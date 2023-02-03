@@ -1,2 +1,8 @@
 # Spotify Match
-installed react native elements package
+
+- Amaan
+- Amandeep
+- Vani
+- Mrin
+- Calder
+- Rami
