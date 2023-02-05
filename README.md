@@ -12,3 +12,4 @@
 
     rneui/base
     rneui/themed
+    expo-font

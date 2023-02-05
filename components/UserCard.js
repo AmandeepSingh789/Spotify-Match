@@ -18,36 +18,65 @@ const Social = ({ name }) => (
 )
 
 class UserCard extends React.Component {
+
   render() {
     return (
+
       <SafeAreaView style={styles.container}>
+
+
+        {/* Image Container */}
         <View style={styles.imageContainer}>
           <Image source={{uri:pic}} style={styles.image} />
+        </View> 
+
+{/* -------------------------------------------------------------------- */}
+
+        {/* Box with Name,Age and Meter*/}
+        <View style={styles.upperBox}>
+
+          <Text h4 style={styles.name}>
+            {title}
+          </Text>
+                
+          <View style={styles.meter}>
+            <Text style={styles.percentage}>{compatibility}</Text>
+          </View>
         </View>
-        <Text h4 style={styles.name}>
-          {title}
-        </Text>
+
+
+        {/* -------------------------------------------------------------------- */}
         
+        {/* Bio and Questions */}
+
+
         <Text style={styles.desc}>Example One liner in Bio.</Text>
         <Divider style={styles.divider} />
 
         <Text style={styles.desc}>
-          Example funniest joke ever
+          Q1
         </Text>
-        <Divider style={styles.divider} />
-        <View style={styles.meter}>
-        <Text style={styles.percentage}>{compatibility}</Text>
-        </View>
-        
         
         <Divider style={styles.divider} />
+
+        <Text style={styles.desc}>
+          Q2
+        </Text>
+
+        <Divider style={styles.divider} />
+
+        <Text style={styles.desc}>
+          Q3
+        </Text>
         
-        <Text style={styles.desc}>Find me on Social here</Text>
+        {/* -------------------------------------------------------------------- */}
+        
+        {/* <Text style={styles.desc}>Find me on Social here</Text>
         <View style={styles.socialLinks}>
           <Social name="snapchat" />
           <Social name="instagram" />
           <Social name="facebook-square" />
-        </View>
+        </View> */}
       </SafeAreaView>
     )
   }
@@ -58,6 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     borderWidth:1,
+    backgroundColor:"#000000",
+    
     
     // height: Layout.window.height / 2,
     
@@ -65,6 +96,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     margin: 20,
+    borderColor:'#3EFF2D',
+    borderWidth:1,
+    borderRadius:20,
+
   },
   image: {
     width: Layout.window.width - 60, // device width - some margin
@@ -72,42 +107,50 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   name: {
-    color: '#5E5E5E',
-    alignSelf: 'center',
-    marginLeft: 30,
+    color: '#fff',
+    // alignSelf: 'flex-start',
+    // justifyContent:'flex-end',
+    
+
   },
   desc: {
-    color: '#5E5E5E',
-    alignSelf: 'center',
+    color: '#fff',
+    alignSelf: 'flex-start',
     marginTop: 5,
     marginHorizontal: 30,
-    fontSize: 14,
+    fontSize: 20,
 
   },
+  upperBox:{
+    flexDirection:'row',
+    alignItems:'center',
+
+    },
   meter: {
     color: '#5E5E5E',
-
-
-    marginHorizontal: 30,
     fontSize: 14,
     borderRadius:'100%',
+    borderColor:'#3EFF2D',
+    marginLeft:"20%",
     borderWidth:1,
-    height:100,
-    width:100,
+    height:80,
+    width:80,
     justifyContent:'center',
-    alignItems:'center'
+    // alignItems:'flex-end',
+    // alignSelf:'flex-start',
 
   },
   percentage: {
-    color: '#5E5E5E',
+    color: '#fff',
     alignSelf: 'center',
-    fontSize:40,
+    fontSize:24,
 
   },
   divider: {
-    backgroundColor: '#C0C0C0',
+    backgroundColor: '#3EFF2D',
     width: Layout.window.width - 60,
     margin: 10,
+    color:'#3EFF2D',
   },
   socialLinks: {
     flex: 1,
