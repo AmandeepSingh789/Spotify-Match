@@ -1,5 +1,6 @@
 # Spotify Match
 
+## Group Members-
 - Amaan
 - Amandeep
 - Vani
@@ -7,8 +8,15 @@
 - Calder
 - Rami
 
+## Setup Notes-
 
-# # Dependencies 
+`git clone https://github.com/AmandeepSingh789/Spotify-Match.git`
+
+`npm install`
+
+`npx expo start --tunnel`
+
+## Dependencies 
 
     rneui/base
     rneui/themed
