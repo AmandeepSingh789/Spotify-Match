@@ -5,12 +5,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
-import OtherUsersScreen from '../screens/OtherUsersScreen';
+import MatchesScreen from '../screens/MatchesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 //Screen names
-const homeName = "Home";
-const otherUsersName = "Other User Profiles";
+const homeName = "Homepage";
+const matchesName = "Matches";
 const settingsName = "Settings";
 
 const Tab = createBottomTabNavigator();
@@ -28,8 +28,8 @@ function MainContainer() {
             if (rn === homeName) {
               iconName = focused ? 'person' : 'person-outline';
 
-            } else if (rn === otherUsersName) {
-              iconName = focused ? 'star' : 'star-outline';
+            } else if (rn === matchesName) {
+              iconName = focused ? 'chatbox' : 'chatbox-outline';
 
             } else if (rn === settingsName) {
               iconName = focused ? 'settings' : 'settings-outline';
@@ -47,7 +47,7 @@ function MainContainer() {
         }}>
 
         <Tab.Screen name={homeName} component={HomeScreen} />
-        <Tab.Screen name={otherUsersName} component={OtherUsersScreen} />
+        <Tab.Screen name={matchesName} component={MatchesScreen} />
         <Tab.Screen name={settingsName} component={SettingsScreen} />
 
       </Tab.Navigator>
