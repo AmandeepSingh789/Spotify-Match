@@ -21,6 +21,18 @@ function MainContainer() {
       <Tab.Navigator
         initialRouteName={homeName}
         screenOptions={({ route }) => ({
+            "tabBarActiveTintColor": "tomato",
+            "tabBarInactiveTintColor": "grey",
+            "tabBarLabelStyle": {
+            "paddingBottom": 10,
+            "fontSize": 10
+        },
+        "tabBarStyle": [
+            {
+            "display": "flex"
+            },
+            null
+        ],
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             let rn = route.name;
@@ -39,12 +51,7 @@ function MainContainer() {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'grey',
-          labelStyle: { paddingBottom: 10, fontSize: 10 },
-          style: { padding: 10, height: 70}
-        }}>
+        >
 
         <Tab.Screen name={homeName} component={HomeScreen} />
         <Tab.Screen name={matchesName} component={MatchesScreen} />

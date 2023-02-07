@@ -6,7 +6,7 @@ export default function MatchesScreen({ navigation }) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text
                 onPress={() => navigation.navigate('Home')}
-                style={{ fontSize: 26, fontWeight: 'bold' }}>Other Users</Text>
+                style={{ fontSize: 26, fontWeight: 'bold' }}>Matches Screen</Text>
         </View>
     );
 }
