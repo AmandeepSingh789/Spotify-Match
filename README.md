@@ -21,3 +21,8 @@
     rneui/base
     rneui/themed
     expo-font
+
+    react-navigation/native
+    react-native-community/masked-view
+    react-navigation/stack
+    react-navigation/bottom-tabs

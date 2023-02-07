@@ -1,13 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import Navigator from './components/Navigator';
+import UserCard from '../components/UserCard';
 
 export default function App() {
   return (
     
     <View style={styles.container}>
     
-    <Navigator/>
+    <UserCard />
 
     </View>
 
