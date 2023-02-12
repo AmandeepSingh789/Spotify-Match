@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     // width: 400,
     // height: 700,
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#fff',
     
     // height:"0%",    
