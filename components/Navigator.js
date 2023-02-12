@@ -24,8 +24,10 @@ function MainContainer() {
             "tabBarActiveTintColor": "tomato",
             "tabBarInactiveTintColor": "grey",
             "tabBarLabelStyle": {
-            "paddingBottom": 5,
-            "fontSize": 9
+            "paddingBottom": 3,
+            "fontSize": 9,
+            // "paddingBottom": 10,
+            // "fontSize": 10
         },
         "tabBarStyle": [
             {

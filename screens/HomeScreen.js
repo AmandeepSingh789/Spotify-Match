@@ -9,8 +9,32 @@ export default function App() {
   return (
     
     <View style={styles.container}>
-    
-    <UserCard />
+    <UserCard/>
+    {/* <UserCard style={{ 
+                  alignItems: 'center',
+                  flex:1}}/> */}
+    <View style={{ justifyContent: 'space-between',
+                   alignItems: 'center',
+                        flexDirection: 'row', 
+                        // paddingHorizontal: '21%', 
+                        positon: 'absolute',
+                        bottom: 0}}>
+            <Icon
+            raised
+            name='times'
+            type='font-awesome'
+            color='#f50'
+            onPress={() => console.log('dislike')} 
+            />
+
+            <Icon
+            reverse
+            name='heart'
+            type='ionicon'
+            color='#517fa4'
+            onPress={() => console.log('like')}
+            />
+        </View>
   
     </View>
 
@@ -22,9 +46,11 @@ const styles = StyleSheet.create({
     // width: 400,
     // height: 700,
     // flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fffff',
+    // alignItems: 'center',
+    // flex:1
     
-    // height:"0%",    
+    // height:"95%",    
   },
   
 });

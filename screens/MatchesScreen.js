@@ -10,24 +10,6 @@ export default function MatchesScreen({ navigation }) {
                 onPress={() => navigation.navigate('Home')}
                 style={{ fontSize: 26, fontWeight: 'bold' }}>Matches Screen</Text>
         
-        <View style={{ justifyContent: 'space-between', alignItems: 'flex-end',
-                        flexDirection: 'row', paddingHorizontal: '15%', }}>
-            <Icon
-            raised
-            name='times'
-            type='font-awesome'
-            color='#f50'
-            onPress={() => console.log('dislike')} 
-            />
-
-            <Icon
-            reverse
-            name='heart'
-            type='ionicon'
-            color='#517fa4'
-            onPress={() => console.log('like')}
-            />
-        </View>
         </View>           
         );
 }

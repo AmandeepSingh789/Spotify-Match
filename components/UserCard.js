@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
       // width: Layout.window.width,
     },
     imageContainer: {
-      marginVertical: 20,
+      marginVertical: 40,
+      // marginVertical: 20,
       borderColor:'#3EFF2D',
       borderWidth:1,
       borderRadius:20,
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     divider: {
       // backgroundColor: '#3EFF2D',
       width: Layout.window.width - 120,
-      margin: 10,
+      margin: 7,
       color:'#3EFF2D',
       // color:"#000000",
     },
