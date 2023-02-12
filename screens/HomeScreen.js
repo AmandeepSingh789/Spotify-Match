@@ -16,7 +16,7 @@ export default function App() {
     <View style={{ justifyContent: 'space-between',
                    alignItems: 'center',
                         flexDirection: 'row', 
-                        // paddingHorizontal: '21%', 
+                        paddingHorizontal: '21%', 
                         positon: 'absolute',
                         bottom: 0}}>
             <Icon
