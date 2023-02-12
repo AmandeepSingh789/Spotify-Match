@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
       // width: Layout.window.width,
     },
     imageContainer: {
-      marginVertical: 20,
-      // marginVertical: 20,
+      // marginVertical: 40,
+      marginVertical: 12,
       borderColor:'#3EFF2D',
       borderWidth:1,
       borderRadius:20,

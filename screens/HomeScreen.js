@@ -16,9 +16,10 @@ export default function App() {
     <View style={{ justifyContent: 'space-between',
                    alignItems: 'center',
                         flexDirection: 'row', 
-                        paddingHorizontal: '21%', 
+                        paddingVertical: '1%',
+                        paddingHorizontal: '7%', 
                         positon: 'absolute',
-                        bottom: 0}}>
+                        bottom: 27}}>
             <Icon
             raised
             name='times'
