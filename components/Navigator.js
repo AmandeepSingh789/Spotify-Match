@@ -24,12 +24,13 @@ function MainContainer() {
             "tabBarActiveTintColor": "tomato",
             "tabBarInactiveTintColor": "grey",
             "tabBarLabelStyle": {
-            "paddingBottom": 10,
-            "fontSize": 10
+            "paddingBottom": 5,
+            "fontSize": 9
         },
         "tabBarStyle": [
             {
-            "display": "flex"
+            "display": "flex",
+            // "height": 75,
             },
             null
         ],
