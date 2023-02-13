@@ -1,14 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import {React, useEffect, useRef, useState, useCallback} from 'react';
-import {Camera} from 'expo-camera';
-import {shareAsync} from 'expo-sharing';
 import { useFonts } from 'expo-font';
-import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
-
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-
-
 import { 
   SafeAreaView, 
   StyleSheet, 
@@ -16,24 +10,17 @@ import {
   View, 
   Image, 
   Button,
-  TouchableWithoutFeedback,
-  Platform,
-  ScrollView,
-  ActivityIndicator,
-  ImageBase,
   TouchableOpacity,
-  TouchableHighlight
  } from 'react-native';
 
-
-
 export default function Add_images() {
+  // Image state variables
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
 
-
+  // Loading fonts
   const [fontsLoaded] = useFonts({
     'Inter-Bold': require('../assets/fonts/Inter-Bold.otf'),
     
@@ -49,7 +36,7 @@ export default function Add_images() {
     return null;
   }
 
-
+  // Function to choose 4 images at a time from user camera roll
   const pickImages = async () => {
     // no permission needed
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -63,7 +50,6 @@ export default function Add_images() {
 
     });
 
-
     if (!result.canceled) {
       setImage1(result.assets[0].uri);
       setImage2(result.assets[1].uri);
@@ -72,6 +58,8 @@ export default function Add_images() {
     }
   };
 
+  // Function to allow user to change an individual image
+  // INPUT: image - value from 1-4 that specifies the image being changed
   const changeImage = async (image) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -100,7 +88,8 @@ export default function Add_images() {
     }
   }
 
-
+  // Function that saves an image to the users local library
+  // INPUT: item - a URI of the image being saved
   const SaveToPhone = async (item) => {
     // item is a image uri
     const permission = await MediaLibrary.requestPermissionsAsync();
@@ -136,23 +125,21 @@ export default function Add_images() {
 
   return (
     <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      {/* Sets status bar mode */}
       <StatusBar style="auto" />
 
+      {/* Titles and subtitles */}
       <Text style={styles.title}>Add Images</Text>
-
       <Text style={styles.subtitle}>The first image will be your profile picture!</Text>
       <Text style={styles.subtitle}>Tap an image to edit it.</Text>
       
-      
+      {/* Image view of the 4 images */}
       <View style={styles.imageContainer}>
         <View style={styles.imageView}>
           <TouchableOpacity onPress={() => {changeImage(1);}}>
             <Image source={{ uri: image1 }} style={styles.profilePicture} />
           </TouchableOpacity>
         </View>
-
-
-
         <View style={styles.imageView}>
           <TouchableOpacity onPress={() => {changeImage(3);}}>
             <Image source={{ uri: image3 }} style={styles.image} />
@@ -168,11 +155,12 @@ export default function Add_images() {
         </View>
       </View>
 
-
+      {/* Button that allows user to choose 4 images at once */}
       <TouchableOpacity style={styles.button} onPress={pickImages}>
         <Text style={styles.buttonText}>Choose Images...</Text>
       </TouchableOpacity>
 
+      {/* Button that saves 4 images to user's local library */}
       <Button
         style={styles.button}
         title="Submit"
@@ -184,7 +172,6 @@ export default function Add_images() {
         }}
         color="#19AC52"
       />
-
     </SafeAreaView>
 
   );
@@ -253,6 +240,5 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily:'Inter-Bold'
   }
-
 });
 

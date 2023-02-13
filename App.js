@@ -11,7 +11,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Edit User Profile" component={Edit_user_profile}
+        <Stack.Screen name="Edit User Profile" component={Add_images}
         options={{
           title: 'Edit Profile',
           headerStyle: {
