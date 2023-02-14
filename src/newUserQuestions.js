@@ -1,4 +1,4 @@
-import React, { useState, setState, useCallback, Component } from "react";
+import React, { useState, setState, useCallback, Component, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 // import { Dropdown } from 'react-native-material-dropdown';
 import DropDownPicker from "react-native-dropdown-picker";
@@ -8,7 +8,39 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { Button } from '@rneui/themed';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+import axios from 'axios';
+
 const NewUserQuestions = () => {
+  const [userID, setUserID] = useState(1);
+  const [name, setName] = useState(null);
+  const [birthday, setBirthday] = useState(null);
+  //setGenderValue
+  //setSOValue
+  // const [genderChoice, setGenderChoice] = useState(null);
+  // const [sexualOrientationChoice, setsexualOrientationChoice] = useState(null);
+  const [pronouns, setPronouns] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [bio, setBio] = useState(null);
+  const [answer1, setAnswer1] = useState(null);
+  const [answer2, setAnswer2] = useState(null);
+  const [answer3, setAnswer3] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/'+userID)
+    .then(function(response) {
+      setName(response["data"][0]["name"]);
+      setBirthday(response["data"][0]["birthday"]);
+      setLocation(response["data"][0]["location"]);
+      setGenderChoice(response["data"][0]["genderChoice"]);
+      setsexualOrientationChoice(response["data"][0]["sexualOrientationChoice"]);
+      setPronouns(response["data"][0]["pronouns"]);
+      setLocation(response["data"][0]["location"]);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }, [])
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [datePickerVisible, setDatePickerVisible] = useState(false);
 
