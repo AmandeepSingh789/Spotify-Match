@@ -2,27 +2,29 @@ import React from 'react'
 import { Image, SafeAreaView, StyleSheet, View } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
-
+import { useState } from 'react'
 
 const pic = 'https://picsum.photos/id/237/1080'
-const title ='Example Name, Age'
-const compatibility='80%'
+const title = 'Example Name, Age'
+const compatibility = '80%'
 
-const Social = ({ name }) => (
-  <Icon
-    name={name}
-    type="font-awesome"
-    containerStyle={styles.iconContainer}
-    size={32}
-  />
-)
+function Card(){
 
-class UserCard extends React.Component {
+    // const [data, setData] = useState([]);
+// const getName = async () => {
+//   try {
+//     const response = await fetch(
+//       'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
+//     );
+//     const json = await response.json();
+//     console.log(json)
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
-  render() {
     return (
-
-      <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
 
 
         {/* Image Container */}
@@ -68,6 +70,8 @@ class UserCard extends React.Component {
         <Text style={styles.desc}>
           Q3
         </Text>
+
+        <Divider style={styles.divider} />
         
         {/* -------------------------------------------------------------------- */}
         
@@ -77,93 +81,93 @@ class UserCard extends React.Component {
           <Social name="instagram" />
           <Social name="facebook-square" />
         </View> */}
-      </SafeAreaView>
+      </View>
     )
-  }
 }
 
+export default Card;
+
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    borderWidth:1,
-    backgroundColor:"#000000",
-    
-    
-    // height: Layout.window.height / 2,
-    
-    
-  },
-  imageContainer: {
-    margin: 20,
-    borderColor:'#3EFF2D',
-    borderWidth:1,
-    borderRadius:20,
-
-  },
-  image: {
-    width: Layout.window.width - 60, // device width - some margin
-    height: Layout.window.height / 2 - 60, // device height / 2 - some margin
-    borderRadius: 20,
-  },
-  name: {
-    color: '#fff',
-    // alignSelf: 'flex-start',
-    // justifyContent:'flex-end',
-    
-
-  },
-  desc: {
-    color: '#fff',
-    alignSelf: 'flex-start',
-    marginTop: 5,
-    marginHorizontal: 30,
-    fontSize: 20,
-
-  },
-  upperBox:{
-    flexDirection:'row',
-    alignItems:'center',
-
+    container: {
+      // flex: 1,
+      alignItems: 'center',
+      borderWidth:1,
+      borderColor:'#3EFF2D',
+      backgroundColor:"#000000",
+      margin:20,
+      // margin:40,
+      borderRadius:"20%",
+      // marginBottom:1, 
+      // marginLeft:5,
+      // marginRight:5,
+      // marginTop:30,
+      // width: "80%",
+      // height: "90%",
+      justifyContent:'center',
+      // height: Layout.window.height / 1,
+      // width: Layout.window.width,
     },
-  meter: {
-    color: '#5E5E5E',
-    fontSize: 14,
-    borderRadius:'100%',
-    borderColor:'#3EFF2D',
-    marginLeft:"20%",
-    borderWidth:1,
-    height:80,
-    width:80,
-    justifyContent:'center',
-    // alignItems:'flex-end',
-    // alignSelf:'flex-start',
-
-  },
-  percentage: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize:24,
-
-  },
-  divider: {
-    backgroundColor: '#3EFF2D',
-    width: Layout.window.width - 60,
-    margin: 10,
-    color:'#3EFF2D',
-  },
-  socialLinks: {
-    flex: 1,
-
-    justifyContent:'center',
-    flexDirection: 'row',
-    width: Layout.window.width,
+    imageContainer: {
+      // marginVertical: 40,
+      marginVertical: 12,
+      borderColor:'#3EFF2D',
+      borderWidth:1,
+      borderRadius:20,
+    },
+    image: {
+      width: Layout.window.width - 120, 
+      height: Layout.window.height / 2 - 120, 
+      borderRadius: 20,
+    },
+    name: {
+      color: '#fff',
+      // marginLeft:20,
+      // alignSelf: 'flex-start',
+      // justifyContent:'flex-end',
+  
+    },
+     meter: {
+      color: '#5E5E5E',
+      fontSize: 14,
+      borderRadius:'100%',
+      borderColor:'#3EFF2D',
+      marginLeft:20,
+      borderWidth:1,
+      height:80,
+      width:80,
+      justifyContent:'center',
+      // alignItems:'flex-end',
+      // alignSelf:'flex-start',
+  
+    },
+    percentage: {
+      color: '#fff',
+      alignSelf: 'center',
+      fontSize:24,
+  
+    },
+    desc: {
+      color: '#fff',
+      alignSelf: 'flex-start',
+      marginTop: 5,
+      marginHorizontal: 30,
+      fontSize: 20,
+  
+    },
+    upperBox:{
+      flexDirection:'row',
+      alignItems:'center',
+  
+      },
+   
+    divider: {
+      // backgroundColor: '#3EFF2D',
+      width: Layout.window.width - 120,
+      // margin: 10,
+      margin: 7,
+      color:'#3EFF2D',
+      // color:"#000000",
+    },
     
-  },
-  iconContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 15,
-  },
-})
-
-export default UserCard
+  })
