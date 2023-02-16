@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+// import { useColorScheme } from 'react-native';
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
 import MatchesScreen from '../screens/MatchesScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 //Screen names
 const homeName = "Homepage";
 const matchesName = "Matches";
-const settingsName = "Settings";
+const profileName = "Profile";
 
 const Tab = createBottomTabNavigator();
 
 function MainContainer() {
+  // const scheme = useColorScheme();
   return (
-    <NavigationContainer>
+    
+    <NavigationContainer theme={DarkTheme}>
       <Tab.Navigator
         initialRouteName={homeName}
         screenOptions={({ route }) => ({
@@ -28,9 +32,12 @@ function MainContainer() {
             "fontSize": 9,
             // "paddingBottom": 10,
             // "fontSize": 10
+            
         },
+        // headerStyle: { backgroundColor: 'black' },
         "tabBarStyle": [
             {
+            // "backgroundColor": "#28282B",  
             "display": "flex",
             // "height": 75,
             },
@@ -46,8 +53,8 @@ function MainContainer() {
             } else if (rn === matchesName) {
               iconName = focused ? 'chatbox' : 'chatbox-outline';
 
-            } else if (rn === settingsName) {
-              iconName = focused ? 'settings' : 'settings-outline';
+            } else if (rn === profileName) {
+              iconName = focused ? 'person-circle' : 'person-circle-outline';
             }
 
             // You can return any component that you like here!
@@ -58,7 +65,7 @@ function MainContainer() {
 
         <Tab.Screen name={homeName} component={HomeScreen} />
         <Tab.Screen name={matchesName} component={MatchesScreen} />
-        <Tab.Screen name={settingsName} component={SettingsScreen} />
+        <Tab.Screen name={profileName} component={ProfileScreen} />
 
       </Tab.Navigator>
     </NavigationContainer>
