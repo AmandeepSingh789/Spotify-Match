@@ -1,9 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
 import { Button } from "@rneui/base";
 import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import { useNavigation } from '@react-navigation/native';
+
+const logo = require('../assets/spotify_match_logo.png');
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -55,14 +57,17 @@ const LoginScreen =() => {
 
   return (
     <View style={styles.container}>
-      <View style={{bottom: 60}}>
+      <View style={{marginBottom: -40}}>
         <Text
           style = {styles.welcometext}
         >
           Welcome{"\n"}
           to{"\n"}
-          Spotify Match
         </Text>
+        <Image 
+          source={logo} 
+          style= {styles.logo}
+        />
       </View>
       <View style={{bottom: -100}}>
         <Button
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
   welcometext: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 50,
+    fontSize: 60,
     color: 'white'
   },
   buttonStyle: {
@@ -104,6 +109,14 @@ const styles = StyleSheet.create({
     width: 200,
     marginHorizontal: 40,
     marginVertical: 10
+  },
+  logo: {
+    height: 100, 
+    width: 300, 
+    justifyContent: 'center', 
+    marginTop: -50, 
+    marginBottom: 90, 
+    marginLeft: 10
   }
 });
 
