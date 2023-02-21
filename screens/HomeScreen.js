@@ -1,18 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image,FlatList } from 'react-native';
 import UserCard from '../components/UserCard';
 // import { Icon } from 'react-native-elements';
 import { Icon } from '@rneui/themed'
-
+import Layout from '../ constants/Layout';
 
 export default function App() {
+
+  const users=[
+    {
+    id:1
+  },
+  {
+    id:2
+  },
+  {
+    id:3
+  },
+  {
+    id:4
+  },
+]
   return (
     
     <View style={styles.container}>
-    <UserCard/>
-    {/* <UserCard style={{ 
+    {/* <UserCard/> */}
+    {/* <FlatList data={users}
+          renderItem={({item}) => <UserCard item ={item} 
+          style={{ 
+            alignItems: 'center',
+            flex:1}}/>}
+          horizontal
+          pagingEnabled 
+          snapToAlignment='center'
+          showHorizontalScrollIndicator= {false}
+          style = {styles.flatList}
+          /> */}
+    <UserCard style={{ 
                   alignItems: 'center',
-                  flex:1}}/> */}
+                  flex:1}}/>
     <View style={{ justifyContent: 'space-between',
                    alignItems: 'center',
                         flexDirection: 'row', 
@@ -52,6 +78,13 @@ const styles = StyleSheet.create({
     // flex:1
     
     // height:"95%",    
+  },
+  flatList: {
+    flatList: {
+      height: Layout.window.height
+    },
+    flexGrow: 0,
+    marginBottom:5,
   },
   
 });

@@ -1,11 +1,29 @@
 import React from 'react'
-import { Image, SafeAreaView, StyleSheet, View } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, View, FlatList } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
 import { useEffect,useState } from 'react'
 import axios from "axios"
 
-const pic = 'https://picsum.photos/id/237/1080'
+const pics = [
+  {
+    id:1,
+    url:'https://picsum.photos/id/237/1080'
+  },
+  {
+    id:2,
+    url:'https://picsum.photos/id/10/1080'
+  },
+  {
+    id:3,
+    url:'https://picsum.photos/id/11/1080'
+  },
+  {
+    id:4,
+    url:'https://picsum.photos/id/12/1080'
+  },
+
+]
  const title =('Example Name, Age')
 const compatibility='80%'
 
@@ -18,7 +36,7 @@ function Card(){
 
     const getData = () => {
       axios
-          .get("http://spotify-match.us-west-1.elasticbeanstalk.com/users/1")
+          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/1`)
           .then((response) => {
             console.log(response["data"][0]["name"])
             setName(response["data"][0]["name"]);
@@ -32,7 +50,17 @@ function Card(){
     getAge(DOB);
     
   }, []);
+  const Item = ({item}) => (
+    
+    <View style={styles.imageContainer}>
+      <Image source={{uri: item.url}}
+      resizeMode="contain"
+      style={styles.image} 
+       />
+       
+    </View>
 
+  );
   const getAge =(DOB) =>{
     var date = new Date(DOB)
     let today = new Date()
@@ -50,27 +78,36 @@ function Card(){
 
 
         {/* Image Container */}
-        <View style={styles.imageContainer}>
-          <Image source={{uri:pic}} style={styles.image} />
+        <View >
+          {/* <Image source={{uri:pic4}} style={styles.image} /> */}
+          <FlatList data={pics}
+          renderItem={({item}) => <Item item ={item}/>}
+          horizontal
+          pagingEnabled 
+          snapToAlignment='center'
+          showHorizontalScrollIndicator= {false}
+          style = {styles.flatList}
+          />
         </View> 
 
 {/* -------------------------------------------------------------------- */}
 
         {/* Box with Name,Age and Meter*/}
-        <View style={styles.upperBox}>
+         <View style={styles.upperBox}>
 
           <Text h4 style={styles.name}>
-            {/* {userData["data"][0]["name"]} */}
+             
             {Name},
+      
             {Age}
             
-          </Text>
+          </Text> 
           
                 
-          <View style={styles.meter}>
+           <View style={styles.meter}>
             <Text style={styles.percentage}>{compatibility}</Text>
-          </View>
-        </View>
+          </View> 
+         </View>  
 
 
         {/* -------------------------------------------------------------------- */}
@@ -97,7 +134,7 @@ function Card(){
           Q3
         </Text>
 
-        <Divider style={styles.divider} />
+        <Divider style={styles.divider} /> 
         
         {/* -------------------------------------------------------------------- */}
         
@@ -127,16 +164,23 @@ const styles = StyleSheet.create({
       
     },
     imageContainer: {
-      marginVertical: 40,
+      // marginVertical: 40,
       borderColor:'#3EFF2D',
       borderWidth:1,
       borderRadius:20,
+      height: Layout.window.height/2-120,
+      
   
     },
+    flatList: {
+      height: Layout.window.height/2-120,
+      flexGrow: 0,
+      marginBottom:5,
+    },
     image: {
-      width: Layout.window.width - 120, 
-      height: Layout.window.height / 2 - 120, 
-      borderRadius: 20,
+      width: Layout.window.width-84,
+        height: Layout.window.height / 2 - 120, 
+        borderRadius: 20,
     },
     name: {
       color: '#fff',
