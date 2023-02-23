@@ -35,3 +35,8 @@
     react-native-keyboard-aware-scroll-view
     axios
     expo-splash-screen
+
+    expo-linear-gradient
+    react-native-gesture-handler
+    react-native-safe-area-context
+    react-native-screens
