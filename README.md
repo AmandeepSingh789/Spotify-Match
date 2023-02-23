@@ -34,3 +34,4 @@
     react-native-dropdown-select-list
     react-native-keyboard-aware-scroll-view
     axios
+    expo-splash-screen
