@@ -12,7 +12,7 @@
 
 `git clone https://github.com/AmandeepSingh789/Spotify-Match.git`
 
-`npm install`
+`npm install` or `npx expo install <indivisual package name>` (recommended)
 
 `npx expo start --tunnel`
 
@@ -26,3 +26,12 @@
     react-native-community/masked-view
     react-navigation/stack
     react-navigation/bottom-tabs
+
+    expo-status-bar
+    expo-image-picker
+    expo-media-library
+    @react-native-community/datetimepicker
+    react-native-dropdown-select-list
+    react-native-keyboard-aware-scroll-view
+    axios
+    expo-splash-screen
