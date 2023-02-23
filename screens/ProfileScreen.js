@@ -50,12 +50,15 @@ import {
     Button,
     ScrollView,
     TouchableOpacity,
-    SplashScreen,
+    // SplashScreen,
     Dimensions
     } from 'react-native';
 
 import axios from "axios";
 
+// adding this and commenting SplashScreen fixed the error "Possible Unhandled Promise Rejection (id: 0):
+// TypeError: undefined is not an object (evaluating '_reactNative.SplashScreen.hideAsync')"
+import * as SplashScreen from 'expo-splash-screen';
 
 // Global width variable
 const WIDTH = Dimensions.get('window').width;
@@ -254,11 +257,11 @@ export default function Edit_user_profile() {
                     horizontal={true}
                     persistentScrollbar={true} 
                 >
-                    {
+                    {  /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
                         images.map((e, index) => 
-                            <TouchableOpacity styles= {{marginLeft: 50}} onPress={() => {changeImage(index+1);}}>
+                            <TouchableOpacity styles= {{marginLeft: 50}} onPress={() => {changeImage(index+1);}} key={index}>
                                 <Image source={{ uri: e }} style={styles.image} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> 
                         )
                     }
 
