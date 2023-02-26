@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, SafeAreaView, StyleSheet, View, FlatList } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
 import { useEffect,useState } from 'react'
@@ -42,14 +42,21 @@ function Card(){
             setName(response["data"][0]["name"]);
             setBio(response["data"][0]["bio"]);
             setDOB(response["data"][0]["birthdate"]);
+            console.log(Name)
+            console.log(Bio)
+            console.log(DOB)
+            
           });
   };
   useEffect(() => {
-    
+
     getData();
     getAge(DOB);
     
+    
   }, []);
+
+
   const Item = ({item}) => (
     
     <View style={styles.imageContainer}>
@@ -79,7 +86,7 @@ function Card(){
 
         {/* Image Container */}
         <View >
-          {/* <Image source={{uri:pic4}} style={styles.image} /> */}
+          {/* <Image source={{uri:'https://picsum.photos/id/237/1080'}} style={styles.image} /> */}
           <FlatList data={pics}
           renderItem={({item}) => <Item item ={item}/>}
           horizontal
@@ -101,7 +108,7 @@ function Card(){
       
             {Age}
             
-          </Text> 
+          </Text>
           
                 
            <View style={styles.meter}>
@@ -113,26 +120,35 @@ function Card(){
         {/* -------------------------------------------------------------------- */}
         
         {/* Bio and Questions */}
-
-
+        <ScrollView >
         <Text style={styles.desc}>{Bio}</Text>
+      
+        </ScrollView>
         <Divider style={styles.divider} />
-
+        
+        <ScrollView >
         <Text style={styles.desc}>
           Q1
         </Text>
+        </ScrollView>
         
         <Divider style={styles.divider} />
 
+        <ScrollView >
         <Text style={styles.desc}>
           Q2
         </Text>
-
+        </ScrollView>
+        
+        
         <Divider style={styles.divider} />
-
+        <ScrollView 
+        >
         <Text style={styles.desc}>
-          Q3
+          Q3 
         </Text>
+        </ScrollView>
+        
 
         <Divider style={styles.divider} /> 
         
@@ -158,7 +174,10 @@ const styles = StyleSheet.create({
       borderWidth:1,
       borderColor:'#3EFF2D',
       backgroundColor:"#000000",
-      margin:40,
+      marginHorizontal:40,
+      marginTop:20,
+      marginBottom:40,
+
       borderRadius:"20%"
       // height: Layout.window.height / 2,
       
@@ -181,6 +200,7 @@ const styles = StyleSheet.create({
       width: Layout.window.width-84,
         height: Layout.window.height / 2 - 120, 
         borderRadius: 20,
+        marginBottom:20,
     },
     name: {
       color: '#fff',
@@ -215,7 +235,8 @@ const styles = StyleSheet.create({
       marginTop: 5,
       marginHorizontal: 30,
       fontSize: 20,
-  
+      flexShrink: 1,
+      
     },
     upperBox:{
       flexDirection:'row',

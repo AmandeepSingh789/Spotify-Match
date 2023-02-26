@@ -1,26 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image,FlatList } from 'react-native';
+import { StyleSheet, Text, View,FlatList,Dimensions, Image} from 'react-native';
 import UserCard from '../components/UserCard';
 // import { Icon } from 'react-native-elements';
 import { Icon } from '@rneui/themed'
 import Layout from '../ constants/Layout';
 
+import CardsSwipe from 'react-native-cards-swipe';
+
+const users=[
+  {
+  id:1
+},
+{
+  id:2
+},
+{
+  id:3
+},
+{
+  id:4
+},
+]
+// const pics = [
+//   {
+//     id:1,
+//     url:'https://picsum.photos/id/23/1080'
+//   },
+//   {
+//     id:2,
+//     url:'https://picsum.photos/id/10/1080'
+//   },
+//   {
+//     id:3,
+//     url:'https://picsum.photos/id/11/1080'
+//   },
+//   {
+//     id:4,
+//     url:'https://picsum.photos/id/12/1080'
+//   },
+
+// ]
+
 export default function App() {
 
-  const users=[
-    {
-    id:1
-  },
-  {
-    id:2
-  },
-  {
-    id:3
-  },
-  {
-    id:4
-  },
-]
+
   return (
     
     <View style={styles.container}>
@@ -30,15 +53,29 @@ export default function App() {
           style={{ 
             alignItems: 'center',
             flex:1}}/>}
-          horizontal
+          
           pagingEnabled 
           snapToAlignment='center'
           showHorizontalScrollIndicator= {false}
           style = {styles.flatList}
           /> */}
-    <UserCard style={{ 
-                  alignItems: 'center',
-                  flex:1}}/>
+
+  
+  <CardsSwipe
+        cards={users}
+        cardContainerStyle={styles.cardContainer}
+        renderCard={(card) => (
+          <View >
+            
+            <UserCard />
+          </View>
+          
+          )}
+          />
+
+ 
+
+
     <View style={{ justifyContent: 'space-between',
                    alignItems: 'center',
                         flexDirection: 'row', 
@@ -75,16 +112,36 @@ const styles = StyleSheet.create({
     // flex: 1,
     backgroundColor: '#fffff',
     // alignItems: 'center',
-    // flex:1
+    flex:1
     
     // height:"95%",    
   },
   flatList: {
     flatList: {
-      height: Layout.window.height
+      height: Layout.window.height -80
     },
     flexGrow: 0,
-    marginBottom:5,
+    // marginBottom:5,
+  },
+  cardContainer: {
+    width: '100%',
+    height: '100%',
+  },
+  card: {
+    width: '100%',
+    height: '100%',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.07,
+    shadowRadius: 3.3,
+  },
+  cardImg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 13,
   },
   
 });
