@@ -4,6 +4,7 @@ import { Button } from "@rneui/base";
 import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const logo = require('../assets/spotify_match_logo.png');
 
@@ -19,7 +20,8 @@ const addToken = token => {
 };
 
 const LoginScreen =() => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+  var dataPlaylistsID = [];
 
   const [token, setToken] = useState("");
   const [request, response, promptAsync] = useAuthRequest(
@@ -32,7 +34,7 @@ const LoginScreen =() => {
         'user-read-currently-playing',
         'playlist-read-private',
         'playlist-read-collaborative',
-        'user-follow-modify',
+        'user-follow-read',
         'user-read-playback-position',
         'user-top-read', 
         'user-read-recently-played', 
@@ -50,9 +52,211 @@ const LoginScreen =() => {
     if(response?.type === "success") {
       const { access_token } = response.params;
       setToken(access_token);
-      navigation.navigate('HomeScreen');
     }
   }, [response]);
+
+  useEffect(() => {
+    if(token) {
+      //Current User's Profile
+      axios
+        .get(
+          'https://api.spotify.com/v1/me', {
+            headers: {
+              Authorization: 'Bearer ' + token,
+              'Content-Type': 'application/json',
+            }
+          }
+        ).then(function(profile) {
+          // console.log(profile);
+          // axios
+          //   .post(
+          //     'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
+          //     {
+          //       "id": profile.data.id,
+          //       "name": profile.data.display_name,
+          //       "birthdate": "1972-04-12T07:00:00.000Z",
+          //       "email": profile.data.email,
+          //       "gender": "M",
+          //       "orientation": "P",
+          //       "location": profile.data.country,
+          //       "pronouns": "he/him",
+          //       "bio": null,
+          //       "questionid1": null,
+          //       "questionid2": null,
+          //       "questionid3": null,
+          //       "answer1": null,
+          //       "answer2": null,
+          //       "answer3": null
+          //     }
+          //   ).catch ((error) => {
+          //     console.error(error.profile.data);
+          //   })
+          navigation.navigate('HomeScreen');
+        }).catch((error) => {
+          console.log("error", error.message);
+        });
+      
+      //Current User Playlist IDs
+      // axios.
+      //   get(
+      //     'https://api.spotify.com/v1/me/playlists', {
+      //       params: { limit: 50, offset: 0 },
+      //       headers: {
+      //         Authorization: 'Bearer ' + token,
+      //       }
+      //   }).then(function(all_playlists) {
+      //     for(let i = 0; i < all_playlists.data.items.length; i++) {
+
+            // Individual Playlist Items
+            // axios
+            //   .get(
+            //     'https://api.spotify.com/v1/playlists/' + all_playlists.data.items[i].id + '/tracks', {
+            //     params: { limit : 50, offset: 0 },
+            //     headers: {
+            //       Authorization: 'Bearer ' + token,
+            //     }
+            //   }).then(function(playlist) {
+
+                //Get tracks in playlist
+
+                // for(let i = 0; i < playlist.data.items.length; i++) {
+                //   axios
+                //     .get(
+                //       'https://api.spotify.com/v1/tracks/' + playlist.data.items[i].track.id, {
+                //         headers: {
+                //           Authorization: 'Bearer ' + token,
+                //         }
+                //       }).then(function(track) {
+
+                        // Get audio feature
+                        // axios.get(
+                        //   'https://api.spotify.com/v1/audio-features/' + track.data.id, {
+                        //     headers: {
+                        //       Authorization: 'Bearer ' + token,
+                        //     }
+                        //   })
+                        //   // .then(function(audio_feature) {
+                        //   //   //Store audio feature thing in back end
+                            
+                        //   // })
+                        
+                        // // Get audio anaylsis
+                        // axios.get(
+                        //   'https://api.spotify.com/v1/audio-analysis/' + track.data.id, {
+                        //     headers: {
+                        //       Authorization: 'Bearer ' + token,
+                        //     }
+                        //   })
+                          
+                        //   // .then(function(audio_analysis) {
+                        //     //Store audio analysis thing in back end
+
+                        //   // })
+                //       })
+                // }
+
+          //     });
+          // }
+        // });
+
+      // //Get Artists Followed
+      // axios
+      //   .get(
+      //     'https://api.spotify.com/v1/me/following?type=artist', {
+      //       headers: {
+      //         Authorization: 'Bearer ' + token,
+      //         "Accept": "application/json",
+      //         'Content-Type': 'application/json',
+      //       }
+      //     }
+      //   ).then(function(artist) {
+      //     // console.log(artist)
+      //   })
+      
+      // // Get Top artists
+      // axios
+      //   .get(
+      //     'https://api.spotify.com/v1/me/top/artists', {
+      //       headers: {
+      //         Authorization: 'Bearer ' + token,
+      //         "Accept": "application/json",
+      //         'Content-Type': 'application/json',
+      //       }
+      //     }
+      //   ).then(function(topArtists) {
+      //     // console.log(topArtists)
+      //   })
+        
+      // // Get Top tracks
+      // axios
+      // .get(
+      //   'https://api.spotify.com/v1/me/top/tracks', {
+      //     headers: {
+      //       Authorization: 'Bearer ' + token,
+      //       "Accept": "application/json",
+      //       'Content-Type': 'application/json',
+      //     }
+      //   }
+      // ).then(function(topTracks) {
+      //   // console.log(topTracks)
+      // })
+
+      // Get User's saved albums
+      // axios
+      // .get(
+      //   'https://api.spotify.com/v1/me/albums', {
+      //     headers: {
+      //       Authorization: 'Bearer ' + token,
+      //       "Accept": "application/json",
+      //       'Content-Type': 'application/json',
+      //     }
+      //   }
+      // ).then(function(userSavedAlbum) {
+      //   console.log(userSavedAlbum)
+      // })
+
+      //Get User's Liked Songs (saved tracks)
+    //   axios
+    //   .get(
+    //     'https://api.spotify.com/v1/me/tracks', {
+    //       params: { limit : 50, offset: 0 },
+    //       headers: {
+    //         Authorization: 'Bearer ' + token,
+    //         "Accept": "application/json",
+    //         'Content-Type': 'application/json',
+    //       }
+    //     }).then(function(userSavedTracks) {
+    //       for(let i = 0; i < userSavedTracks.data.items.length; i++) {
+    //         // Get audio feature
+    //         axios.get(
+    //           'https://api.spotify.com/v1/audio-features/' + track.data.id, {
+    //             headers: {
+    //               Authorization: 'Bearer ' + token,
+    //             }
+    //         })
+    //         .then(function(audio_feature) {
+    //           //Store audio feature thing in back end
+                
+    //         })
+              
+    //         // Get audio anaylsis
+    //         axios.get(
+    //           'https://api.spotify.com/v1/audio-analysis/' + track.data.id, {
+    //             headers: {
+    //               Authorization: 'Bearer ' + token,
+    //             }
+    //         })
+    //         .then(function(audio_analysis) {
+    //           //Store audio analysis thing in back end
+
+    //         })
+    //       }
+    //       console.log(userSavedTracks.data.items[9].track.id)
+          
+    //     })
+      
+    }
+  }, [token]);
 
 
   return (
@@ -95,7 +299,7 @@ const styles = StyleSheet.create({
   welcometext: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 60,
+    fontSize: 50,
     color: 'white'
   },
   buttonStyle: {
@@ -111,12 +315,12 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   logo: {
-    height: 100, 
-    width: 300, 
+    height: 120, 
+    width: 330, 
     justifyContent: 'center', 
     marginTop: -50, 
     marginBottom: 90, 
-    marginLeft: 10
+    marginLeft: 30
   }
 });
 
