@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import ChatScreen from "../screens/ChatScreen";
-import MatchScreen from "../screens/MatchScreen";
+import MatchScreen from "../screens/MatchesScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";

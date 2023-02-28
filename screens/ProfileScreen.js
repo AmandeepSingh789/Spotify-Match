@@ -426,7 +426,7 @@ export default function Edit_user_profile() {
                 onChangeText={(answer3) => setAnswer3(answer3)}
                 placeholder={'Answer3'}
                 style={styles.textInput}
-                autoFocus={true}
+                // autoFocus={true}
             />
 
             {/* Submit button - updates database with new information on call */}

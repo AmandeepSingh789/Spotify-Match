@@ -8,7 +8,7 @@ export default function App() {
     <View style={styles.container}>
     
     <Navigator/>
-
+    
     </View>
 
   );

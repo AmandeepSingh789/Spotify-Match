@@ -16,6 +16,15 @@
 
 `npx expo start --tunnel`
 
+## Navigation Sturcture-
+- Stack.Navigator
+ - - Home (Tab.Navigator)
+  - - - Feed (Screen)
+  - - - Messages (Screen)
+ - - Profile (Screen)
+ - - Settings (Screen)
+
+
 ## Dependencies 
 
     rneui/base

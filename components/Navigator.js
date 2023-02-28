@@ -2,8 +2,10 @@ import * as React from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme, } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 // import { useColorScheme } from 'react-native';
+
+// import MatchesNavigator from './components/MatchesNavigator';
+// <MatchesNavigator/>
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
