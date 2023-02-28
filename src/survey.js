@@ -240,7 +240,8 @@ const Survey = () => {
                     color="white"
                     />
                 }
-                onPress={submitData}
+                // onPress={submitData}
+                onPress={(submitData) => navigation.navigate('AddImages')}
             />
         </View>
     </View>

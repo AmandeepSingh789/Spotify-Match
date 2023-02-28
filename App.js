@@ -7,6 +7,7 @@ import Home from './src/home';
 import NewUserQuestions from './src/newUserQuestions';
 import Bio from './src/bio';
 import Survey from './src/survey';
+import AddImages from './src/addimages';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -17,6 +18,7 @@ export default function App() {
       <Stack.Screen options={{headerShown: false}} name="NewUserQuestions" component={NewUserQuestions} />
       <Stack.Screen options={{headerShown: false}} name="Bio" component={Bio} />
       <Stack.Screen options={{headerShown: false}} name="Survey" component={Survey} />
+      <Stack.Screen options={{headerShown: false}} name="AddImages" component={AddImages} />
     </Stack.Navigator>
     </NavigationContainer>
   );
