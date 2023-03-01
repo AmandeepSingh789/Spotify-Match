@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,FlatList,Dimensions, Image} from 'react-native';
 import UserCard from '../components/UserCard';
-// import { Icon } from 'react-native-elements';
 import { Icon } from '@rneui/themed'
 import Layout from '../ constants/Layout';
-
+import  { useRef,useState,useEffect} from 'react';
 import CardsSwipe from 'react-native-cards-swipe';
+import axios from "axios"
 
 const users=[
   {
@@ -21,62 +21,74 @@ const users=[
   id:4
 },
 ]
-// const pics = [
-//   {
-//     id:1,
-//     url:'https://picsum.photos/id/23/1080'
-//   },
-//   {
-//     id:2,
-//     url:'https://picsum.photos/id/10/1080'
-//   },
-//   {
-//     id:3,
-//     url:'https://picsum.photos/id/11/1080'
-//   },
-//   {
-//     id:4,
-//     url:'https://picsum.photos/id/12/1080'
-//   },
 
-// ]
+// const ex_id= "0000000000000000000000"
 
 export default function App() {
+  const [Matches, setMatches] = useState([]);
 
+  const getMatches= () => {
+    axios
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/0`)
+        .then((response) => {
+          
+          setMatches(response ["data"] [2]["id"])
+          // console.log(response["data"]);
+          console.log(Matches);
+          // Gives 6 for now for response.length
+          
+        });
+  };
+  useEffect(() => {
 
+    getMatches();     
+  }, []);
+  
   return (
     
     <View style={styles.container}>
-    {/* <UserCard/> */}
-    {/* <FlatList data={users}
-          renderItem={({item}) => <UserCard item ={item} 
-          style={{ 
-            alignItems: 'center',
-            flex:1}}/>}
-          
-          pagingEnabled 
-          snapToAlignment='center'
-          showHorizontalScrollIndicator= {false}
-          style = {styles.flatList}
-          /> */}
-
   
   <CardsSwipe
         cards={users}
         cardContainerStyle={styles.cardContainer}
+        // loop={false}
+        // renderYep
+        // renderNope
+        renderNoMoreCard={() => (
+          <View >
+            <Text style={styles.noMorePeople}>{'Check Again Soon!'}</Text>
+          </View>
+        )}
+        onSwipedLeft ={()=>(
+          console.log("dislike")
+        )}
+        onSwipedRight ={()=>(
+          console.log("like")
+        )}
+        
+        renderYep={() => (
+          <View style={styles.like}>
+            <Text style={styles.likeLabel}>YEP</Text>
+          </View>
+        )}
+        
+        renderNope={() => (
+          <View style={styles.nope}>
+            <Text style={styles.nopeLabel}>NOPE</Text>
+          </View>
+        )}
+
         renderCard={(card) => (
           <View >
             
-            <UserCard />
+            <UserCard id={ Matches }/>
           </View>
           
           )}
           />
 
- 
 
-
-    <View style={{ justifyContent: 'space-between',
+    {/* <View style={{ justifyContent: 'space-between',
                    alignItems: 'center',
                         flexDirection: 'row', 
                         paddingVertical: '1%',
@@ -88,7 +100,6 @@ export default function App() {
             name='times'
             type='font-awesome'
             color='#f50'
-            onPress={() => console.log('dislike')} 
             />
 
             <Icon
@@ -96,10 +107,9 @@ export default function App() {
             name='heart'
             type='ionicon'
             color='#517fa4'
-            onPress={() => console.log('like')}
             />
         </View>
-  
+   */}
     </View>
 
   );
@@ -143,5 +153,40 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 13,
   },
-  
+  noMorePeople: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color:'#fff',
+  },
+  like: {
+    borderWidth: 5,
+    borderRadius: 6,
+    padding: 8,
+    marginLeft: 30,
+    marginTop: 20,
+    borderColor: 'lightgreen',
+    transform: [{ rotateZ: '-22deg' }],
+  },
+  likeLabel: {
+    fontSize: 100,
+    color: '#3EFF2D',
+    fontWeight: 'bold',
+  },
+  nope: {
+    borderWidth: 5,
+    borderRadius: 6,
+    padding: 8,
+    marginRight: 30,
+    marginTop: 25,
+    borderColor: 'red',
+    transform: [{ rotateZ: '22deg' }],
+  },
+  nopeLabel: {
+    fontSize: 100,
+    color: 'red',
+    fontWeight: 'bold',
+  },
 });

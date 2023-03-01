@@ -28,3 +28,8 @@
     react-navigation/bottom-tabs
 
     axios
+    react-native-reanimated
+    react-native-cards-swipe
+    react-native-gesture-handler
+
+   ADD "clean": "npx expo start --clear" to package.json scripts for cache clearing
