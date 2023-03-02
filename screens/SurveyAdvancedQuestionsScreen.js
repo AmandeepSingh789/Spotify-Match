@@ -116,7 +116,7 @@ const Survey = () => {
                     color="gray"
                     />
                 }
-                onPress={() => navigation.navigate('Bio')}
+                onPress={() => navigation.navigate('SurveyBio')}
             />
         </View>
         <Controller

@@ -206,7 +206,7 @@ const NewUserQuestions = () => {
                   color="white"
                 />
               }
-              onPress={() => navigation.navigate('Bio')}
+              onPress={() => navigation.navigate('SurveyBio')}
           />
         </View>
     </View>

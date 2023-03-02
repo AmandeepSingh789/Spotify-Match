@@ -35,7 +35,7 @@ const Bio = () => {
                     color="gray"
                     />
                 }
-                onPress={() => navigation.navigate('NewUserQuestions')}
+                onPress={() => navigation.navigate('SurveyGeneralQuestions')}
             />
         </View>
         <Text style={styles.questions}> Tell us a bit about yourself </Text>
@@ -57,7 +57,7 @@ const Bio = () => {
                     color="white"
                     />
                 }
-                onPress={() => navigation.navigate('Survey')}
+                onPress={() => navigation.navigate('SurveyAdvancedQuestions')}
             />
         </View>
         </View>
