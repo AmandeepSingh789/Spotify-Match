@@ -3,15 +3,15 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
   
-import NewUserQuestions from './newUserQuestions';
+import NewUserQuestions from './SurveyNewUserQuestions';
 
-export default class Home extends Component {
+export default class SpotifyLogin extends Component {
     render() {
         return (
             <View >
-            <Text> Begin creating your profile </Text>
+            <Text> Spotify Login Page </Text>
             <Button
-                title="Go to Profile"
+                title="Go to Survey"
                 onPress={() => this.props.navigation.navigate('NewUserQuestions')}
             />
           </View>
