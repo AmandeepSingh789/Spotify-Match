@@ -2,8 +2,10 @@ import * as React from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme, } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 // import { useColorScheme } from 'react-native';
+
+// import MatchesNavigator from './components/MatchesNavigator';
+// <MatchesNavigator/>
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
@@ -32,8 +34,8 @@ function MainContainer() {
             "fontSize": 9,
             // "paddingBottom": 10,
             // "fontSize": 10
-            
         },
+        headerShown: false, // this controls the header, commenting this out will show the header
         // headerStyle: { backgroundColor: 'black' },
         "tabBarStyle": [
             {
@@ -66,6 +68,7 @@ function MainContainer() {
         <Tab.Screen name={homeName} component={HomeScreen} />
         <Tab.Screen name={matchesName} component={MatchesScreen} />
         <Tab.Screen name={profileName} component={ProfileScreen} />
+        
 
       </Tab.Navigator>
     </NavigationContainer>
