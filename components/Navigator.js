@@ -4,9 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import { useColorScheme } from 'react-native';
 
-// import MatchesNavigator from './components/MatchesNavigator';
-// <MatchesNavigator/>
-
 // Screens
 import HomeScreen from '../screens/HomeScreen';
 import MatchesScreen from '../screens/MatchesScreen';
@@ -22,10 +19,12 @@ const Tab = createBottomTabNavigator();
 function MainContainer() {
   // const scheme = useColorScheme();
   return (
-    
-    <NavigationContainer theme={DarkTheme}>
+
+    <NavigationContainer theme={DarkTheme} independent={true}>
+    {/* <NavigationContainer theme={DarkTheme}> */}
       <Tab.Navigator
         initialRouteName={homeName}
+        // initialRouteName={Home}
         screenOptions={({ route }) => ({
             "tabBarActiveTintColor": "tomato",
             "tabBarInactiveTintColor": "grey",
@@ -48,7 +47,7 @@ function MainContainer() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             let rn = route.name;
-
+            // if (rn === Home) {
             if (rn === homeName) {
               iconName = focused ? 'person' : 'person-outline';
 
@@ -65,7 +64,7 @@ function MainContainer() {
         })}
         >
 
-        <Tab.Screen name={homeName} component={HomeScreen} />
+        {/* <Tab.Screen name={homeName} component={HomeScreen} /> */}
         <Tab.Screen name={matchesName} component={MatchesScreen} />
         <Tab.Screen name={profileName} component={ProfileScreen} />
         

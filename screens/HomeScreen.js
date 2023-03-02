@@ -3,12 +3,14 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import UserCard from '../components/UserCard';
 // import { Icon } from 'react-native-elements';
 import { Icon } from '@rneui/themed'
-
+import Navigator from '../components/Navigator';
 
 export default function App() {
   return (
     
     <View style={styles.container}>
+    <Navigator/>
+
     <UserCard/>
     {/* <UserCard style={{ 
                   alignItems: 'center',

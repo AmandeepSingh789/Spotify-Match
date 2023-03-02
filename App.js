@@ -34,6 +34,7 @@ import SurveyGeneralQuestions from './screens/SurveyGeneralQuestionsScreen';
 import SurveyBio from './screens/SurveyBioScreen';
 import SurveyAdvancedQuestions from './screens/SurveyAdvancedQuestionsScreen';
 import AddImages from './screens/AddImagesScreen';
+import Home from './screens/HomeScreen';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -45,6 +46,7 @@ export default function App() {
       <Stack.Screen options={{headerShown: false}} name="SurveyBio" component={SurveyBio} />
       <Stack.Screen options={{headerShown: false}} name="SurveyAdvancedQuestions" component={SurveyAdvancedQuestions} />
       <Stack.Screen options={{headerShown: false}} name="AddImages" component={AddImages} />
+      <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
     </Stack.Navigator>
     </NavigationContainer>
   );
