@@ -34,8 +34,8 @@ function MainContainer() {
             "fontSize": 9,
             // "paddingBottom": 10,
             // "fontSize": 10
-            
         },
+        headerShown: false, // this controls the header, commenting this out will show the header
         // headerStyle: { backgroundColor: 'black' },
         "tabBarStyle": [
             {
@@ -68,6 +68,7 @@ function MainContainer() {
         <Tab.Screen name={homeName} component={HomeScreen} />
         <Tab.Screen name={matchesName} component={MatchesScreen} />
         <Tab.Screen name={profileName} component={ProfileScreen} />
+        
 
       </Tab.Navigator>
     </NavigationContainer>

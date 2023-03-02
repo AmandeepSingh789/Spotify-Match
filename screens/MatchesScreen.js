@@ -96,7 +96,7 @@ import {
           end={{ x: 1.0, y: 1.0 }}
           style={styles.matchProfile}
         >
-          <Pressable onPress={() => navigation.navigate("ChatScreen")}>
+          {/* <Pressable onPress={() => navigation.navigate("ChatScreen")}> */}
               
             <Image
               source={{
@@ -105,7 +105,7 @@ import {
               style={styles.profilePic}
             />
   
-          </Pressable>
+          {/* </Pressable> */}
         </LinearGradient>
       </>
     );
@@ -116,7 +116,7 @@ import {
     return (
       <>
       <View style={{flex: 1}}>
-        <Pressable onPress={() => navigation.navigate("ChatScreen")}>
+        {/* <Pressable onPress={() => navigation.navigate("ChatScreen")}> */}
   
           <View style={styles.messageContainer}>
   
@@ -136,7 +136,7 @@ import {
   
           </View>
   
-        </Pressable>
+        {/* </Pressable> */}
   
         <Divider
           style={{ marginTop: 15, marginBottom: 15 }}

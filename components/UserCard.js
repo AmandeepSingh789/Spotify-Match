@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
       borderColor:'#3EFF2D',
       backgroundColor:"#000000",
       margin:20,
+      // margin: 60,
       // margin:40,
       borderRadius:"20%",
       // marginBottom:1, 
@@ -158,7 +159,6 @@ const styles = StyleSheet.create({
     upperBox:{
       flexDirection:'row',
       alignItems:'center',
-  
       },
    
     divider: {
