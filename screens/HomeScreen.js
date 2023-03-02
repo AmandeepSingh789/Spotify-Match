@@ -26,15 +26,18 @@ const users=[
 
 export default function App() {
   const [Matches, setMatches] = useState([]);
+  const [numMatches, setNumMatches] = useState([]);
 
   const getMatches= () => {
     axios
-        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/0`)
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/1`)
         .then((response) => {
           
-          setMatches(response ["data"] [2]["id"])
+          setNumMatches(response ["data"])
+          setMatches(response ["data"][0]["id"])
           // console.log(response["data"]);
           console.log(Matches);
+
           // Gives 6 for now for response.length
           
         });
@@ -49,9 +52,9 @@ export default function App() {
     <View style={styles.container}>
   
   <CardsSwipe
-        cards={users}
+        cards={numMatches}
         cardContainerStyle={styles.cardContainer}
-        // loop={false}
+        loop={false}
         // renderYep
         // renderNope
         renderNoMoreCard={() => (
@@ -81,7 +84,7 @@ export default function App() {
         renderCard={(card) => (
           <View >
             
-            <UserCard id={ Matches }/>
+            <UserCard id={ Matches}/>
           </View>
           
           )}
@@ -154,12 +157,15 @@ const styles = StyleSheet.create({
     borderRadius: 13,
   },
   noMorePeople: {
-    width: '100%',
-    height: '100%',
+    
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    color:'#fff',
+    color:'#FF2DB6',
+    fontWeight: 'bold',
+    fontSize:44,
+    fontFamily:'Baskerville-SemiBold',
+    
   },
   like: {
     borderWidth: 5,

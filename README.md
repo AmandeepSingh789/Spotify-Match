@@ -31,5 +31,6 @@
     react-native-reanimated
     react-native-cards-swipe
     react-native-gesture-handler
+    buffer
 
    ADD "clean": "npx expo start --clear" to package.json scripts for cache clearing

@@ -4,11 +4,14 @@ import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
 import { useEffect,useState } from 'react'
 import axios from "axios"
+import {Buffer} from 'buffer';
 
 const pics = [
   {
     id:1,
-    url:'https://picsum.photos/id/237/1080'
+    url:'https://picsum.photos/id/237/1080',
+    // url:'data:image/jpeg;base64,'+ pic1,
+
   },
   {
     id:2,
@@ -24,14 +27,13 @@ const pics = [
   },
 
 ]
-const title =('Example Name, Age')
+// http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/0000000000000000000000
 const compatibility='80%'
 
 function Card({id}){
 
     const [Name, setName] = useState([]);
     const [Bio, setBio] = useState([]);
-    const [DOB, setDOB] = useState([]);
     const [Age, setAge] = useState([]);
     const [Answer1, setAnswer1] = useState([]);
     const [Answer2, setAnswer2] = useState([]);
@@ -39,6 +41,10 @@ function Card({id}){
     const [Q1, setQ1] = useState([]);
     const [Q2, setQ2] = useState([]);
     const [Q3, setQ3] = useState([]);
+    const [pic1,setPic1] = useState({});
+    const [pic2,setPic2] = useState([]);
+    const [pic3,setPic3] = useState([]);
+    const [pic4,setPic4] = useState([]);
 
     const getData = ({id}) => {
       axios
@@ -47,37 +53,76 @@ function Card({id}){
             // console.log(response["data"][0]["name"])
             setName(response["data"][0]["name"]);
             setBio(response["data"][0]["bio"]);
-            setDOB(response["data"][0]["birthdate"])
             setAnswer1(response["data"][0]["answer1"])
             setAnswer2(response["data"][0]["answer2"])
             setAnswer3(response["data"][0]["answer3"])
             setQ1(response["data"][0]["questionid1"])
             setQ2(response["data"][0]["questionid2"])
             setQ3(response["data"][0]["questionid3"])
-            
-            // console.log(Name)
-            // console.log(Bio)
-            // console.log(DOB)
-            
-          });
+            getAge(response["data"][0]["birthdate"])
+            console.log(`${id}YE HAI ${id}`);
+
+            const pic1Data= (response["data"][0]["picture1"]["data"])
+            const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
+
+            // const pic2Data= (response["data"][0]["picture2"]["data"])
+            // const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
+
+            // const pic3Data= (response["data"][0]["picture3"]["data"])
+            // const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
+
+            // const pic4Data= (response["data"][0]["picture4"]["data"])
+            // const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
+
+            setPic1(pic1Conversion)
+            // setPic2(pic2Conversion)
+            // setPic3(pic3Conversion)
+            // setPic4(pic4Conversion)
+
+          }).catch((error) => {
+            // Handle any errors that occur
+            console.error(error);
+        });
+
   };
 
   useEffect(() => {
 
     getData({id});
-    getAge(DOB);
     
-    
+    // getAge(DOB);
   }, []);
+
+  // let [response, setResponse] = useState();
+  // const [loading, setLoading] = useState(false);
+  // useEffect(async () => {
+  //   const fetchData = async () => {
+  //     fetch("https://dummy.restapiexample.com/api/v1/employee/1")
+  //     .then((res) => res.json())
+  //     .then((jsoon) => {
+  //       setResponse(jsoon.data);
+  //     });
+  //   }
+
+  //   setLoading(true);
+  //   await fetchData();
+  //   setLoading(false);
+  // }, []);
+
 
 
   const Item = ({item}) => (
     
     <View style={styles.imageContainer}>
-      <Image source={{uri: item.url}}
-      resizeMode="contain"
+      <Image source={{uri:"data:image/jpeg;base64,"+ pic1}}
+      resizeMode="cover"
       style={styles.image} 
        />
+
+       {/* <Image source={{uri:item.uri}}
+      resizeMode="contain"
+      style={styles.image} 
+       /> */}
        
     </View>
 
@@ -100,7 +145,10 @@ function Card({id}){
         <ScrollView>
         {/* Image Container */}
         <View >
-          {/* <Image source={{uri:'https://picsum.photos/id/237/1080'}} style={styles.image} /> */}
+        {/* <Image source={{uri:"data:image/jpeg;base64,"+ pic1}}
+      resizeMode="cover"
+      style={styles.image} 
+       /> */}
           <FlatList data={pics}
           renderItem={({item}) => <Item item ={item}/>}
           horizontal
@@ -124,6 +172,7 @@ function Card({id}){
           </Text>
              
            <View style={styles.meter}>
+             
             <Text style={styles.percentage}>{compatibility}</Text>
           </View> 
          </View>  
@@ -142,6 +191,7 @@ function Card({id}){
         <Divider style={styles.divider} />
         
         <View >
+          
         <Text style={styles.desc}>
         {`${Q1}: ${Answer1}`}
         </Text>
