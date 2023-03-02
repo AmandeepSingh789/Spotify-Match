@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Home from './src/home';
-import NewUserQuestions from './src/newUserQuestions';
-import Bio from './src/bio';
-import Survey from './src/survey';
-import AddImages from './src/addimages';
+import Home from './screens/home';
+import NewUserQuestions from './screens/newUserQuestions';
+import Bio from './screens/bio';
+import Survey from './screens/survey';
+import AddImages from './screens/addimages';
 
 export default function App() {
   const Stack = createStackNavigator();
