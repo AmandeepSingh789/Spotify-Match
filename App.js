@@ -1,9 +1,11 @@
+// Importing Packages
 import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+// Screens File Paths
 import SpotifyLogin from './screens/SpotifyLoginScreen';
 import SurveyGeneralQuestions from './screens/SurveyGeneralQuestionsScreen';
 import SurveyBio from './screens/SurveyBioScreen';
@@ -13,28 +15,41 @@ import Home from './screens/HomeScreen';
 import Matches from './screens/MatchesScreen';
 import Profile from './screens/ProfileScreen';
 
+//Screens names
+const spotifyLoginScreenName = "Spotify Login Screen";
+const surveyGeneralScreenName = "SurveyGeneralQuestions";
+const surveyBioScreenName = "SurveyBio";
+const surveyAdvancedScreenName = "SurveyAdvancedQuestions";
+const addImagesScreenName = "AddImages";
+const homeScreenName = "Homepage";
+const matchesScreenName = "Matches";
+const profileScreenName = "Profile";
+
+// Main App function
+// Contains the entire stack navigation
 export default function App() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer theme={DarkTheme}>
     <Stack.Navigator>
-      <Stack.Screen name="SpotifyLoginScreen" component={SpotifyLogin} />
-      <Stack.Screen options={{headerShown: false}} name="SurveyGeneralQuestions" component={SurveyGeneralQuestions} />
-      <Stack.Screen options={{headerShown: false}} name="SurveyBio" component={SurveyBio} />
-      <Stack.Screen options={{headerShown: false}} name="SurveyAdvancedQuestions" component={SurveyAdvancedQuestions} />
-      <Stack.Screen options={{headerShown: false}} name="AddImages" component={AddImages} />
+      <Stack.Screen name={spotifyLoginScreenName} component={SpotifyLogin} />
+      <Stack.Screen options={{headerShown: false}} name={surveyGeneralScreenName} component={SurveyGeneralQuestions} />
+      <Stack.Screen options={{headerShown: false}} name={surveyBioScreenName} component={SurveyBio} />
+      <Stack.Screen options={{headerShown: false}} name={surveyAdvancedScreenName} component={SurveyAdvancedQuestions} />
+      <Stack.Screen options={{headerShown: false}} name={addImagesScreenName} component={AddImages} />
       <Stack.Screen options={{headerShown: false}} name="Home" component={TabNavigation} />
     </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
+// Function for Tab Navigation 
+// Called in the App() function
 function TabNavigation() {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
-      initialRouteName={"Homepage"}
-          // initialRouteName={Home}
+      initialRouteName={homeScreenName}
           screenOptions={({ route }) => ({
               "tabBarActiveTintColor": "tomato",
               "tabBarInactiveTintColor": "grey",
@@ -58,11 +73,11 @@ function TabNavigation() {
             let iconName;
             let rn = route.name;
             // if (rn === Home) {
-            if (rn === "Homepage") {
+            if (rn === homeScreenName) {
               iconName = focused ? 'person' : 'person-outline';
-            } else if (rn === "Matches") {
+            } else if (rn === matchesScreenName) {
               iconName = focused ? 'chatbox' : 'chatbox-outline';
-            } else if (rn === "Profile") {
+            } else if (rn === profileScreenName) {
               iconName = focused ? 'person-circle' : 'person-circle-outline';
             }
             // You can return any component that you like here!
@@ -70,9 +85,9 @@ function TabNavigation() {
             },
           })}
           >
-        <Tab.Screen options={{headerShown: false}} name="Homepage" component={Home} />
-        <Tab.Screen name="Matches" component={Matches} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name={homeScreenName} component={Home} />
+        <Tab.Screen name={matchesScreenName} component={Matches} />
+        <Tab.Screen name={profileScreenName} component={Profile} />
     </Tab.Navigator>
   );
 }
