@@ -2829,6 +2829,14 @@
     "base64-js" "^1.3.1"
     "ieee754" "^1.1.13"
 
+"buffer@^6.0.3":
+  "integrity" "sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA=="
+  "resolved" "https://registry.npmjs.org/buffer/-/buffer-6.0.3.tgz"
+  "version" "6.0.3"
+  dependencies:
+    "base64-js" "^1.3.1"
+    "ieee754" "^1.2.1"
+
 "builtins@^1.0.3":
   "integrity" "sha512-uYBjakWipfaO/bXI7E8rq6kpwHRZK5cNYrUv2OzZSI/FvmdMyXJ2tG9dKcjEC5YHmHpUAwsargWIZNWdxb/bnQ=="
   "resolved" "https://registry.npmjs.org/builtins/-/builtins-1.0.3.tgz"
@@ -4498,7 +4506,7 @@
   dependencies:
     "safer-buffer" ">= 2.1.2 < 3"
 
-"ieee754@^1.1.13":
+"ieee754@^1.1.13", "ieee754@^1.2.1":
   "integrity" "sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA=="
   "resolved" "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
   "version" "1.2.1"
@@ -6590,6 +6598,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
+"react-native-cards-swipe@^1.2.1":
+  "integrity" "sha512-II2qcI18TnAzuQvNG3theG+DwmEsCEETeNAMkPRDgSFjj3QN2PznjG0tD18MX9OuMkVTNAqRQoASHLTcjeAYCw=="
+  "resolved" "https://registry.npmjs.org/react-native-cards-swipe/-/react-native-cards-swipe-1.2.1.tgz"
+  "version" "1.2.1"
+
 "react-native-codegen@^0.70.4", "react-native-codegen@^0.70.6":
   "integrity" "sha512-kdwIhH2hi+cFnG5Nb8Ji2JwmcCxnaOOo9440ov7XDzSvGfmUStnCzl+MCW8jLjqHcE4icT7N9y+xx4f50vfBTw=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.70.6.tgz"
@@ -6624,7 +6637,7 @@
     "react-native-ratings" "8.0.4"
     "react-native-size-matters" "^0.3.1"
 
-"react-native-gesture-handler@>= 1.0.0", "react-native-gesture-handler@~2.8.0":
+"react-native-gesture-handler@*", "react-native-gesture-handler@>= 1.0.0", "react-native-gesture-handler@~2.8.0":
   "integrity" "sha512-poOSfz/w0IyD6Qwq7aaIRRfEaVTl1ecQFoyiIbpOpfNTjm2B1niY2FLrdVQIOtIOe+K9nH55Qal04nr4jGkHdQ=="
   "resolved" "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.8.0.tgz"
   "version" "2.8.0"
@@ -6674,7 +6687,7 @@
   dependencies:
     "lodash" "^4.17.15"
 
-"react-native-reanimated@~2.12.0":
+"react-native-reanimated@>=2.1.0", "react-native-reanimated@~2.12.0":
   "integrity" "sha512-nrlPyw+Hx9u4iJhZk9PoTvDo/QmVAd+bo7OK9Tv3hveNEF9++5oig/g3Uv9V93shy9avTYGsUprUvAEt/xdzeQ=="
   "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.12.0.tgz"
   "version" "2.12.0"
@@ -6760,7 +6773,7 @@
     "whatwg-fetch" "^3.0.0"
     "ws" "^6.1.4"
 
-"react-native@*", "react-native@^0.70.0", "react-native@>=0.42.0", "react-native@>=0.48.4", "react-native@>=0.57", "react-native@>=0.65.0", "react-native@0.70.5":
+"react-native@*", "react-native@^0.70.0", "react-native@>=0.42.0", "react-native@>=0.48.4", "react-native@>=0.57", "react-native@>=0.59.0", "react-native@>=0.65.0", "react-native@0.70.5":
   "integrity" "sha512-5NZM80LC3L+TIgQX/09yiyy48S73wMgpIgN5cCv3XTMR394+KpDI3rBZGH4aIgWWuwijz31YYVF5504+9n2Zfw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.70.5.tgz"
   "version" "0.70.5"
@@ -6811,7 +6824,7 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.12.0 || ^17.0.0 || ^18.0.0"
 
-"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@>=16.0", "react@>=17.0.0", "react@18.0.0", "react@18.1.0":
+"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@>=16.0", "react@>=16.8.3", "react@>=17.0.0", "react@18.0.0", "react@18.1.0":
   "integrity" "sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   "version" "18.1.0"

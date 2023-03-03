@@ -51,7 +51,7 @@ function TabNavigation() {
     <Tab.Navigator
       initialRouteName={homeScreenName}
           screenOptions={({ route }) => ({
-              "tabBarActiveTintColor": "tomato",
+              "tabBarActiveTintColor": "#3EFF2D",
               "tabBarInactiveTintColor": "grey",
               "tabBarLabelStyle": {
               "paddingBottom": 3,

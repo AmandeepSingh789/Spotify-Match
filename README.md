@@ -12,9 +12,15 @@
 
 `git clone https://github.com/AmandeepSingh789/Spotify-Match.git`
 
-`npm install` or `npx expo install <indivisual package name>` (recommended)
+`npm install` or `yarn` or `npx expo install <indivisual package name>` (recommended)
 
+### to run the app-
+`npx expo start` or
 `npx expo start --tunnel`
+
+### to clear the cache and run-
+`npx expo start --clear`
+OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clearing
 
 ## Navigation Sturcture-
 - Stack.Navigator
@@ -29,7 +35,7 @@
 
 
 
-## Dependencies 
+## Dependencies -
 
     rneui/base
     rneui/themed
@@ -57,3 +63,8 @@
     react-native-dropdown-picker
     react-native-modal-datetime-picker
     react-hook-form
+
+    react-native-reanimated
+    react-native-cards-swipe
+    react-native-gesture-handler
+    buffer

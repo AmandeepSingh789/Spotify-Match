@@ -7,13 +7,14 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Button } from '@rneui/themed';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 
 const NewUserQuestions = () => {
   const [userID, setUserID] = useState(1);
   const [name, setName] = useState(null);
   const [birthday, setBirthday] = useState(null);
+
   //setGenderValue
   //setSOValue
   // const [genderChoice, setGenderChoice] = useState(null);
@@ -103,15 +104,22 @@ const NewUserQuestions = () => {
         <TextInput style={styles.smallInput} />
 
         <Text style={styles.questions}> Date of Birth? </Text>
-        <DateTimePickerModal
+        {/* <DateTimePickerModal
           date={selectedDate}
           isVisible={datePickerVisible}
           mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-        />
+        /> */}
+          {/* <DateTimePicker
+          date={selectedDate}
+          isVisible={datePickerVisible}
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        /> */}
+  
         <View style={styles.DOBsmallInput}>
-        <View style={{flex:1}}>
+     {/* <View style={{flex:1}}>
           <Button 
           type="clear" 
           icon={
@@ -124,12 +132,29 @@ const NewUserQuestions = () => {
             style={styles.dobbutton}
             onPress={showDatePicker} 
           />
-        </View>
-        <View style={{flex:2}}>
+        </View> */}
+        <DateTimePicker style={{flex: 0.7}}
+        // display="default" 
+        display="calendar" 
+        value={selectedDate}
+        themeVariant="dark"
+        onChange={(event, date) => {
+            const {
+                type,
+                nativeEvent: {timestamp},
+            } = event;
+            console.log(event.type)
+            if (event.type == 'set') {
+                // console.log(date.getDate());
+                setBirthday(date);
+            }
+        }}
+      />
+        {/* <View style={{flex:2}}>
         <Text style={styles.dob}>
           {selectedDate ? selectedDate.toLocaleDateString() : 'No date selected'}
         </Text>
-        </View>
+        </View> */}
         </View>
         {/* <TextInput style={styles.smallInput} /> */}
 
