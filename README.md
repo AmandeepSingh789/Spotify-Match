@@ -18,11 +18,15 @@
 
 ## Navigation Sturcture-
 - Stack.Navigator
- - - Home (Tab.Navigator)
-  - - - Feed (Screen)
-  - - - Messages (Screen)
- - - Profile (Screen)
- - - Settings (Screen)
+ - - Spotify Login (Screen)
+ - - Survey General (Screen)
+ - - Survey Bio (Screen)
+ - - Survey Advanced (Screen)
+ - - Add Images (Screen)
+ - - Home Page (Tab.Navigator and Screen)
+  - - - Matches (Screen)
+  - - - Profile (Screen)
+
 
 
 ## Dependencies 
