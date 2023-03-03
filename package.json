@@ -36,5 +36,6 @@
     "@babel/core": "^7.12.9",
     "metro-config": "^0.72.3"
   },
-  "private": true
+  "private": true,
+  "clean": "npx expo start --clear"
 }
