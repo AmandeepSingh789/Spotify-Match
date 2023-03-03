@@ -1,19 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 import UserCard from '../components/UserCard';
 // import { Icon } from 'react-native-elements';
 import { Icon } from '@rneui/themed'
-
-
+// import Navigator from '../components/Navigator';
+//     {/* <Navigator/> */}
 export default function App() {
   return (
     
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+
     <UserCard/>
     {/* <UserCard style={{ 
                   alignItems: 'center',
                   flex:1}}/> */}
-    <View style={{ justifyContent: 'space-between',
+    <SafeAreaView style={{ justifyContent: 'space-between',
                    alignItems: 'center',
                         flexDirection: 'row', 
                         paddingVertical: '1%',
@@ -35,9 +36,9 @@ export default function App() {
             color='#517fa4'
             onPress={() => console.log('like')}
             />
-        </View>
+        </SafeAreaView>
   
-    </View>
+    </SafeAreaView>
 
   );
 }

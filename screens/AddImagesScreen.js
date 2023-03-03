@@ -4,6 +4,7 @@ import {Camera} from 'expo-camera';
 import {shareAsync} from 'expo-sharing';
 import { useFonts } from 'expo-font';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
+import { useNavigation } from '@react-navigation/native';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
@@ -26,8 +27,8 @@ import {
  } from 'react-native';
 
 
-
 export default function Add_images() {
+  const navigation = useNavigation(); 
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
@@ -181,6 +182,7 @@ export default function Add_images() {
           SaveToPhone(image2);
           SaveToPhone(image3);
           SaveToPhone(image4);
+          navigation.navigate('Home');
         }}
         color="#19AC52"
       />
