@@ -57,3 +57,8 @@
     react-native-dropdown-picker
     react-native-modal-datetime-picker
     react-hook-form
+
+    react-native-reanimated
+    react-native-cards-swipe
+    react-native-gesture-handler
+    buffer
