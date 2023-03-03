@@ -35,13 +35,13 @@ function TabNavigation() {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Homepage" component={Home} />
       <Tab.Screen name="Matches" component={Matches} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
-// options={{headerShown: false}}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

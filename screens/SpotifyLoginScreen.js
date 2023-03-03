@@ -9,7 +9,7 @@ export default class SpotifyLoginClass extends Component {
     render() {
         return (
             <View >
-            <Text> Spotify Login Page </Text>
+            <Text style={{color: 'green'}}> Spotify Login Page </Text>
             <Button
                 title="Go to Survey"
                 onPress={() => this.props.navigation.navigate('SurveyGeneralQuestions')}
