@@ -225,8 +225,8 @@ import {
     },
   
     header: {
-      fontSize: 40,
-      color: "white",
+      fontSize: 50,
+      color: "#FFF",
       marginTop: 0,
       fontWeight: "bold",
       alignSelf: "center",
@@ -235,16 +235,16 @@ import {
     numMatches: {
       fontSize: 20,
       color: "#FE8AE3",
-      marginTop: 20,
+      marginTop: 10,
       fontWeight: "bold",
       alignSelf: "center",
     },
   
     desc: {
       fontSize: 20,
-      color: "#3EFF2D",
+      color: "#1DB954",
       marginTop: 20,
-      marginBottom: 20,
+      marginBottom: 10,
       fontWeight: "bold",
       alignSelf: "flex-start",
       marginHorizontal: 10,

@@ -160,10 +160,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    color:'#FF2DB6',
+    color:'#FE8AE3',
     fontWeight: 'bold',
     fontSize:44,
-    fontFamily:'Baskerville-SemiBold',
+    // fontFamily:'Baskerville-SemiBold',
     
   },
   like: {
