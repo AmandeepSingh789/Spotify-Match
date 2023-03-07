@@ -34,7 +34,7 @@ export default function App() {
   return (
     <NavigationContainer theme={DarkTheme}>
     <Stack.Navigator>
-      <Stack.Screen name={spotifyLoginScreenName} component={SpotifyLogin} />
+      <Stack.Screen options={{headerShown: false}} name={spotifyLoginScreenName} component={SpotifyLogin} />
       <Stack.Screen options={{headerShown: false}} name={surveyGeneralScreenName} component={SurveyGeneralQuestions} />
       <Stack.Screen options={{headerShown: false}} name={surveyBioScreenName} component={SurveyBio} />
       <Stack.Screen options={{headerShown: false}} name={surveyAdvancedScreenName} component={SurveyAdvancedQuestions} />
