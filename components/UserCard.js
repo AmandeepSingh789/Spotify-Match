@@ -6,31 +6,11 @@ import { useEffect,useState } from 'react'
 import axios from "axios"
 import {Buffer} from 'buffer';
 
-const pics = [
-  {
-    id:1,
-    url:'https://picsum.photos/id/237/1080',
-    // url:'data:image/jpeg;base64,'+ pic1,
-
-  },
-  {
-    id:2,
-    url:'https://picsum.photos/id/10/1080'
-  },
-  {
-    id:3,
-    url:'https://picsum.photos/id/11/1080'
-  },
-  {
-    id:4,
-    url:'https://picsum.photos/id/12/1080'
-  },
-
-]
 // http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/0000000000000000000000
 const compatibility='80%'
 
 function Card({id}){
+  
 
     const [Name, setName] = useState([]);
     const [Bio, setBio] = useState([]);
@@ -41,43 +21,70 @@ function Card({id}){
     const [Q1, setQ1] = useState([]);
     const [Q2, setQ2] = useState([]);
     const [Q3, setQ3] = useState([]);
+    const [Q1id, setQ1id] = useState([]);
+    const [Q2id, setQ2id] = useState([]);
+    const [Q3id, setQ3id] = useState([]);
     const [pic1,setPic1] = useState({});
     const [pic2,setPic2] = useState([]);
     const [pic3,setPic3] = useState([]);
     const [pic4,setPic4] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+
+const pics = [
+  {
+    id:1,
+    // url:'https://picsum.photos/id/237/1080',
+    uri:'data:image/jpeg;base64,'+ pic1,
+
+  },
+  {
+    id:2,
+    uri:'data:image/jpeg;base64,'+ pic2,
+  },
+  {
+    id:3,
+    uri:'data:image/jpeg;base64,'+ pic3,
+  },
+  {
+    id:4,
+    uri:'data:image/jpeg;base64,'+ pic4,
+  },
+
+]
 
     const getData = ({id}) => {
       axios
           .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
           .then((response) => {
-            // console.log(response["data"][0]["name"])
+            console.log(id);
             setName(response["data"][0]["name"]);
             setBio(response["data"][0]["bio"]);
             setAnswer1(response["data"][0]["answer1"])
             setAnswer2(response["data"][0]["answer2"])
             setAnswer3(response["data"][0]["answer3"])
-            setQ1(response["data"][0]["questionid1"])
-            setQ2(response["data"][0]["questionid2"])
-            setQ3(response["data"][0]["questionid3"])
+            setQ1id(response["data"][0]["questionid1"])
+            setQ2id(response["data"][0]["questionid2"])
+            setQ3id(response["data"][0]["questionid3"])
             getAge(response["data"][0]["birthdate"])
-            console.log(`${id}YE HAI ${id}`);
+            // console.log(`${id}YE HAI ${id}`);
 
             const pic1Data= (response["data"][0]["picture1"]["data"])
             const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
 
-            // const pic2Data= (response["data"][0]["picture2"]["data"])
-            // const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
+            const pic2Data= (response["data"][0]["picture2"]["data"])
+            const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
 
-            // const pic3Data= (response["data"][0]["picture3"]["data"])
-            // const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
+            const pic3Data= (response["data"][0]["picture3"]["data"])
+            const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
 
-            // const pic4Data= (response["data"][0]["picture4"]["data"])
-            // const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
+            const pic4Data= (response["data"][0]["picture4"]["data"])
+            const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
 
             setPic1(pic1Conversion)
-            // setPic2(pic2Conversion)
-            // setPic3(pic3Conversion)
-            // setPic4(pic4Conversion)
+            setPic2(pic2Conversion)
+            setPic3(pic3Conversion)
+            setPic4(pic4Conversion)
+            getQuestions()
 
           }).catch((error) => {
             // Handle any errors that occur
@@ -85,44 +92,53 @@ function Card({id}){
         });
 
   };
+  const getQuestions = () => {
+    axios
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
+        .then((response) => {
+          // const question1 = response["data"][Q1id]["questiontext"]
+
+          // const question2 = response["data"][Q2id]["questiontext"]
+
+          // const question3 = response["data"][Q3id]["questiontext"]
+          setQ1(response["data"][Q1id]["questiontext"])
+          setQ2(response["data"][Q2id]["questiontext"])
+          setQ3(response["data"][Q3id]["questiontext"])
+          setLoaded(true);
+        }).catch((error) => {
+          // Handle any errors that occur
+          console.error(error);
+      });
+
+};
 
   useEffect(() => {
 
     getData({id});
     
-    // getAge(DOB);
-  }, []);
+  }, []); 
+
 
   // let [response, setResponse] = useState();
   // const [loading, setLoading] = useState(false);
   // useEffect(async () => {
   //   const fetchData = async () => {
   //     fetch("https://dummy.restapiexample.com/api/v1/employee/1")
-  //     .then((res) => res.json())
-  //     .then((jsoon) => {
-  //       setResponse(jsoon.data);
-  //     });
-  //   }
-
-  //   setLoading(true);
-  //   await fetchData();
-  //   setLoading(false);
-  // }, []);
-
-
+  //     
 
   const Item = ({item}) => (
     
+    
     <View style={styles.imageContainer}>
-      <Image source={{uri:"data:image/jpeg;base64,"+ pic1}}
+      {/* <Image source={{uri:"data:image/jpeg;base64,"+ `${pic2}`}}
       resizeMode="cover"
       style={styles.image} 
-       />
+       /> */}
 
-       {/* <Image source={{uri:item.uri}}
+       <Image source={{uri:item.uri}}
       resizeMode="contain"
       style={styles.image} 
-       /> */}
+       />
        
     </View>
 
@@ -135,13 +151,13 @@ function Card({id}){
     var daysOld =  Math.floor(distance / (1000*60*60 *24));
     var yearsOld = (Math.abs((daysOld/365).toFixed(0)))
     yearsOld.toString()
-    // console.log(yearsOld)
     setAge(yearsOld)
   }
 
     return (
-        <View style={styles.container}>
 
+    
+        <View style={styles.container}>
         <ScrollView>
         {/* Image Container */}
         <View >
@@ -150,7 +166,7 @@ function Card({id}){
       style={styles.image} 
        /> */}
           <FlatList data={pics}
-          renderItem={({item}) => <Item item ={item}/>}
+          renderItem={({item}) => <Item item ={item} />}
           horizontal
           pagingEnabled 
           snapToAlignment='center'
@@ -180,9 +196,7 @@ function Card({id}){
 
         {/* -------------------------------------------------------------------- */}
         
-        
-        {/* Bio and Questions */}
-        <View >
+        {loaded ? <><View >
         <Text style={styles.bio}>
           {Bio}          
           </Text>
@@ -191,28 +205,50 @@ function Card({id}){
         <Divider style={styles.divider} />
         
         <View >
-          
         <Text style={styles.desc}>
-        {`${Q1}: ${Answer1}`}
+
+        {`Q: ${Q1}`}
         </Text>
         </View>
-        
+
+        <View >
+        <Text style={styles.desc}>
+
+        {`A: ${Answer1}`}
+        </Text>
+        </View>
         <Divider style={styles.divider} />
 
         <View >
         <Text style={styles.desc}>
-        {`${Q2}: ${Answer2}`}
+
+        {`Q: ${Q2}`}
         </Text>
         </View>
-        
+
+        <View >
+        <Text style={styles.desc}>
+
+        {`A: ${Answer2}`}
+        </Text>
+        </View>
         
         <Divider style={styles.divider} />
-        <View 
-        >
+        <View >
         <Text style={styles.desc}>
-        {`${Q3}: ${Answer3}`}
+
+        {`Q: ${Q3}`}
         </Text>
         </View>
+
+        <View >
+        <Text style={styles.desc}>
+
+        {`A: ${Answer3}`}
+        </Text>
+        </View></>: null}
+        {/* Bio and Questions */}
+        
         
 
         <Divider style={styles.divider} /> 
@@ -293,6 +329,8 @@ const styles = StyleSheet.create({
       marginHorizontal: 30,
       fontSize: 20,
       flexShrink: 1,
+      justifyContent:'center',
+      alignContent:"center",
       
     },
     bio: {
