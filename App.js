@@ -14,6 +14,7 @@ import AddImages from './screens/AddImagesScreen';
 import Home from './screens/HomeScreen';
 import Matches from './screens/MatchesScreen';
 import Profile from './screens/ProfileScreen';
+import SocialsScreen from './screens/SocialsScreen';
 
 //Screens names
 const spotifyLoginScreenName = "Spotify Login Screen";
@@ -23,6 +24,7 @@ const surveyAdvancedScreenName = "SurveyAdvancedQuestions";
 const addImagesScreenName = "AddImages";
 const homeScreenName = "Homepage";
 const matchesScreenName = "Matches";
+const socialsScreenName = "Socials"
 const profileScreenName = "Profile";
 
 // Main App function
@@ -38,6 +40,7 @@ export default function App() {
       <Stack.Screen options={{headerShown: false}} name={surveyAdvancedScreenName} component={SurveyAdvancedQuestions} />
       <Stack.Screen options={{headerShown: false}} name={addImagesScreenName} component={AddImages} />
       <Stack.Screen options={{headerShown: false}} name="Home" component={TabNavigation} />
+      <Stack.Screen options={{headerShown: false}} name={socialsScreenName} component={SocialsScreen} />
     </Stack.Navigator>
     </NavigationContainer>
   );

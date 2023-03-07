@@ -23,11 +23,11 @@ import {
     Pressable,
     Dimensions,
     ScrollView,
+    FlatList,
   } from "react-native";
   import * as React from "react";
   import { useRef } from "react";
   import { LinearGradient } from "expo-linear-gradient";
-  import { Divider } from "@rneui/themed";
   import { useNavigation } from "@react-navigation/native";
   
   const matches = [
@@ -55,34 +55,22 @@ import {
       id: "5",
       uri: "https://i.pinimg.com/originals/94/25/2b/94252bec792f63f96e1e481ee0cd2669.jpg",
       name: "Amaan",
-    }
-  ];
-  
-  const messages = [
+    },
     {
-      id: "1",
+      id: "6",
       uri: "https://i.pinimg.com/originals/e4/18/e2/e418e22729bd7a202c563e08463b6ad9.jpg",
-      name: "Jane Doe",
-      text: "do you play the guitar?",
+      name: "Jane",
     },
     {
-      id: "2",
+      id: "7",
       uri: "https://i.pinimg.com/564x/eb/ae/2f/ebae2fd689ea2196625491b719a855eb.jpg",
-      name: "Deer Doe",
-      text: "btw whats your insta?",
+      name: "Deer",
     },
     {
-      id: "3",
+      id: "8",
       uri: "https://i.pinimg.com/originals/ad/81/eb/ad81ebb84107d9fc10a7e1c335d4c823.jpg",
-      name: "Doe Doe",
-      text: "no way i like that song 2!",
-    },
-    {
-      id: "4",
-      uri: "https://i.pinimg.com/originals/ad/81/eb/ad81ebb84107d9fc10a7e1c335d4c823.jpg",
-      name: "Doe Doe",
-      text: "no way i like that song 2!",
-    },
+      name: "Doe",
+    }
   ];
   
   const NewMatches = ({ uri }) => {
@@ -96,7 +84,7 @@ import {
           end={{ x: 1.0, y: 1.0 }}
           style={styles.matchProfile}
         >
-          {/* <Pressable onPress={() => navigation.navigate("ChatScreen")}> */}
+          <Pressable onPress={() => navigation.navigate("Socials")}>
               
             <Image
               source={{
@@ -105,60 +93,26 @@ import {
               style={styles.profilePic}
             />
   
-          {/* </Pressable> */}
+          </Pressable>
         </LinearGradient>
       </>
     );
   };
   
-  const CurrMessages = ({ uri, name, text }) => {
-    const navigation = useNavigation();
-    return (
-      <>
-      <View style={{flex: 1}}>
-        {/* <Pressable onPress={() => navigation.navigate("ChatScreen")}> */}
-  
-          <View style={styles.messageContainer}>
-  
-            <View style={styles.messageProfile}>
-              <Image
-                source={{
-                  uri,
-                }}
-                style={styles.profilePic}
-              />
-            </View>
-  
-            <View style={styles.ProfileInfo}>
-              <Text style={styles.name}>{name}</Text>
-              <Text style={styles.text}>{text}</Text>
-            </View>
-  
-          </View>
-  
-        {/* </Pressable> */}
-  
-        <Divider
-          style={{ marginTop: 15, marginBottom: 15 }}
-          orientation="horizontal"
-          color="white"
-        />
-      </View>
-      </>
-    );
-  };
+  const {height} = Dimensions.get('window');
   
   const MatchScreen = () => {
-    // const [screenHeight, setScreenHeight] = React.useState(0);
-    // const {height} = Dimensions.get('window');
+    state: {
+      screenHeight: 0
+    }
+    const [screenHeight, setScreenHeight] = React.useState(0);
+
   
-    // const onContentSizeChange = (contentWidth, contentHeight) => {
-    //     setScreenHeight(contentHeight);
-    // };
+    const onContentSizeChange = (contentWidth, contentHeight) => {
+        setScreenHeight(contentHeight);
+    };
   
-    // const scrollEnabled = screenHeight > height;
-  
-    const scrollViewRef = useRef(null);
+    const scrollEnabled = matches.length > 9;
   
     return (
       <View style={styles.container}>
@@ -174,46 +128,22 @@ import {
           <View style={{ alignSelf: "flex-start"}}>
             <Text style={styles.desc}>New Matches</Text>
           </View>
-  
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ flexGrow: 0}}
-          >
-            <View style={styles.storyContainer}>
-              {matches.map(({ id, uri, name }) => (
-                <>
-                  <View style={{ flexDirection: "column"}}>
-                    <NewMatches key={id} uri={uri} />
-                    <Text style={styles.matchName}> {name} </Text>
-                  </View>
-                </>
-              ))}
-            </View>
-          </ScrollView>
-  
-          <View style={{ alignSelf: "flex-start"}}>
-              <Text style={styles.desc}>Messages</Text>
-          </View>
-  
-          </SafeAreaView>
-  
-          <View>
-              <ScrollView
-                  horizontal={false}
-                  showsVerticalScrollIndicator={false}
-                  scrollEnabled={true}
-                  style={{height: '100%', width: '100%'}}
-                  // ref={scrollViewRef} 
-                  // onContentSizeChange={() => {scrollViewRef.current?.scrollToEnd()}}
-                  // contentInset={{bottom: 40}}
-              >
-                  {messages.map(({ id, uri, name, text }) => (
-                      <CurrMessages key={id} uri={uri} name={name} text={text} />
-                  ))}
-              </ScrollView>
-          </View>
-  
+        </SafeAreaView>
+        
+        <FlatList
+          data={matches}
+          style={styles.storyContainer}
+          numColumns={3}
+          scrollEnabled={scrollEnabled}
+          renderItem={({item}) =>
+            <>
+              <View style={{ flexDirection: "column"}}>
+                <NewMatches key={item.id} uri={item.uri} />
+                <Text style={styles.matchName}> {item.name} </Text>
+              </View>
+            </>
+          }
+        />
       </View>
     );
   };
@@ -221,13 +151,13 @@ import {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: "black",
-      flex: 1
+      flex: 1,
     },
   
     header: {
-      fontSize: 50,
+      fontSize: 40,
       color: "#FFF",
-      marginTop: 0,
+      marginBottom: 10,
       fontWeight: "bold",
       alignSelf: "center",
     },
@@ -251,16 +181,15 @@ import {
     },
   
     storyContainer: {
-      flexDirection: "row",
+      flexDirection: "column",
       paddingHorizontal: 10,
-      justifyContent: "flex-start",
     },
   
     matchProfile: {
-      width: 90,
-      height: 90,
-      borderRadius: 90 / 2,
-      borderWidth: 2,
+      width: 115,
+      height: 115,
+      borderRadius: 115 / 2,
+      borderWidth: 6,
       padding: 2,
       overflow: "hidden",
       marginRight: 10,
@@ -269,56 +198,23 @@ import {
     },
   
     profilePic: {
-      width: 80,
-      height: 80,
-      borderRadius: 90 / 2,
+      width: 95,
+      height: 95,
+      borderRadius: 95 / 2,
       borderColor: "black",
-      borderWidth: 3,
+      borderWidth: 5,
     },
   
     matchName: {
       color: "white",
-      fontSize: 15,
+      fontSize: 17,
       fontWeight: "bold",
-      marginTop: 5,
+      marginTop: 10,
+      marginBottom: 30,
       textAlign: "center",
       marginRight: 15,
     },
-  
-    messageContainer: {
-      flexDirection: "row",
-      paddingHorizontal: 10,
-      alignItems: "center",
-      flex: 1
-    },
-  
-    messageProfile: {
-      width: 90,
-      height: 90,
-      borderRadius: 90 / 2,
-      borderWidth: 2,
-      borderColor: "white",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  
-    ProfileInfo: {
-      marginLeft: 15,
-      flex: 1
-    },
-  
-    name: {
-      color: "#FE8AE3",
-      fontSize: "20",
-      fontWeight: "bold",
-      marginBottom: 7,
-    },
-  
-    text: {
-      color: "#ABABAB",
-      fontSize: "15",
-      fontWeight: "bold",
-    },
+
   });
   
   export default MatchScreen;

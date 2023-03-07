@@ -2046,7 +2046,7 @@
 
 "@types/invariant@^2.2.35":
   version "2.2.35"
-  resolved "https://registry.npmjs.org/@types/invariant/-/invariant-2.2.35.tgz"
+  resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.35.tgz#cd3ebf581a6557452735688d8daba6cf0bd5a3be"
   integrity sha512-DxX1V9P8zdJPYQat1gHyY0xj3efl8gnMVjiM9iCY6y27lj+PoQWkgjt8jDqmovPqULkKVpKRg8J36iQiA+EtEg==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
@@ -6324,7 +6324,7 @@ react-native-ratings@^8.1.0:
 
 react-native-reanimated@~2.12.0:
   version "2.12.0"
-  resolved "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.12.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.12.0.tgz#5821eecfb1769b1617a67a2d4dec12fdeedb2b6e"
   integrity sha512-nrlPyw+Hx9u4iJhZk9PoTvDo/QmVAd+bo7OK9Tv3hveNEF9++5oig/g3Uv9V93shy9avTYGsUprUvAEt/xdzeQ==
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.16.7"
