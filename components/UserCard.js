@@ -6,12 +6,13 @@ import { useEffect,useState, } from 'react'
 import axios from "axios"
 import {Buffer} from 'buffer';
 
-// http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/0000000000000000000000
+
 const compatibility='80%'
 
+// Card component that displays user information
 function Card({id}){
   
-
+// State variables to store user data
     const [Name, setName] = useState([]);
     const [Bio, setBio] = useState([]);
     const [Age, setAge] = useState([]);
@@ -30,11 +31,10 @@ function Card({id}){
     const [pic4,setPic4] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
-
+// Array of pictures
 const pics = [
   {
     id:1,
-    // url:'https://picsum.photos/id/237/1080',
     uri:'data:image/jpeg;base64,'+ pic1,
 
   },
@@ -53,6 +53,7 @@ const pics = [
 
 ]
 
+ // Function to get user data from the server
     const getData = async ({id}) => {
       await axios
           .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
@@ -67,8 +68,8 @@ const pics = [
             setQ2id(response["data"]["questionid2"] )
             setQ3id(response["data"]["questionid3"])
             getAge(response["data"]["birthdate"])
-            // console.log(`${id}YE HAI ${id}`);
 
+            // Convert profile pictures to base64
             const pic1Data= (response["data"] ["profilepictures"]["picture1"]["data"])
             const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
 
@@ -81,6 +82,7 @@ const pics = [
             const pic4Data= (response["data"]["profilepictures"]["picture4"]["data"])
             const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
 
+            // Store profile pictures in state
             setPic1(pic1Conversion)
             setPic2(pic2Conversion)
             setPic3(pic3Conversion)
@@ -93,15 +95,14 @@ const pics = [
         });
 
   };
+
+  // Function to get question data from the server
   const getQuestions = async () => {
     await axios
         .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
         .then((response) => {
-          // const question1 = response["data"][Q1id]["questiontext"]
 
-          // const question2 = response["data"][Q2id]["questiontext"]
-
-          // const question3 = response["data"][Q3id]["questiontext"]
+          // Store questions in state
           setQ1(response["data"][Q1id]["questiontext"])
           setQ2(response["data"][Q2id]["questiontext"])
           setQ3(response["data"][Q3id]["questiontext"])
@@ -114,7 +115,9 @@ const pics = [
 };
 
 
-
+//  Using the Axios library to make HTTP requests to retrieve data from a server.
+// Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
+// Once the requests are complete, it uses the axios.spread() method to access the response data.
   axios.all([getData({id}), getQuestions()])
   .then(axios.spread(function (data, questions) {
     getData({id});
@@ -122,23 +125,13 @@ const pics = [
 }));
 
   useEffect(() => {
-
- 
     console.log("loaded", loaded);
-    
   }, []); 
 
-  
-  // let [response, setResponse] = useState();
-  // const [loading, setLoading] = useState(false);
-  // useEffect(async () => {
-  //   const fetchData = async () => {
-  //     fetch("https://dummy.restapiexample.com/api/v1/employee/1")
-  //     
 
+  // Flatlist Image Item
   const Item = ({item}) => (
-    
-    
+
     <View style={styles.imageContainer}>
       {/* <Image source={{uri:"data:image/jpeg;base64,"+ `${pic2}`}}
       resizeMode="cover"
@@ -153,6 +146,8 @@ const pics = [
     </View>
 
   );
+
+  // Function to get age from DOB
   const getAge =(DOB) =>{
     var date = new Date(DOB)
     let today = new Date()
@@ -166,7 +161,6 @@ const pics = [
 
     return (
 
-    
         <View style={styles.container}>
         <ScrollView>
         {/* Image Container */}
