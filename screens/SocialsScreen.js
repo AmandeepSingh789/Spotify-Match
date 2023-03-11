@@ -3,9 +3,13 @@ import { Button } from "@rneui/base";
 import Icon from "react-native-vector-icons/AntDesign";
 import { SafeAreaView, StyleSheet, Text, View, Image} from "react-native";
 import UserCard from '../components/UserCard';
+import { Linking } from 'react-native';
 
-const SocialsScreen = () => {
+const SocialsScreen = (id) => {
   const navigation = useNavigation();
+  const matchId = id.route.params.id;
+  console.log(matchId);
+
   return (
     <SafeAreaView style={styles.container}>
         <View style={{alignSelf: 'flex-start'}}>
@@ -23,12 +27,22 @@ const SocialsScreen = () => {
                 source={require('../assets/instagram.png')} 
                 style={styles.instagramIcon}
             />
-            <Text style={styles.instagram}> jerry2002 </Text>
+            <Text 
+              style={styles.instagram}
+              onPress={() => Linking.openURL('http://instagram.com/jerry2002')}
+            > 
+              jerry2002
+            </Text>
             <Image 
                 source={require('../assets/spotify.png')} 
                 style={styles.spotifyIcon}
             />
-            <Text style={styles.spotify}> jerry2002 </Text>
+            <Text 
+              style={styles.spotify}
+              onPress={() => Linking.openURL('https://open.spotify.com/user/flower4518')}
+            > 
+              jerry2002
+            </Text>
         </View>
         <View>
             <Button
@@ -70,7 +84,8 @@ const styles = StyleSheet.create({
   },
 
   instagram: {
-    color: "white",
+    color: "#FE8AE3",
+    textDecorationLine: 'underline',
     fontSize: 17,
     fontWeight: "bold",
     marginLeft: 10,
@@ -86,11 +101,12 @@ const styles = StyleSheet.create({
   },
 
   spotify: {
-    color: "white",
+    color: "#1DB954",
+    textDecorationLine: 'underline',
     fontSize: 17,
     fontWeight: "bold",
     marginLeft: 10,
-    top: -10
+    top: -10,
   },
 
   buttonStyle: {

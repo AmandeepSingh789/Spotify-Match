@@ -91,62 +91,62 @@ const SpotifyLoginScreen =() => {
             .get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + profile.data.id)
             .then(function(response) {
                 console.log(response.data)
-                if(response.data.length == 0){
-                    axios
-                        .post(
-                        'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
-                        {
-                            "id": profileData.data.id,
-                            "name": profileData.data.display_name,
-                            "birthdate": "1972-04-12T07:00:00.000Z",
-                            "email": profileData.data.email,
-                            "gender": "M",
-                            "orientation": "P",
-                            "location": profileData.data.country,
-                            "pronouns": "he/him",
-                            "bio": null,
-                            "questionid1": null,
-                            "questionid2": null,
-                            "questionid3": null,
-                            "answer1": null,
-                            "answer2": null,
-                            "answer3": null
-                        }).catch(function(error) {
-                            console.log(error);
-                        })
-                    navigation.navigate('SurveyGeneralQuestions');
-                } else {
-                    navigation.navigate('Home');
-                }
+                navigation.navigate('Home');
+                // if(response.data.length == 0){
+                //     axios
+                //         .post(
+                //         'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
+                //         {
+                //             "id": profileData.data.id,
+                //             "name": profileData.data.display_name,
+                //             "birthdate": "1972-04-12T07:00:00.000Z",
+                //             "email": profileData.data.email,
+                //             "gender": "M",
+                //             "orientation": "P",
+                //             "location": profileData.data.country,
+                //             "pronouns": "he/him",
+                //             "bio": null,
+                //             "questionid1": null,
+                //             "questionid2": null,
+                //             "questionid3": null,
+                //             "answer1": null,
+                //             "answer2": null,
+                //             "answer3": null
+                //         }).catch(function(error) {
+                //             console.log(error);
+                //         })
+                //     navigation.navigate('SurveyGeneralQuestions');
+                // } else {
+                //     navigation.navigate('Home');
+                // }
             })
             .catch(function(error) {
-                console.log(error);
+                console.log("user does not exist");
+                axios
+                    .post(
+                    'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
+                    {
+                        "id": profileData.data.id,
+                        "name": profileData.data.display_name,
+                        "birthdate": "1972-04-12T07:00:00.000Z",
+                        "email": profileData.data.email,
+                        "gender": "F",
+                        "orientation": "S",
+                        "location": profileData.data.country,
+                        "pronouns": "she/her",
+                        "bio": null,
+                        "questionid1": null,
+                        "questionid2": null,
+                        "questionid3": null,
+                        "answer1": null,
+                        "answer2": null,
+                        "answer3": null,
+                        "instagram": null
+                    }).catch(function(error) {
+                        console.log(error);
+                    })
+                navigation.navigate('SurveyGeneralQuestions');
             })
-
-        //   axios
-        //     .post(
-        //       'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
-        //       {
-        //         "id": profile.data.id,
-        //         "name": profile.data.display_name,
-        //         "birthdate": "1972-04-12T07:00:00.000Z",
-        //         "email": profile.data.email,
-        //         "gender": "M",
-        //         "orientation": "P",
-        //         "location": profile.data.country,
-        //         "pronouns": "he/him",
-        //         "bio": null,
-        //         "questionid1": null,
-        //         "questionid2": null,
-        //         "questionid3": null,
-        //         "answer1": null,
-        //         "answer2": null,
-        //         "answer3": null
-        //       }
-        //     ).catch ((error) => {
-        //       console.error(error.profile.data);
-        //     })
-        //   navigation.navigate('SurveyGeneralQuestions');
         }).catch((error) => {
           console.log("error", error.message);
         });

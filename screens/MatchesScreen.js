@@ -29,53 +29,58 @@ import {
   import { useRef } from "react";
   import { LinearGradient } from "expo-linear-gradient";
   import { useNavigation } from "@react-navigation/native";
+  import { useEffect, useState } from "react";
+  import axios from 'axios';
+  import { Buffer } from 'buffer';
   
-  const matches = [
-    {
-      id: "1",
-      uri: "https://i.pinimg.com/originals/b2/86/a6/b286a65bfc482ebc7b3138dbb6568b37.jpg",
-      name: "Mrin",
-    },
-    {
-      id: "2",
-      uri: "https://i.pinimg.com/originals/cc/7a/8f/cc7a8fa84c296ac4de2a227a92324a77.jpg",
-      name: "Rami",
-    },
-    {
-      id: "3",
-      uri: "https://i.pinimg.com/originals/99/63/78/996378defcb190e5e0d067e2d3c62477.jpg",
-      name: "Cal",
-    },
-    {
-      id: "4",
-      uri: "https://i.pinimg.com/originals/58/7b/57/587b57f888b1cdcc0e895cbdcfde1c1e.jpg",
-      name: "Amandeep",
-    },
-    {
-      id: "5",
-      uri: "https://i.pinimg.com/originals/94/25/2b/94252bec792f63f96e1e481ee0cd2669.jpg",
-      name: "Amaan",
-    },
-    {
-      id: "6",
-      uri: "https://i.pinimg.com/originals/e4/18/e2/e418e22729bd7a202c563e08463b6ad9.jpg",
-      name: "Jane",
-    },
-    {
-      id: "7",
-      uri: "https://i.pinimg.com/564x/eb/ae/2f/ebae2fd689ea2196625491b719a855eb.jpg",
-      name: "Deer",
-    },
-    {
-      id: "8",
-      uri: "https://i.pinimg.com/originals/ad/81/eb/ad81ebb84107d9fc10a7e1c335d4c823.jpg",
-      name: "Doe",
-    }
-  ];
+  // const matches = [
+  //   {
+  //     id: "1",
+  //     uri: "https://i.pinimg.com/originals/b2/86/a6/b286a65bfc482ebc7b3138dbb6568b37.jpg",
+  //     name: "Rami",
+  //   },
+  //   {
+  //     id: "2",
+  //     uri: "https://i.pinimg.com/originals/cc/7a/8f/cc7a8fa84c296ac4de2a227a92324a77.jpg",
+  //     name: "Mrin",
+  //   },
+  //   {
+  //     id: "3",
+  //     uri: "https://i.pinimg.com/originals/99/63/78/996378defcb190e5e0d067e2d3c62477.jpg",
+  //     name: "Cal",
+  //   },
+  //   {
+  //     id: "4",
+  //     uri: "https://i.pinimg.com/originals/58/7b/57/587b57f888b1cdcc0e895cbdcfde1c1e.jpg",
+  //     name: "Amandeep",
+  //   },
+  //   {
+  //     id: "5",
+  //     uri: "https://i.pinimg.com/originals/94/25/2b/94252bec792f63f96e1e481ee0cd2669.jpg",
+  //     name: "Amaan",
+  //   },
+  //   {
+  //     id: "6",
+  //     uri: "https://i.pinimg.com/originals/e4/18/e2/e418e22729bd7a202c563e08463b6ad9.jpg",
+  //     name: "Jane",
+  //   },
+  //   {
+  //     id: "7",
+  //     uri: "https://i.pinimg.com/564x/eb/ae/2f/ebae2fd689ea2196625491b719a855eb.jpg",
+  //     name: "Deer",
+  //   },
+  //   {
+  //     id: "8",
+  //     uri: "https://i.pinimg.com/originals/ad/81/eb/ad81ebb84107d9fc10a7e1c335d4c823.jpg",
+  //     name: "Doe",
+  //   }
+  // ];
+  let matches = [];
   
-  const NewMatches = ({ uri }) => {
+  const NewMatches = ({ id, uri }) => {
     const navigation = useNavigation();
-  
+    const pfp = new Buffer.from(uri.data).toString('base64');
+
     return (
       <>
         <LinearGradient
@@ -84,11 +89,11 @@ import {
           end={{ x: 1.0, y: 1.0 }}
           style={styles.matchProfile}
         >
-          <Pressable onPress={() => navigation.navigate("Socials")}>
+          <Pressable onPress={() => navigation.navigate("Socials", {id: id})}>
               
             <Image
               source={{
-                uri,
+                uri: "data:image/jpeg;base64," + pfp,
               }}
               style={styles.profilePic}
             />
@@ -102,16 +107,31 @@ import {
   const {height} = Dimensions.get('window');
   
   const MatchScreen = () => {
-    state: {
-      screenHeight: 0
-    }
-    const [screenHeight, setScreenHeight] = React.useState(0);
+    // state: {
+    //   screenHeight: 0
+    // }
+    // const [screenHeight, setScreenHeight] = React.useState(0);
 
   
-    const onContentSizeChange = (contentWidth, contentHeight) => {
-        setScreenHeight(contentHeight);
+    // const onContentSizeChange = (contentWidth, contentHeight) => {
+    //     setScreenHeight(contentHeight);
+    // };
+  
+    const [matches, setMatches] = useState([]);
+
+    const getMatches = () => {
+      axios
+        .get('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/0')
+        .then((response) => {
+          setMatches(response ["data"])
+        })
     };
   
+    useEffect(() => {
+      getMatches();     
+    }, []);
+
+
     const scrollEnabled = matches.length > 9;
   
     return (
@@ -121,9 +141,23 @@ import {
   
           <Text style={styles.header}>Matches</Text>
   
-          <Text style={styles.numMatches}>
-            You have {matches.length} new matches!
-          </Text>
+          <View>
+            {(() => {
+              if (matches.length == 1){
+                  return (
+                    <Text style={styles.numMatches}>
+                      You have {matches.length} new match!
+                    </Text>
+                  )
+              }
+              
+              return (
+                <Text style={styles.numMatches}>
+                  You have {matches.length} new matches!
+                </Text>
+              );
+            })()}
+          </View>
   
           <View style={{ alignSelf: "flex-start"}}>
             <Text style={styles.desc}>New Matches</Text>
@@ -138,7 +172,7 @@ import {
           renderItem={({item}) =>
             <>
               <View style={{ flexDirection: "column"}}>
-                <NewMatches key={item.id} uri={item.uri} />
+                <NewMatches key={item.id} id={item.id} uri={item.picture1} />
                 <Text style={styles.matchName}> {item.name} </Text>
               </View>
             </>
