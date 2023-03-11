@@ -430,13 +430,18 @@ export default function Edit_user_profile() {
             />
 
             {/* Submit button - updates database with new information on call */}
-            <View style={{margin:20}}>
-                <Button 
+            {/* <View style={styles.button}> */}
+            <TouchableOpacity style={styles.button} onPress={updateDB()}>
+                <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+                {/* <Button 
                     title='Submit' 
-                    color= '#19AC52'
+                    color= 'black'
+                    fontSize="bold"
+                    style={styles.buttonText}
                     onPress={() => {updateDB()}}
-                />
-            </View>
+                /> */}
+            {/* </View> */}
         </KeyboardAwareScrollView>
     );
 }
@@ -445,7 +450,7 @@ export default function Edit_user_profile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#181818',
+        backgroundColor: 'black',
     },
 
     horizontal: {
@@ -491,7 +496,9 @@ const styles = StyleSheet.create({
     fieldTitle: {
         marginLeft: 15,
         color: '#FE8AE3',
-        fontSize: 15,
+        fontSize: 17,
+        fontWeight: "bold"
+
     },
 
     userNameInput: {
@@ -499,7 +506,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 10,
         color: '#fff'
@@ -514,7 +521,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 10,
         color: '#fff',
@@ -526,7 +533,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 10,
         color: '#fff',
@@ -539,7 +546,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 10,
         color: '#fff'
@@ -557,7 +564,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 10,
         color: '#fff'
@@ -569,7 +576,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 15,
         color: '#fff',
@@ -599,7 +606,7 @@ const styles = StyleSheet.create({
         margin: 15,
         fontSize: 20,
         borderRadius: 25,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#1DB954',
         padding: 15,
         color: '#fff',
@@ -619,5 +626,20 @@ const styles = StyleSheet.create({
     QselectionBoxDropdownText: {
         color: '#fff'
     },
+    button: {
+        backgroundColor: "#1DB954",
+        color: 'black',
+        margin: 10,
+        borderRadius: 20,
+        alignSelf: "center",
+        alignContent: "center",
+        width: 100,
+        height: 40,
+        padding: 10,
+    },
+    buttonText: {
+        fontWeight: "bold",
+        textAlign: "center"
+    }
 });
   

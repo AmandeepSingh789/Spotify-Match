@@ -268,7 +268,8 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       borderWidth:1,
-      borderColor:'#3EFF2D',
+      // borderColor:'#3EFF2D',
+      borderColor:'#1DB954',
       backgroundColor:"#000000",
       marginHorizontal:40,
       marginTop:20,
@@ -278,7 +279,8 @@ const styles = StyleSheet.create({
       
     },
     imageContainer: {
-      borderColor:'#3EFF2D',
+      // borderColor:'#3EFF2D',
+      borderColor:'#1DB954',
       borderWidth:1,
       borderRadius:20,
       height: Layout.window.height/2-120,
@@ -302,22 +304,25 @@ const styles = StyleSheet.create({
   
       },
     name: {
-      color: '#fff',
+      // color: '#fff',
+      color: '#FE8AE3',
       fontSize:28,
     },
      meter: {
       color: '#5E5E5E',
       fontSize:34,
       borderRadius:'100%',
-      borderColor:'#3EFF2D',
-       marginLeft:20,
+      // borderColor:'#3EFF2D',
+      borderColor:'#1DB954',
+      marginLeft:20,
       borderWidth:1,
       height:90,
       width:90,
       justifyContent:'center',
     },
     percentage: {
-      color: '#fff',
+      // color: '#fff',
+      color: '#1DB954',
       alignSelf: 'center',
       fontSize:30,
   
