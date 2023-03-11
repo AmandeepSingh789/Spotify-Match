@@ -32,7 +32,7 @@ export default function App() {
 
   const getMatches= () => {
     axios
-        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/1`)
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/0`)
         .then((response) => {
           
           setNumMatches(response ["data"])

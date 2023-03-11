@@ -58,27 +58,27 @@ const pics = [
           .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
           .then((response) => {
             console.log(id);
-            setName(response["data"][0]["name"]);
-            setBio(response["data"][0]["bio"]);
-            setAnswer1(response["data"][0]["answer1"])
-            setAnswer2(response["data"][0]["answer2"])
-            setAnswer3(response["data"][0]["answer3"])
-            setQ1id(response["data"][0]["questionid1"])
-            setQ2id(response["data"][0]["questionid2"])
-            setQ3id(response["data"][0]["questionid3"])
-            getAge(response["data"][0]["birthdate"])
+            setName(response ["data"] ["name"]);
+            setBio(response["data"]["bio"]);
+            setAnswer1(response["data"]["answer1"])
+            setAnswer2(response["data"]["answer2"])
+            setAnswer3(response["data"]["answer3"])
+            setQ1id(response["data"]["questionid1"])
+            setQ2id(response["data"]["questionid2"] )
+            setQ3id(response["data"]["questionid3"])
+            getAge(response["data"]["birthdate"])
             // console.log(`${id}YE HAI ${id}`);
 
-            const pic1Data= (response["data"][0]["picture1"]["data"])
+            const pic1Data= (response["data"] ["profilepictures"]["picture1"]["data"])
             const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
 
-            const pic2Data= (response["data"][0]["picture2"]["data"])
+            const pic2Data= (response["data"]["profilepictures"]["picture2"]["data"])
             const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
 
-            const pic3Data= (response["data"][0]["picture3"]["data"])
+            const pic3Data= (response["data"]["profilepictures"]["picture3"]["data"])
             const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
 
-            const pic4Data= (response["data"][0]["picture4"]["data"])
+            const pic4Data= (response["data"]["profilepictures"]["picture4"]["data"])
             const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
 
             setPic1(pic1Conversion)
@@ -113,26 +113,17 @@ const pics = [
 
 };
 
-console.log("pls work",loaded);
 
-  // componentDidMount(() => {
-  //   getData({id});
-  //   getQuestions();
 
-  // }, []);
   axios.all([getData({id}), getQuestions()])
   .then(axios.spread(function (data, questions) {
-    // Both requests are now complete
     getData({id});
-    // getQuestions();
+
 }));
 
   useEffect(() => {
 
-    // getData({id});
-    // getQuestions();
-
-    
+ 
     console.log("loaded", loaded);
     
   }, []); 
