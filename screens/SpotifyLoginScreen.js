@@ -25,6 +25,10 @@ import axios from 'axios';
 
 const logo = require('../assets/spotify_match_logo.png');
 
+const NUMTOPARTISTS = 50;
+const NUMTOPTRACKS = 50;
+const NUMTOPGENRES = 50;
+
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
@@ -36,10 +40,213 @@ const addToken = token => {
   return {type: ADD_TOKEN, token: token};
 };
 
-const SpotifyLoginScreen =() => {
+async function postData (data, endpoint, id) {
+  axios
+    .post(
+      'http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/' + endpoint + id,
+      {
+        data: data,
+      }
+    ).catch ((error) => {
+      console.error(error);
+    })
+}
+
+async function getTopArtists(token, userID) {
+  // Get Top artists
+  axios
+  .get(
+    'https://api.spotify.com/v1/me/top/artists', {
+      params: { limit: NUMTOPARTISTS, offset: 0 },
+      headers: {
+        Authorization: 'Bearer ' + token,
+        "Accept": "application/json",
+        'Content-Type': 'application/json',
+      }
+    }
+  ).then(function(topArtists) {
+
+    let genres = {}
+    let artists = []
+    
+    console.log("Top Artists")
+    for (let i = 0; i < topArtists.data.items.length; i+=1) {
+      let artistData = topArtists.data.items[i];
+      let artistObj = {
+        artistid: artistData.id,
+        artistname: artistData.name,
+        rank: i + 1
+      }
+      artists.push(artistObj)
+      console.log(artistObj)
+      // iterate through each genre associated with the artist and add them to the counter
+      for (let genre in artistData.genres) {
+        genres[artistData.genres[genre]] = (genres[artistData.genres[genre]] || 0 ) +1;
+      }
+    }
+    console.log("\n")
+    console.log("Genres")
+    console.log(genres)
+    console.log("\n")
+    
+    const genresRanked = Object.entries(genres).sort((a,b) => b[1]-a[1]);
+
+    let genreList = []
+
+    let i = 0;
+    while (i < NUMTOPGENRES && i < genresRanked.length) {
+      let genre = {
+        genre: genresRanked[i][0],
+        rank: i + 1
+      };
+      genreList.push(genre);
+      i += 1;
+    }
+
+    console.log(genreList)
+
+
+    postData(artists, "topartists/", userID);
+    postData(genreList, "topgenres/", userID);
+
+  })
+}
+
+async function getTopTracks(token, userID) {
+  return axios
+  .get(
+    'https://api.spotify.com/v1/me/top/tracks', {
+      params: { limit: NUMTOPTRACKS, offset: 0 },
+      headers: {
+        Authorization: 'Bearer ' + token,
+        "Accept": "application/json",
+        'Content-Type': 'application/json',
+      }
+    }
+  ).then(function(topTracks) {
+    console.log("Top Tracks");
+    let tracks = []
+    let trackids = []
+    for (let i = 0; i < topTracks.data.items.length; i+=1) {
+      let trackInfo = topTracks.data.items[i];
+      let track = {
+        trackid: trackInfo.id,
+        trackname: trackInfo.name,
+        rank: i+1
+      }
+      tracks.push(track)
+      trackids.push(trackInfo.id)
+      console.log(track)
+    }
+    console.log("\n")
+
+
+    postData(tracks, "toptracks/", userID);
+    return trackids;
+}
+)}
+
+async function getAudioFeatures(trackids, token, userID) {
+  axios.get(
+    'https://api.spotify.com/v1/audio-features', {
+      params: { ids: trackids.toString()},
+      headers: {
+        Authorization: 'Bearer ' + token,
+        "Accept": "application/json",
+        'Content-Type': 'application/json',
+      }
+    }
+  ).then(function(audioFeatures) {
+    let data = {
+      id: userID,
+      acousticness: 0,
+      danceability: 0,
+      energy: 0,
+      instrumentalness: 0,
+      liveness: 0, 
+      speechiness: 0,
+      valence: 0
+    }
+  
+    console.log("Top Tracks Audio Features")
+  
+    let num_tracks = audioFeatures.data.audio_features.length;
+  
+    for (let track = 0; track < audioFeatures.data.audio_features.length; track +=1) {
+      let track_data = audioFeatures.data.audio_features[track]
+      data.acousticness += track_data.acousticness
+      data.danceability += track_data.danceability
+      data.energy += track_data.energy
+      data.instrumentalness += track_data.instrumentalness
+      data.liveness += track_data.liveness
+      data.speechiness += track_data.speechiness
+      data.valence += track_data.valence
+    }
+  
+    data.acousticness /= num_tracks
+    data.danceability /= num_tracks
+    data.energy /= num_tracks
+    data.instrumentalness /= num_tracks
+    data.liveness /= num_tracks
+    data.speechiness /= num_tracks
+    data.valence /= num_tracks
+  
+    console.log(data)
+    console.log("\n")
+  
+    console.log(userID);
+  
+    axios.post(
+    'http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/',
+    data
+  ).catch((error) => {
+    console.error(error);
+  }
+  )
+})}
+
+async function createUser(profileData) {
+      axios
+          .post(
+          'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
+          {
+              "id": profileData.id,
+              "name": profileData.display_name,
+              "birthdate": "1972-04-12T07:00:00.000Z",
+              "email": profileData.email,
+              "gender": "M",
+              "orientation": "P",
+              "location": profileData.country,
+              "pronouns": null,
+              "bio": null,
+              "questionid1": null,
+              "questionid2": null,
+              "questionid3": null,
+              "answer1": null,
+              "answer2": null,
+              "answer3": null
+          }).catch(function(error) {
+              console.log(error);
+          })
+}
+
+async function getSpotifyUser(token) {
+  if(token) {
+    //Current User's Profile
+    return axios
+      .get(
+        'https://api.spotify.com/v1/me', {
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          }
+        }
+      )
+  }
+}
+
+const SpotifyLoginScreen = () => {
   const navigation = useNavigation();
-  var dataPlaylistsID = [];
-  var profileData = [];
 
   const [token, setToken] = useState("");
   const [request, response, promptAsync] = useAuthRequest(
@@ -74,247 +281,28 @@ const SpotifyLoginScreen =() => {
   }, [response]);
 
   useEffect(() => {
-    if(token) {
-      //Current User's Profile
-      axios
-        .get(
-          'https://api.spotify.com/v1/me', {
-            headers: {
-              Authorization: 'Bearer ' + token,
-              'Content-Type': 'application/json',
-            }
-          }
-        ).then(function(profile) {
-          console.log(profile.data.id);
-          profileData = profile; 
-          axios
-            .get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + profile.data.id)
-            .then(function(response) {
-                console.log(response.data)
-                if(response.data == false){
-                    axios
-                        .post(
-                        'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
-                        {
-                            "id": profileData.data.id,
-                            "name": profileData.data.display_name,
-                            "birthdate": "1972-04-12T07:00:00.000Z",
-                            "email": profileData.data.email,
-                            "gender": "M",
-                            "orientation": "P",
-                            "location": profileData.data.country,
-                            "pronouns": "he/him",
-                            "bio": null,
-                            "questionid1": null,
-                            "questionid2": null,
-                            "questionid3": null,
-                            "answer1": null,
-                            "answer2": null,
-                            "answer3": null
-                        }).catch(function(error) {
-                            console.log(error);
-                        })
-                    navigation.navigate('SurveyGeneralQuestions');
-                } else {
-                    navigation.navigate('Home');
-                }
-            })
-            .catch(function(error) {
-                console.log(error);
-            })
-
-        //   axios
-        //     .post(
-        //       'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
-        //       {
-        //         "id": profile.data.id,
-        //         "name": profile.data.display_name,
-        //         "birthdate": "1972-04-12T07:00:00.000Z",
-        //         "email": profile.data.email,
-        //         "gender": "M",
-        //         "orientation": "P",
-        //         "location": profile.data.country,
-        //         "pronouns": "he/him",
-        //         "bio": null,
-        //         "questionid1": null,
-        //         "questionid2": null,
-        //         "questionid3": null,
-        //         "answer1": null,
-        //         "answer2": null,
-        //         "answer3": null
-        //       }
-        //     ).catch ((error) => {
-        //       console.error(error.profile.data);
-        //     })
-        //   navigation.navigate('SurveyGeneralQuestions');
-        }).catch((error) => {
-          console.log("error", error.message);
-        });
-      
-
-
-    
-      //Current User Playlist IDs
-      // axios.
-      //   get(
-      //     'https://api.spotify.com/v1/me/playlists', {
-      //       params: { limit: 50, offset: 0 },
-      //       headers: {
-      //         Authorization: 'Bearer ' + token,
-      //       }
-      //   }).then(function(all_playlists) {
-      //     for(let i = 0; i < all_playlists.data.items.length; i++) {
-
-            // Individual Playlist Items
-            // axios
-            //   .get(
-            //     'https://api.spotify.com/v1/playlists/' + all_playlists.data.items[i].id + '/tracks', {
-            //     params: { limit : 50, offset: 0 },
-            //     headers: {
-            //       Authorization: 'Bearer ' + token,
-            //     }
-            //   }).then(function(playlist) {
-
-                //Get tracks in playlist
-
-                // for(let i = 0; i < playlist.data.items.length; i++) {
-                //   axios
-                //     .get(
-                //       'https://api.spotify.com/v1/tracks/' + playlist.data.items[i].track.id, {
-                //         headers: {
-                //           Authorization: 'Bearer ' + token,
-                //         }
-                //       }).then(function(track) {
-
-                        // Get audio feature
-                        // axios.get(
-                        //   'https://api.spotify.com/v1/audio-features/' + track.data.id, {
-                        //     headers: {
-                        //       Authorization: 'Bearer ' + token,
-                        //     }
-                        //   })
-                        //   // .then(function(audio_feature) {
-                        //   //   //Store audio feature thing in back end
-                            
-                        //   // })
-                        
-                        // // Get audio anaylsis
-                        // axios.get(
-                        //   'https://api.spotify.com/v1/audio-analysis/' + track.data.id, {
-                        //     headers: {
-                        //       Authorization: 'Bearer ' + token,
-                        //     }
-                        //   })
-                          
-                        //   // .then(function(audio_analysis) {
-                        //     //Store audio analysis thing in back end
-
-                        //   // })
-                //       })
-                // }
-
-          //     });
-          // }
-        // });
-
-      // //Get Artists Followed
-      // axios
-      //   .get(
-      //     'https://api.spotify.com/v1/me/following?type=artist', {
-      //       headers: {
-      //         Authorization: 'Bearer ' + token,
-      //         "Accept": "application/json",
-      //         'Content-Type': 'application/json',
-      //       }
-      //     }
-      //   ).then(function(artist) {
-      //     // console.log(artist)
-      //   })
-      
-      // // Get Top artists
-      // axios
-      //   .get(
-      //     'https://api.spotify.com/v1/me/top/artists', {
-      //       headers: {
-      //         Authorization: 'Bearer ' + token,
-      //         "Accept": "application/json",
-      //         'Content-Type': 'application/json',
-      //       }
-      //     }
-      //   ).then(function(topArtists) {
-      //     // console.log(topArtists)
-      //   })
-        
-      // // Get Top tracks
-      // axios
-      // .get(
-      //   'https://api.spotify.com/v1/me/top/tracks', {
-      //     headers: {
-      //       Authorization: 'Bearer ' + token,
-      //       "Accept": "application/json",
-      //       'Content-Type': 'application/json',
-      //     }
-      //   }
-      // ).then(function(topTracks) {
-      //   // console.log(topTracks)
-      // })
-
-      // Get User's saved albums
-      // axios
-      // .get(
-      //   'https://api.spotify.com/v1/me/albums', {
-      //     headers: {
-      //       Authorization: 'Bearer ' + token,
-      //       "Accept": "application/json",
-      //       'Content-Type': 'application/json',
-      //     }
-      //   }
-      // ).then(function(userSavedAlbum) {
-      //   console.log(userSavedAlbum)
-      // })
-
-      //Get User's Liked Songs (saved tracks)
-    //   axios
-    //   .get(
-    //     'https://api.spotify.com/v1/me/tracks', {
-    //       params: { limit : 50, offset: 0 },
-    //       headers: {
-    //         Authorization: 'Bearer ' + token,
-    //         "Accept": "application/json",
-    //         'Content-Type': 'application/json',
-    //       }
-    //     }).then(function(userSavedTracks) {
-    //       for(let i = 0; i < userSavedTracks.data.items.length; i++) {
-    //         // Get audio feature
-    //         axios.get(
-    //           'https://api.spotify.com/v1/audio-features/' + track.data.id, {
-    //             headers: {
-    //               Authorization: 'Bearer ' + token,
-    //             }
-    //         })
-    //         .then(function(audio_feature) {
-    //           //Store audio feature thing in back end
-                
-    //         })
-              
-    //         // Get audio anaylsis
-    //         axios.get(
-    //           'https://api.spotify.com/v1/audio-analysis/' + track.data.id, {
-    //             headers: {
-    //               Authorization: 'Bearer ' + token,
-    //             }
-    //         })
-    //         .then(function(audio_analysis) {
-    //           //Store audio analysis thing in back end
-
-    //         })
-    //       }
-    //       console.log(userSavedTracks.data.items[9].track.id)
-          
-    //     })
-      
+    async function fetchData() {
+      const profile = await getSpotifyUser(token);
+      console.log(profile.data.id);
+      let profileData = profile.data; 
+      const userID = profileData.id;
+      const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID);
+      console.log(userExists.data);
+      if (userExists.data) {
+        navigation.navigate('Home');
+      }
+      else {
+        await createUser(profileData);
+        await getTopArtists(token, userID);
+        let trackids = await getTopTracks(token, userID);
+        console.log(trackids);
+        await getAudioFeatures(trackids, token, userID);
+        navigation.navigate('SurveyGeneralQuestions');
+      }
     }
+    fetchData();
   }, [token]);
+
 
 
   return (
@@ -346,6 +334,7 @@ const SpotifyLoginScreen =() => {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
