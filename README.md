@@ -68,3 +68,5 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
     react-native-cards-swipe
     react-native-gesture-handler
     buffer
+
+    expo-auth-session

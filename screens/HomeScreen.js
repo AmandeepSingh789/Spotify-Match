@@ -28,15 +28,20 @@ export default function App() {
   const [Matches, setMatches] = useState([]);
   const [numMatches, setNumMatches] = useState([]);
 
+  const [ids, setIds] = useState([]);
+
   const getMatches= () => {
     axios
         .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/1`)
         .then((response) => {
           
           setNumMatches(response ["data"])
-          setMatches(response ["data"][0]["id"])
-          // console.log(response["data"]);
-          console.log(Matches);
+          setMatches(response)
+          setIds(response.data.map((item, index) => ({
+          id: item.id.trim(),
+          index: index
+        })));
+        console.log(ids)
 
           // Gives 6 for now for response.length
           
@@ -44,31 +49,53 @@ export default function App() {
   };
   useEffect(() => {
 
-    getMatches();     
+    getMatches();
+
   }, []);
   
   return (
     
     <SafeAreaView style={styles.container}>
-  
+  {ids.length > 0 && (
   <CardsSwipe
-        cards={numMatches}
+        cards={ids}
         cardContainerStyle={styles.cardContainer}
-        loop={false}
-        // renderYep
-        // renderNope
+        // loop={false}
+
         renderNoMoreCard={() => (
           <View >
             <Text style={styles.noMorePeople}>{'Check Again Soon!'}</Text>
           </View>
         )}
-        onSwipedLeft ={()=>(
-          console.log("dislike")
-        )}
-        onSwipedRight ={()=>(
-          console.log("like")
-        )}
-        
+        onSwipedLeft ={({id}) => {
+          const leftData = {
+            swipeeid: 0,
+            swiperid: 1,
+            liked: false,
+          }
+          axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches', leftData)
+          .then((response) => {
+            console.log('Match saved:', response.data);
+          })
+          .catch((error) => {
+            console.log('Error saving match:', error);
+          });
+        }}
+        onSwipedRight ={({id}) => {
+          const rightData = {
+            swipeeid: id,
+            swiperid: 1,
+            liked: true,
+          }
+          console.log('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',rightData);
+          axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/', rightData)
+          .then((response) => {
+            console.log('Match saved:', response.data);
+          })
+          .catch((error) => {
+            console.log('Error saving match:', error);
+          });
+        }}
         renderYep={() => (
           <View style={styles.like}>
             <Text style={styles.likeLabel}>YEP</Text>
@@ -81,37 +108,16 @@ export default function App() {
           </View>
         )}
 
-        renderCard={(card) => (
+        renderCard={({id}) => (
           <View >
             
-            <UserCard id={ Matches}/>
+            <UserCard id={id}/>
           </View>
           
           )}
           />
+          )}
 
-
-    {/* <View style={{ justifyContent: 'space-between',
-                   alignItems: 'center',
-                        flexDirection: 'row', 
-                        paddingVertical: '1%',
-                        paddingHorizontal: '7%', 
-                        positon: 'absolute',
-                        bottom: 27}}>
-            <Icon
-            raised
-            name='times'
-            type='font-awesome'
-            color='#f50'
-            />
-            <Icon
-            reverse
-            name='heart'
-            type='ionicon'
-            color='#517fa4'
-            />
-        </View>
-   */}
     </SafeAreaView>
 
   );
@@ -160,10 +166,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    // color:'#FF2DB6',
     color:'#FE8AE3',
     fontWeight: 'bold',
     fontSize:44,
-    // fontFamily:'Baskerville-SemiBold',
+    fontFamily:'Baskerville-SemiBold',
     
   },
   like: {
