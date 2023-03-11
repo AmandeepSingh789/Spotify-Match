@@ -28,7 +28,7 @@ export default function App() {
   const [Matches, setMatches] = useState([]);
   const [numMatches, setNumMatches] = useState([]);
 
-  const [ids, setIds] = useState([]);
+  const [userIds, setuserIds] = useState([]);
 
   const getMatches= () => {
     axios
@@ -37,13 +37,12 @@ export default function App() {
           
           setNumMatches(response ["data"])
           setMatches(response)
-          setIds(response.data.map((item, index) => ({
-          id: item.id.trim(),
+          setuserIds(response.data.map((item, index) => ({
+          userid: item.id.trim(),
           index: index
         })));
-        console.log(ids)
+        console.log(userIds)
 
-          // Gives 6 for now for response.length
           
         });
   };
@@ -56,24 +55,32 @@ export default function App() {
   return (
     
     <SafeAreaView style={styles.container}>
-  {ids.length > 0 && (
+  {userIds.length > 0 && (
   <CardsSwipe
-        cards={ids}
+        cards={userIds}
         cardContainerStyle={styles.cardContainer}
-        // loop={false}
+        loop={false}
 
         renderNoMoreCard={() => (
           <View >
             <Text style={styles.noMorePeople}>{'Check Again Soon!'}</Text>
           </View>
         )}
-        onSwipedLeft ={({id}) => {
+        renderCard={({userid}) => (
+          <View >
+            
+            <UserCard id={userid}/>
+          </View>
+          
+          )}
+       onSwipedLeft ={(id) => {
           const leftData = {
-            swipeeid: 0,
+            swipeeid:userIds[id].userid,
             swiperid: 1,
             liked: false,
           }
-          axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches', leftData)
+          console.log('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',leftData);
+          axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',leftData)
           .then((response) => {
             console.log('Match saved:', response.data);
           })
@@ -81,14 +88,14 @@ export default function App() {
             console.log('Error saving match:', error);
           });
         }}
-        onSwipedRight ={({id}) => {
+        onSwipedRight ={(id) => {
           const rightData = {
-            swipeeid: id,
+            swipeeid:userIds[id].userid,
             swiperid: 1,
             liked: true,
           }
           console.log('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',rightData);
-          axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/', rightData)
+          axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',rightData)
           .then((response) => {
             console.log('Match saved:', response.data);
           })
@@ -108,13 +115,7 @@ export default function App() {
           </View>
         )}
 
-        renderCard={({id}) => (
-          <View >
-            
-            <UserCard id={id}/>
-          </View>
-          
-          )}
+        
           />
           )}
 

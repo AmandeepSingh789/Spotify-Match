@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
-import { useEffect,useState } from 'react'
+import { useEffect,useState, } from 'react'
 import axios from "axios"
 import {Buffer} from 'buffer';
 
@@ -30,6 +30,7 @@ function Card({id}){
     const [pic4,setPic4] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
+
 const pics = [
   {
     id:1,
@@ -52,8 +53,8 @@ const pics = [
 
 ]
 
-    const getData = ({id}) => {
-      axios
+    const getData = async ({id}) => {
+      await axios
           .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
           .then((response) => {
             console.log(id);
@@ -92,8 +93,8 @@ const pics = [
         });
 
   };
-  const getQuestions = () => {
-    axios
+  const getQuestions = async () => {
+    await axios
         .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
         .then((response) => {
           // const question1 = response["data"][Q1id]["questiontext"]
@@ -112,13 +113,31 @@ const pics = [
 
 };
 
+console.log("pls work",loaded);
+
+  // componentDidMount(() => {
+  //   getData({id});
+  //   getQuestions();
+
+  // }, []);
+  axios.all([getData({id}), getQuestions()])
+  .then(axios.spread(function (data, questions) {
+    // Both requests are now complete
+    getData({id});
+    // getQuestions();
+}));
+
   useEffect(() => {
 
-    getData({id});
+    // getData({id});
+    // getQuestions();
+
+    
+    console.log("loaded", loaded);
     
   }, []); 
 
-
+  
   // let [response, setResponse] = useState();
   // const [loading, setLoading] = useState(false);
   // useEffect(async () => {
