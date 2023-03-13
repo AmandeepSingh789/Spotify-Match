@@ -1,20 +1,3 @@
-// import React, { Component } from "react";
-// import { StyleSheet, Text, View, Button } from 'react-native';
-  
-// export default class SpotifyLoginClass extends Component {
-//     render() {
-//         return (
-//             <View >
-//             <Text style={{color: 'green'}}> Spotify Login Page </Text>
-//             <Button
-//                 title="Go to Survey"
-//                 onPress={() => this.props.navigation.navigate('SurveyGeneralQuestions')}
-//             />
-//           </View>
-//         );
-//     }
-// }
-
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { Button } from "@rneui/base";
@@ -32,12 +15,6 @@ const NUMTOPGENRES = 50;
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
-};
-
-const ADD_TOKEN = 'ADD_TOKEN';
-
-const addToken = token => {
-  return {type: ADD_TOKEN, token: token};
 };
 
 async function postData (data, endpoint, id) {
@@ -287,7 +264,7 @@ const SpotifyLoginScreen = () => {
       let profileData = profile.data; 
       const userID = profileData.id;
       const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID);
-      console.log(userExists.data);
+      console.log(`User ${userID} exists: ` + userExists.data);
       if (userExists.data) {
         navigation.navigate('Home');
       }

@@ -52,64 +52,57 @@ const pics = [
 
 ]
 
-    const getData = ({id}) => {
-      axios
-          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
-          .then((response) => {
-            console.log(id);
-            setName(response["data"][0]["name"]);
-            setBio(response["data"][0]["bio"]);
-            setAnswer1(response["data"][0]["answer1"])
-            setAnswer2(response["data"][0]["answer2"])
-            setAnswer3(response["data"][0]["answer3"])
-            setQ1id(response["data"][0]["questionid1"])
-            setQ2id(response["data"][0]["questionid2"])
-            setQ3id(response["data"][0]["questionid3"])
-            getAge(response["data"][0]["birthdate"])
-            // console.log(`${id}YE HAI ${id}`);
-
-            const pic1Data= (response["data"][0]["picture1"]["data"])
-            const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
-
-            const pic2Data= (response["data"][0]["picture2"]["data"])
-            const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
-
-            const pic3Data= (response["data"][0]["picture3"]["data"])
-            const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
-
-            const pic4Data= (response["data"][0]["picture4"]["data"])
-            const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
-
-            setPic1(pic1Conversion)
-            setPic2(pic2Conversion)
-            setPic3(pic3Conversion)
-            setPic4(pic4Conversion)
-            getQuestions()
-
-          }).catch((error) => {
-            // Handle any errors that occur
-            console.error(error);
-        });
-
-  };
-  const getQuestions = () => {
-    axios
-        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
-        .then((response) => {
-          // const question1 = response["data"][Q1id]["questiontext"]
-
-          // const question2 = response["data"][Q2id]["questiontext"]
-
-          // const question3 = response["data"][Q3id]["questiontext"]
-          setQ1(response["data"][Q1id]["questiontext"])
-          setQ2(response["data"][Q2id]["questiontext"])
-          setQ3(response["data"][Q3id]["questiontext"])
-          setLoaded(true);
+async function getUserById(id) {
+  axios
+          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`,
+          {
+            responseType: 'json, arraybuffer',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/pdf'
+            }
         }).catch((error) => {
-          // Handle any errors that occur
+        // Handle any errors that occur
+        console.error(error);
+        }
+        )
+}
+
+    const getData = async ({id}) => {
+      const response = await getUserById(id);
+  
+      console.log(response.data);
+      setName(response["data"]["name"]);
+      setBio(response["data"]["bio"]);
+      setAnswer1(response["data"]["answer1"])
+      setAnswer2(response["data"]["answer2"])
+      setAnswer3(response["data"]["answer3"])
+      await setQ1id(response["data"]["questionid1"])
+      await setQ2id(response["data"]["questionid2"])
+      await setQ3id(response["data"]["questionid3"])
+      getAge(response["data"]["birthdate"])
+
+      setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
+      setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
+      setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
+      setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+      
+      const questions = await getQuestions();
+
+      setQ1(response["data"][Q1id]["questiontext"])
+      setQ2(response["data"][Q2id]["questiontext"])
+      setQ3(response["data"][Q3id]["questiontext"])
+      setLoaded(true);
+
+          
+    };
+
+  const getQuestions = () => {
+    return axios
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
+        .catch((error) => {
           console.error(error);
       });
-
 };
 
   useEffect(() => {
@@ -152,6 +145,10 @@ const pics = [
     var yearsOld = (Math.abs((daysOld/365).toFixed(0)))
     yearsOld.toString()
     setAge(yearsOld)
+  }
+
+  function binaryToBase64(data) {
+    return new Buffer.from(data).toString('base64');
   }
 
     return (
