@@ -49,6 +49,7 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
     expo-status-bar
     expo-image-picker
     expo-media-library
+    expo-image-manipulator
     @react-native-community/datetimepicker
     react-native-dropdown-select-list
     react-native-keyboard-aware-scroll-view
@@ -70,3 +71,7 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
     buffer
 
     expo-auth-session
+
+    @reduxjs/toolkit
+    redux
+    react-redux

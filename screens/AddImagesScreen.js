@@ -1,21 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import {React, useEffect, useRef, useState, useCallback} from 'react';
-import {Camera} from 'expo-camera';
-import {shareAsync} from 'expo-sharing';
+import { React, useEffect, useRef, useState, useCallback } from 'react';
+import { Camera } from 'expo-camera';
+import { shareAsync } from 'expo-sharing';
 import { useFonts } from 'expo-font';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 
 
-import { 
-  SafeAreaView, 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image, 
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
   Button,
   TouchableWithoutFeedback,
   Platform,
@@ -23,34 +24,62 @@ import {
   ActivityIndicator,
   ImageBase,
   TouchableOpacity,
-  TouchableHighlight,
-  Dimensions
- } from 'react-native';
+  TouchableHighlight
+} from 'react-native';
 
- const WIDTH = Dimensions.get('window').width;
- const HEIGHT = Dimensions.get('window').height;
+
+// Import Redux store
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setPicture1,
+  setPicture2,
+  setPicture3,
+  setPicture4,
+} from '../redux/UserData';
+
+import { updatePictures, createUser } from '../redux/UserData';
+
+
 export default function Add_images() {
-  const navigation = useNavigation(); 
+  const dispatch = useDispatch();
+  var {
+    id,
+    name,
+    email,
+    gender,
+    location,
+    orientation,
+    pronouns,
+
+    question1,
+    question2,
+    question3,
+
+    answer1,
+    answer2,
+    answer3,
+
+    birthdate,
+    bio,
+    socials,
+    picture1,
+    picture2,
+    picture3,
+    picture4,
+
+    spotifydata,
+    toptracks,
+    topgenres,
+    topartists,
+
+  } = useSelector(((state) => state.id));
+
+  const navigation = useNavigation();
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
 
-
-  const [fontsLoaded] = useFonts({
-    'Inter-Bold': require('../assets/fonts/Inter-Bold.otf'),
-    
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
 
   const pickImages = async () => {
@@ -62,16 +91,23 @@ export default function Add_images() {
       aspect: [1, 1],
       quality: 1,
       selectionLimit: 4,
-      orderedSelection: true
-
+      orderedSelection: true,
+      base64: true
     });
 
 
     if (!result.canceled) {
       setImage1(result.assets[0].uri);
+      dispatch(setPicture1(result.assets[0].base64));
+
       setImage2(result.assets[1].uri);
+      dispatch(setPicture2(result.assets[1].base64));
+
       setImage3(result.assets[2].uri);
+      dispatch(setPicture3(result.assets[2].base64));
+
       setImage4(result.assets[3].uri);
+      dispatch(setPicture4(result.assets[3].base64));
     }
   };
 
@@ -81,113 +117,162 @@ export default function Add_images() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true
     });
 
     console.log(result);
 
-    if (image === 1) {
-      setImage1(result.assets[0].uri);
-      console.log(image1);
-    } 
-    if (image === 2) {
-      setImage2(result.assets[0].uri);
-      console.log("image 2");
-    }
-    if (image === 3) {
-      setImage3(result.assets[0].uri);
-      console.log("image 3");
-    } 
-    if (image === 4) {
-      setImage4(result.assets[0].uri);
-      console.log("image 4");
+    if (!result.canceled) {
+      if (image === 1) {
+        setImage1(result.assets[0].uri);
+        dispatch(setPicture1(result.assets[0].base64));
+        console.log("image1");
+      }
+      if (image === 2) {
+        setImage2(result.assets[0].uri);
+        dispatch(setPicture2(result.assets[0].base64));
+        console.log("image 2");
+      }
+      if (image === 3) {
+        setImage3(result.assets[0].uri);
+        dispatch(setPicture3(result.assets[0].base64));
+        console.log("image 3");
+      }
+      if (image === 4) {
+        setImage4(result.assets[0].uri);
+        dispatch(setPicture4(result.assets[0].base64));
+        console.log("image 4");
+      }
     }
   }
 
 
-  const SaveToPhone = async (item) => {
-    // item is a image uri
-    const permission = await MediaLibrary.requestPermissionsAsync();
-    if (permission.granted) {
-      try {
-        const asset = await MediaLibrary.createAssetAsync(item);
-        const album = MediaLibrary.getAlbumAsync('SpotifyMatch');
-
-        if (album == null) {
-          MediaLibrary.createAlbumAsync('SpotifyMatch', asset, false)
-          .then(() => {
-            console.log('file saved');
-          })
-          .catch(() => {
-            console.log('error saving');
-          });
-          console.log("album not here");
-  
-
-        } else {
-          console.log("album here");
-          MediaLibrary.addAssetsToAlbumAsync(asset, 'SpotifyMatch', true)
-        }
-        
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      console.log('need photo permission');
-    }
-  };
-
-
+  // console.log(name)
   return (
-    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-      <StatusBar style="auto" />
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="light" />
 
-      <Text style={styles.title}>Add Images</Text>
+      <Icon
+        style={styles.header}
+        name="arrowleft"
+        size={25}
+        color="gray"
+        onPress={() => navigation.navigate('SurveyGeneralQuestions')}
+      />
 
-      <Text style={styles.subtitle}>The first image will be your profile picture!</Text>
-      <Text style={styles.subtitle}>Tap an image to edit it.</Text>
-      
-      
+      {/* <View style={styles.header}>
+        <Button
+          title=""
+          type="clear"
+          icon={
+            <Icon
+              name="arrowleft"
+              size={25}
+              color="gray"
+            />
+          }
+          onPress={() => navigation.navigate('SurveyGeneralQuestions')}
+        />
+      </View> */}
+
+      {/* <Text style={styles.title}>Add Images</Text> */}
+
+      <Text style={styles.questions}>Add images to your profile! Tap 'Choose images' to select them. Tap an image to edit it.</Text>
+      {/* <Text style={styles.questions}>Tap an image to edit it.</Text> */}
+
+
       <View style={styles.imageContainer}>
+
         <View style={styles.imageView}>
-          <TouchableOpacity onPress={() => {changeImage(1);}}>
-            <Image source={{ uri: image1 }} style={styles.profilePicture} />
+          <TouchableOpacity onPress={() => { changeImage(1); }}>
+            <Image source={{ uri: image1 }} style={styles.image} />
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => { changeImage(2); }}>
+            <Image source={{ uri: image2 }} style={styles.image} />
+          </TouchableOpacity>
+
         </View>
 
 
 
         <View style={styles.imageView}>
-          <TouchableOpacity onPress={() => {changeImage(3);}}>
+          <TouchableOpacity onPress={() => { changeImage(3); }}>
             <Image source={{ uri: image3 }} style={styles.image} />
           </TouchableOpacity>
-          
-          <TouchableOpacity onPress={() => {changeImage(4);}}>
-            <Image source={{ uri: image4 }} style={styles.image} />
-          </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {changeImage(2);}}>
-            <Image source={{ uri: image2 }} style={styles.image} />
+          <TouchableOpacity onPress={() => { changeImage(4); }}>
+            <Image source={{ uri: image4 }} style={styles.image} />
           </TouchableOpacity>
         </View>
       </View>
 
 
-      <TouchableOpacity style={styles.button} onPress={pickImages}>
-        <Text style={styles.buttonText}>Choose Images</Text>
-      </TouchableOpacity>
+
 
       <Button
-        title="Submit"
-        onPress={() => {
-          SaveToPhone(image1);
-          SaveToPhone(image2);
-          SaveToPhone(image3);
-          SaveToPhone(image4);
-          navigation.navigate('Home');
-        }}
-        color="#1DB954"
-        
+        style={styles.button}
+        title="Choose images"
+        onPress={pickImages}
+        color="#19AC52"
       />
+
+      <TouchableOpacity style={styles.button} onPress={() => {
+        console.log({
+          "id": id,
+          "name": name,
+          "birthdate": birthdate,
+          "email": email,
+          "gender": gender,
+          "orientation": orientation,
+          "location": location,
+          "pronouns": pronouns,
+          "bio": bio,
+          "questionid1": question1,
+          "questionid2": question2,
+          "questionid3": question3,
+          "answer1": answer1,
+          "answer2": answer2,
+          "answer3": answer3,
+          "instagram": socials
+        })
+        if (name && birthdate && gender && orientation && location && pronouns && bio && question1 && question2 && question3 && answer1 && answer2 && answer3 && socials && image1 && image2 && image3 && image4) {
+          createUser({
+            "id": id,
+            "name": name,
+            "birthdate": birthdate,
+            "email": email,
+            "gender": gender,
+            "orientation": orientation,
+            "location": location,
+            "pronouns": pronouns,
+            "bio": bio,
+            "questionid1": question1,
+            "questionid2": question2,
+            "questionid3": question3,
+            "answer1": answer1,
+            "answer2": answer2,
+            "answer3": answer3,
+            "instagram": socials
+          })
+
+
+          updatePictures({
+            "id": id,
+            "image1": image1,
+            "image2": image2,
+            "image3": image3,
+            "image4": image4,
+          });
+          navigation.navigate('Home');
+        } else {
+          alert("Please fill out all fields!");
+        }
+
+        
+      }}>
+        <Text style={styles.buttonText}>Complete Profile!</Text>
+      </TouchableOpacity>
 
     </SafeAreaView>
 
@@ -202,30 +287,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
 
+  header: {
+    margin: 10,
+    alignItems: "left",
+
+  },
+
   title: {
-    fontSize: 45,
-    alignSelf: 'center',
-    fontWeight: "bold",
-    // fontFamily: 'Inter-Bold',
+    fontSize: 40,
     color: '#fff',
     margin: 20,
-    // alignSelf: 'flex-start'
+    alignSelf: 'flex-start'
   },
 
   subtitle: {
     fontSize: 14,
-    color: "#FE8AE3",
-    fontWeight: "bold",
-    alignSelf: 'center',
-    // marginRight: 20,
-    // alignSelf: 'flex-end'
+    color: "#1DB954",
+    marginRight: 20,
+    alignSelf: 'flex-end'
   },
 
   imageContainer: {
-    margin: HEIGHT*0.04,
+    margin: 50,
+    marginTop: 25,
     alignSelf: 'center'
-  }, 
-  
+  },
+
   imageView: {
     flexDirection: 'row',
     alignSelf: 'center'
@@ -233,7 +320,7 @@ const styles = StyleSheet.create({
 
   profilePicture: {
     borderColor: '#1DB954',
-    borderWidth: 0.5,
+    borderWidth: 1,
     width: 200,
     height: 200,
     borderRadius: 43,
@@ -242,26 +329,30 @@ const styles = StyleSheet.create({
 
   image: {
     borderColor: '#1DB954',
-    borderWidth: 0.5,
-    width: 120,
-    height: 120,
+    borderWidth: 1,
+    width: 160,
+    height: 160,
     borderRadius: 33,
     margin: 5
   },
 
   button: {
+    margin: 40,
     backgroundColor: '#1DB954',
     alignItems: 'center',
     alignSelf: 'center',
-    padding: 15,
+    padding: 20,
     borderRadius: 50,
-    marginBottom: 10,
   },
 
   buttonText: {
-    fontWeight: "bold",
-    color: "black"
-    // fontFamily:'Inter-Bold'
-  }
+    fontSize: 20,
+  },
+  questions: {
+    textAlign: "center",
+    color: "#FE8AE3",
+    fontWeight: 'bold',
+    margin: 24,
+  },
 
 });

@@ -1,6 +1,6 @@
 // import React, { Component } from "react";
 // import { StyleSheet, Text, View, Button } from 'react-native';
-  
+
 // export default class SpotifyLoginClass extends Component {
 //     render() {
 //         return (
@@ -23,232 +23,99 @@ import { ResponseType, useAuthRequest } from "expo-auth-session";
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
+// Importing Redux store
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  setID,
+  setSpotifyData,
+  setTopArtists,
+  setTopGenres,
+  setTopTracks
+} from '../redux/UserData';
+import { updateUserData, updatePictures, questionBank, fetchUserData } from '../redux/UserData';
+
 const logo = require('../assets/spotify_match_logo.png');
 
 const NUMTOPARTISTS = 50;
 const NUMTOPTRACKS = 50;
 const NUMTOPGENRES = 50;
 
+
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 };
 
-const ADD_TOKEN = 'ADD_TOKEN';
 
-const addToken = token => {
-  return {type: ADD_TOKEN, token: token};
-};
-
-async function postData (data, endpoint, id) {
-  axios
-    .post(
-      'http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/' + endpoint + id,
-      {
-        data: data,
-      }
-    ).catch ((error) => {
-      console.error(error);
-    })
-}
-
-async function getTopArtists(token, userID) {
-  // Get Top artists
-  axios
-  .get(
-    'https://api.spotify.com/v1/me/top/artists', {
-      params: { limit: NUMTOPARTISTS, offset: 0 },
-      headers: {
-        Authorization: 'Bearer ' + token,
-        "Accept": "application/json",
-        'Content-Type': 'application/json',
-      }
-    }
-  ).then(function(topArtists) {
-
-    let genres = {}
-    let artists = []
-    
-    console.log("Top Artists")
-    for (let i = 0; i < topArtists.data.items.length; i+=1) {
-      let artistData = topArtists.data.items[i];
-      let artistObj = {
-        artistid: artistData.id,
-        artistname: artistData.name,
-        rank: i + 1
-      }
-      artists.push(artistObj)
-      console.log(artistObj)
-      // iterate through each genre associated with the artist and add them to the counter
-      for (let genre in artistData.genres) {
-        genres[artistData.genres[genre]] = (genres[artistData.genres[genre]] || 0 ) +1;
-      }
-    }
-    console.log("\n")
-    console.log("Genres")
-    console.log(genres)
-    console.log("\n")
-    
-    const genresRanked = Object.entries(genres).sort((a,b) => b[1]-a[1]);
-
-    let genreList = []
-
-    let i = 0;
-    while (i < NUMTOPGENRES && i < genresRanked.length) {
-      let genre = {
-        genre: genresRanked[i][0],
-        rank: i + 1
-      };
-      genreList.push(genre);
-      i += 1;
-    }
-
-    console.log(genreList)
+// async function postData (data, endpoint, id) {
+//   axios
+//     .post(
+//       'http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/' + endpoint + id,
+//       {
+//         data: data,
+//       }
+//     ).catch ((error) => {
+//       console.error(error);
+//     })
+// }
 
 
-    postData(artists, "topartists/", userID);
-    postData(genreList, "topgenres/", userID);
 
-  })
-}
-
-async function getTopTracks(token, userID) {
-  return axios
-  .get(
-    'https://api.spotify.com/v1/me/top/tracks', {
-      params: { limit: NUMTOPTRACKS, offset: 0 },
-      headers: {
-        Authorization: 'Bearer ' + token,
-        "Accept": "application/json",
-        'Content-Type': 'application/json',
-      }
-    }
-  ).then(function(topTracks) {
-    console.log("Top Tracks");
-    let tracks = []
-    let trackids = []
-    for (let i = 0; i < topTracks.data.items.length; i+=1) {
-      let trackInfo = topTracks.data.items[i];
-      let track = {
-        trackid: trackInfo.id,
-        trackname: trackInfo.name,
-        rank: i+1
-      }
-      tracks.push(track)
-      trackids.push(trackInfo.id)
-      console.log(track)
-    }
-    console.log("\n")
-
-
-    postData(tracks, "toptracks/", userID);
-    return trackids;
-}
-)}
-
-async function getAudioFeatures(trackids, token, userID) {
-  axios.get(
-    'https://api.spotify.com/v1/audio-features', {
-      params: { ids: trackids.toString()},
-      headers: {
-        Authorization: 'Bearer ' + token,
-        "Accept": "application/json",
-        'Content-Type': 'application/json',
-      }
-    }
-  ).then(function(audioFeatures) {
-    let data = {
-      id: userID,
-      acousticness: 0,
-      danceability: 0,
-      energy: 0,
-      instrumentalness: 0,
-      liveness: 0, 
-      speechiness: 0,
-      valence: 0
-    }
-  
-    console.log("Top Tracks Audio Features")
-  
-    let num_tracks = audioFeatures.data.audio_features.length;
-  
-    for (let track = 0; track < audioFeatures.data.audio_features.length; track +=1) {
-      let track_data = audioFeatures.data.audio_features[track]
-      data.acousticness += track_data.acousticness
-      data.danceability += track_data.danceability
-      data.energy += track_data.energy
-      data.instrumentalness += track_data.instrumentalness
-      data.liveness += track_data.liveness
-      data.speechiness += track_data.speechiness
-      data.valence += track_data.valence
-    }
-  
-    data.acousticness /= num_tracks
-    data.danceability /= num_tracks
-    data.energy /= num_tracks
-    data.instrumentalness /= num_tracks
-    data.liveness /= num_tracks
-    data.speechiness /= num_tracks
-    data.valence /= num_tracks
-  
-    console.log(data)
-    console.log("\n")
-  
-    console.log(userID);
-  
-    axios.post(
-    'http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/',
-    data
-  ).catch((error) => {
-    console.error(error);
-  }
-  )
-})}
-
-async function createUser(profileData) {
-      axios
-          .post(
-          'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
-          {
-              "id": profileData.id,
-              "name": profileData.display_name,
-              "birthdate": "1972-04-12T07:00:00.000Z",
-              "email": profileData.email,
-              "gender": "M",
-              "orientation": "P",
-              "location": profileData.country,
-              "pronouns": null,
-              "bio": null,
-              "questionid1": null,
-              "questionid2": null,
-              "questionid3": null,
-              "answer1": null,
-              "answer2": null,
-              "answer3": null
-          }).catch(function(error) {
-              console.log(error);
-          })
-}
+// async function createUser(profileData) {
+//       axios
+//           .post(
+//           'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
+//           {
+//               "id": profileData.id,
+//               "name": profileData.display_name,
+//               "birthdate": "1972-04-12T07:00:00.000Z",
+//               "email": profileData.email,
+//               "gender": "M",
+//               "orientation": "P",
+//               "location": profileData.country,
+//               "pronouns": null,
+//               "bio": null,
+//               "questionid1": null,
+//               "questionid2": null,
+//               "questionid3": null,
+//               "answer1": null,
+//               "answer2": null,
+//               "answer3": null
+//           }).catch(function(error) {
+//               console.log(error);
+//           })
+// }
 
 async function getSpotifyUser(token) {
-  if(token) {
+  if (token) {
     //Current User's Profile
     return axios
       .get(
         'https://api.spotify.com/v1/me', {
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-          }
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
         }
+      }
       )
   }
 }
 
 const SpotifyLoginScreen = () => {
+  const dispatch = useDispatch();
+  var {
+    id,
+    spotifydata,
+    topartists,
+    toptracks,
+    topgenres,
+  } = useSelector(((state) => state.id));
+
   const navigation = useNavigation();
 
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState('');
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
@@ -261,8 +128,8 @@ const SpotifyLoginScreen = () => {
         'playlist-read-collaborative',
         'user-follow-read',
         'user-read-playback-position',
-        'user-top-read', 
-        'user-read-recently-played', 
+        'user-top-read',
+        'user-read-recently-played',
         'user-library-read',
         'user-read-email',
         'user-read-private',
@@ -270,36 +137,210 @@ const SpotifyLoginScreen = () => {
       usePKCE: false,
       redirectUri: "exp://localhost:19000/",
     },
-    discovery
+    {
+      authorizationEndpoint: "https://accounts.spotify.com/authorize",
+      tokenEndpoint: "https://accounts.spotify.com/api/token",
+    }
   );
 
+  async function getTopArtists(token, userID) {
+    // Get Top artists
+    axios
+      .get(
+        'https://api.spotify.com/v1/me/top/artists', {
+        params: { limit: NUMTOPARTISTS, offset: 0 },
+        headers: {
+          Authorization: 'Bearer ' + token,
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+        }
+      }
+      ).then(function (topArtists) {
+
+        let genres = {}
+        let artists = []
+
+        // console.log("Top Artists")
+        for (let i = 0; i < topArtists.data.items.length; i += 1) {
+          let artistData = topArtists.data.items[i];
+          let artistObj = {
+            artistid: artistData.id,
+            artistname: artistData.name,
+            rank: i + 1
+          }
+          artists.push(artistObj)
+          // console.log(artistObj)
+          // iterate through each genre associated with the artist and add them to the counter
+          for (let genre in artistData.genres) {
+            genres[artistData.genres[genre]] = (genres[artistData.genres[genre]] || 0) + 1;
+          }
+        }
+        // console.log("\n")
+        // console.log("Genres")
+        // console.log(genres)
+        // console.log("\n")
+
+        const genresRanked = Object.entries(genres).sort((a, b) => b[1] - a[1]);
+
+        let genreList = []
+
+        let i = 0;
+        while (i < NUMTOPGENRES && i < genresRanked.length) {
+          let genre = {
+            genre: genresRanked[i][0],
+            rank: i + 1
+          };
+          genreList.push(genre);
+          i += 1;
+        }
+
+        // console.log(genreList)
+
+        dispatch(setTopGenres(genreList));
+        dispatch(setTopArtists(artists));
+
+        // postData(artists, "topartists/", userID);
+        // postData(genreList, "topgenres/", userID);
+
+      })
+  }
+
+  async function getTopTracks(token, userID) {
+    return axios
+      .get(
+        'https://api.spotify.com/v1/me/top/tracks', {
+        params: { limit: NUMTOPTRACKS, offset: 0 },
+        headers: {
+          Authorization: 'Bearer ' + token,
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+        }
+      }
+      ).then(function (topTracks) {
+        // console.log("Top Tracks");
+        let tracks = []
+        let trackids = []
+        for (let i = 0; i < topTracks.data.items.length; i += 1) {
+          let trackInfo = topTracks.data.items[i];
+          let track = {
+            trackid: trackInfo.id,
+            trackname: trackInfo.name,
+            rank: i + 1
+          }
+          tracks.push(track)
+          trackids.push(trackInfo.id)
+          // console.log(track)
+        }
+        // console.log("\n")
+
+        dispatch(setTopTracks(tracks));
+
+        // postData(tracks, "toptracks/", userID);
+        return trackids;
+      }
+      )
+  }
+
+  async function getAudioFeatures(trackids, token, userID) {
+    axios.get(
+      'https://api.spotify.com/v1/audio-features', {
+      params: { ids: trackids.toString() },
+      headers: {
+        Authorization: 'Bearer ' + token,
+        "Accept": "application/json",
+        'Content-Type': 'application/json',
+      }
+    }
+    ).then(function (audioFeatures) {
+      let data = {
+        id: userID,
+        acousticness: 0,
+        danceability: 0,
+        energy: 0,
+        instrumentalness: 0,
+        liveness: 0,
+        speechiness: 0,
+        valence: 0
+      }
+
+      // console.log("Top Tracks Audio Features")
+
+      let num_tracks = audioFeatures.data.audio_features.length;
+
+      for (let track = 0; track < audioFeatures.data.audio_features.length; track += 1) {
+        let track_data = audioFeatures.data.audio_features[track]
+        data.acousticness += track_data.acousticness
+        data.danceability += track_data.danceability
+        data.energy += track_data.energy
+        data.instrumentalness += track_data.instrumentalness
+        data.liveness += track_data.liveness
+        data.speechiness += track_data.speechiness
+        data.valence += track_data.valence
+      }
+
+      data.acousticness /= num_tracks
+      data.danceability /= num_tracks
+      data.energy /= num_tracks
+      data.instrumentalness /= num_tracks
+      data.liveness /= num_tracks
+      data.speechiness /= num_tracks
+      data.valence /= num_tracks
+
+      // console.log(data)
+      // console.log("\n")
+
+      // console.log(userID);
+
+      dispatch(setSpotifyData(data));
+    }
+    )
+  }
+
+
+
+  console.log(token);
   useEffect(() => {
-    if(response?.type === "success") {
+    if (response?.type === "success") {
       const { access_token } = response.params;
       setToken(access_token);
+      // token = access_token;
     }
   }, [response]);
 
   useEffect(() => {
     async function fetchData() {
+      setToken('');
+
+
       const profile = await getSpotifyUser(token);
-      console.log(profile.data.id);
-      let profileData = profile.data; 
-      const userID = profileData.id;
-      const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID);
-      console.log(userExists.data);
-      if (userExists.data) {
-        navigation.navigate('Home');
+      var userID;
+      if (profile.data) {
+        userID = profile.data.id;
       }
-      else {
-        await createUser(profileData);
+
+      // dispatch(setID(userID))
+
+      console.log(userID)
+      
+      dispatch(fetchUserData(userID));
+
+      const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID)
+        .catch((response) => { console.log(response) });
+
+      if (userExists && token != null) {
+        
+        navigation.navigate('Home');
+
+      } else {
         await getTopArtists(token, userID);
         let trackids = await getTopTracks(token, userID);
-        console.log(trackids);
+        // console.log(trackids);
         await getAudioFeatures(trackids, token, userID);
-        navigation.navigate('SurveyGeneralQuestions');
+        
+
       }
     }
+
     fetchData();
   }, [token]);
 
@@ -307,19 +348,19 @@ const SpotifyLoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{marginBottom: -40}}>
+      <View style={{ marginBottom: -40 }}>
         <Text
-          style = {styles.welcometext}
+          style={styles.welcometext}
         >
           Welcome{"\n"}
           to{"\n"}
         </Text>
-        <Image 
-          source={logo} 
-          style= {styles.logo}
+        <Image
+          source={logo}
+          style={styles.logo}
         />
       </View>
-      <View style={{bottom: -100}}>
+      <View style={{ bottom: -100 }}>
         <Button
           disabled={!request}
           title="Login with Spotify"
@@ -362,13 +403,14 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   logo: {
-    height: 120, 
-    width: 330, 
-    justifyContent: 'center', 
-    marginTop: -50, 
-    marginBottom: 90, 
+    height: 120,
+    width: 330,
+    justifyContent: 'center',
+    marginTop: -50,
+    marginBottom: 90,
     marginLeft: 30
-  }
+  },
+  
 });
 
 export default SpotifyLoginScreen;
