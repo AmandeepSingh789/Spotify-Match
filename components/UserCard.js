@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView, Pressable, Modal } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
 import { useEffect,useState, } from 'react'
@@ -30,6 +30,14 @@ function Card({id}){
     const [pic3,setPic3] = useState([]);
     const [pic4,setPic4] = useState([]);
     const [loaded, setLoaded] = useState(false);
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [gender, SetGender]  = useState([]);
+    const [orientation, SetOrientation] = useState([]);
+    const [TopSongs, SetTopSongs] = useState([]);
+    const [TopGenres, SetTopGenres] = useState([]);
+    const [TopArtists, SetTopArtists] = useState([]);
 
 // Array of pictures
 const pics = [
@@ -69,8 +77,14 @@ const pics = [
             setQ3id(response["data"]["questionid3"])
             getAge(response["data"]["birthdate"])
 
+            GetGender(response["data"]["gender"])
+            GetOrientation(response["data"]["orientation"])
+            SetTopSongs(response["data"]["spotifydata"]["topsongs"])
+            SetTopGenres(response["data"]["spotifydata"]["topgenres"])
+            SetTopArtists(response["data"]["spotifydata"]["topartists"])
+
             // Convert profile pictures to base64
-            const pic1Data= (response["data"] ["profilepictures"]["picture1"]["data"])
+            const pic1Data= (response["data"]["profilepictures"]["picture1"]["data"])
             const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
 
             const pic2Data= (response["data"]["profilepictures"]["picture2"]["data"])
@@ -159,6 +173,20 @@ const pics = [
     setAge(yearsOld)
   }
 
+  const GetGender=(gender) => {
+    if (gender == "F") SetGender("Female")
+    if (gender == "M") SetGender("Male")
+    if (gender == "N") SetGender("Non Binary")
+  }
+
+  const GetOrientation=(orientation) => {
+    if (orientation="S") SetOrientation("Straight")
+    if (orientation="B") SetOrientation("Bisexual")
+    if (orientation="G") SetOrientation("Gay")
+    if (orientation="P") SetOrientation("Pansexual")
+
+  }
+
     return (
 
         <View style={styles.container}>
@@ -184,16 +212,50 @@ const pics = [
         {/* Box with Name,Age and Meter*/}
          <View style={styles.upperBox}>
 
-          <Text style={styles.name}>
-             {`${Name}, ${Age}`}
-            
-             {/* Name, Age  */}
-            
-          </Text>
+          <View style={styles.basicInfo}>
+            <Text style={styles.name}>
+              {`${Name}, ${Age}`}
+              
+            </Text>
+            <Text style={styles.genderAndOrientation}>
+              {`${gender}, ${orientation}`}            
+            </Text>
+          </View>
              
            <View style={styles.meter}>
-             
-            <Text style={styles.percentage}>{compatibility}</Text>
+
+          {/* POPUP CODE BEGINS */}
+           <View style={styles.centeredView}>
+            <Modal
+              
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
+                  <Pressable
+                    style={[styles.button]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>X</Text>
+                  </Pressable>
+                  <Text style={styles.modalText}>Compatiable songs:  </Text>
+                  <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+                  {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
+                </View>
+              </View>
+            </Modal>
+            <Pressable
+              onPress={() => setModalVisible(true)}>
+              <Text style={styles.percentage}>{compatibility}</Text>
+            </Pressable>
+          </View>
+       {/* POPUP CODE ENDS */}
+
+            {/* <Text style={styles.percentage}>{compatibility}</Text> */}
           </View> 
          </View>  
 
@@ -204,9 +266,13 @@ const pics = [
         <Text style={styles.bio}>
           {Bio}          
           </Text>
-      
+        
         </View>
         <Divider style={styles.divider} />
+           
+          <Text style={styles.topInfo}>Top Genres: </Text>
+          <Text style={styles.topInfo}>{`${TopGenres}`} </Text>
+          <Divider style={styles.divider} />
         
         <View >
         <Text style={styles.desc}>
@@ -223,6 +289,10 @@ const pics = [
         </View>
         <Divider style={styles.divider} />
 
+        <Text style={styles.topInfo}>Top Songs:  </Text>
+        <Text style={styles.topInfo}>{`${TopSongs}`} </Text>
+        <Divider style={styles.divider} />
+
         <View >
         <Text style={styles.desc}>
 
@@ -236,6 +306,10 @@ const pics = [
         {`A: ${Answer2}`}
         </Text>
         </View>
+
+        <Divider style={styles.divider} />
+        <Text style={styles.topInfo}>Top Artists: </Text>
+        <Text style={styles.topInfo}>{`${TopArtists}`} </Text>
         
         <Divider style={styles.divider} />
         <View >
@@ -305,9 +379,17 @@ const styles = StyleSheet.create({
       justifyContent:'center',
   
       },
+    basicInfo: {
+      flexShrink: 1
+    },
     name: {
       color: '#fff',
       fontSize:28,
+    },
+    genderAndOrientation: {
+      color: '#fff',
+      fontSize:18,
+      
     },
      meter: {
       color: '#5E5E5E',
@@ -350,6 +432,53 @@ const styles = StyleSheet.create({
       width: Layout.window.width - 120,
       margin: 10,
       alignSelf: 'center',
+    },
+
+    ////
+    // the X button to hide the modal
+    button: {
+      margin: 5,
+      backgroundColor: '#FE8AE3',
+      alignItems: "flex-end",
+      width: Layout.window.width - 150,
+    },
+    // the text of the X button modal
+    textStyle: {
+      color: '#000',
+      fontWeight: 'bold',
+      fontSize: 20,
+
+    },
+    // the text of the popup, which is top songs, genres, etc
+    modalText: {
+      marginBottom: 5,
+      color: "#000",
+      fontWeight: "bold",
+    },
+    // centering the popup
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    // style of the popup window
+    modalView: {
+      backgroundColor: "#FE8AE3",
+      borderRadius: 20,
+      borderWidth: 2,
+      borderColor: "#FE8AE3",
+      alignItems: 'center',
+      paddingBottom: 10,
+      
+    },
+    topInfo: {
+      color: '#fff',
+      alignSelf: 'center',
+      marginTop: 5,
+      marginHorizontal: 30,
+      fontSize: 20,
+      flexShrink: 1,
     },
     
   })
