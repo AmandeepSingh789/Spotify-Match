@@ -4,11 +4,43 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { SafeAreaView, StyleSheet, Text, View, Image} from "react-native";
 import UserCard from '../components/UserCard';
 import { Linking } from 'react-native';
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
 const SocialsScreen = (id) => {
   const navigation = useNavigation();
-  const matchId = id.route.params.id;
+  let matchId = id.route.params.id;
+
+  matchId = "0"; //keep as 0 for now
   console.log(matchId);
+
+  const [instagramSocial, setInstagram] = useState("");
+  const [spotifySocial, setSpotify] = useState("");
+  const [spotifyMatchId, setId] = useState("");
+
+  const getSocials = () => {
+    axios
+      .get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + matchId)
+      .then((response) => {
+        setInstagram(response.data.instagram);
+        setSpotify(response.data.name);
+        setId(response.data.id);
+      })
+  };
+
+  const deleteMatch = () => {
+    axios
+      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches' + matchId)
+      .then((response) => {
+        console.log(response);
+        navigation.navigate("Matches");
+      }) 
+  };
+
+  useEffect(() => {
+    getSocials();     
+  }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,7 +53,7 @@ const SocialsScreen = (id) => {
             />
         </View>
         <Text style={styles.header}> Contact Info </Text>
-        <UserCard id={'0'}/>
+        <UserCard id={matchId}/>
         <View style ={{flexDirection: 'row'}}>
             <Image 
                 source={require('../assets/instagram.png')} 
@@ -29,9 +61,9 @@ const SocialsScreen = (id) => {
             />
             <Text 
               style={styles.instagram}
-              onPress={() => Linking.openURL('http://instagram.com/jerry2002')}
+              onPress={() => Linking.openURL('http://instagram.com/' + instagramSocial)}
             > 
-              jerry2002
+              Instagram
             </Text>
             <Image 
                 source={require('../assets/spotify.png')} 
@@ -40,8 +72,9 @@ const SocialsScreen = (id) => {
             <Text 
               style={styles.spotify}
               onPress={() => Linking.openURL('https://open.spotify.com/user/flower4518')}
+              // onPress={() => Linking.openURL('https://open.spotify.com/user/' + spotifyMatchId)}
             > 
-              jerry2002
+              Spotify
             </Text>
         </View>
         <View>
@@ -50,6 +83,7 @@ const SocialsScreen = (id) => {
                 buttonStyle={styles.buttonStyle}
                 containerStyle={styles.buttonContainer}
                 titleStyle={{ fontWeight: 'bold', color: 'white', fontSize: '20' }}
+                onPress={() => deleteMatch()}
             />
         </View>
     </SafeAreaView>
@@ -78,7 +112,7 @@ const styles = StyleSheet.create({
   instagramIcon: {
     height: 40,
     width: 40,
-    marginLeft: 50,
+    marginLeft: 60,
     marginBottom: 20,
     top: -20
   },
