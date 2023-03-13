@@ -1,5 +1,5 @@
 import React, { useState, setState, useCallback, Component, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Dimensions } from 'react-native';
 // import { Dropdown } from 'react-native-material-dropdown';
 import DropDownPicker from "react-native-dropdown-picker";
 import {useForm, Controller} from 'react-hook-form';
@@ -9,7 +9,9 @@ import { Button } from '@rneui/themed';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+const WIDTH = Dimensions.get('window').width;
 const NewUserQuestions = () => {
   const [userID, setUserID] = useState(1);
   const [name, setName] = useState(null);
@@ -95,6 +97,7 @@ const NewUserQuestions = () => {
   const navigation = useNavigation(); 
 
   return (
+    <KeyboardAwareScrollView  style={styles.container} >
     <View style={styles.container}>
         <Text style={styles.welcome}> Welcome! </Text>
         {/* <Text  style={styles.spotifyUsername}>spotify_username!</Text> */}
@@ -168,12 +171,15 @@ const NewUserQuestions = () => {
                 <View >
                     <DropDownPicker
                     style={styles.dropdown}
+                    textStyle={styles.textStyle}
                     open={genderOpen}
                     value={genderValue} //genderValue
                     items={gender}
                     setOpen={setGenderOpen}
                     setValue={setGenderValue}
                     setItems={setGender}
+                    listItemLabelStyle={styles.listItemLabelStyle}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
                     placeholder="Select Gender"
                     placeholderStyle={styles.placeholderStyles}
                     onOpen={onGenderOpen}
@@ -195,12 +201,15 @@ const NewUserQuestions = () => {
                 <View>
                     <DropDownPicker
                     style={styles.dropdown}
+                    textStyle={styles.textStyle}
                     open={soOpen}
                     value={soValue} //soValue
                     items={so}
                     setOpen={setSOOpen}
                     setValue={setSOValue}
                     setItems={setSO}
+                    listItemLabelStyle={styles.listItemLabelStyle}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
                     placeholder="Select Sexual Orientation"
                     placeholderStyle={styles.placeholderStyles}
                     loading={loading}
@@ -235,6 +244,7 @@ const NewUserQuestions = () => {
           />
         </View>
     </View>
+    </KeyboardAwareScrollView>  
   );
 };
 
@@ -245,12 +255,11 @@ const styles = StyleSheet.create({
     },
     questions: {
         textAlign: "center",
-        color: "#B9DD5C",
-        fontWeight: "bold"
+        color: "#FE8AE3",
     },
     welcome: {
-        marginTop: 40,
-        color: "#FF2DB6",
+        marginTop: WIDTH*0.11,
+        color: "#FFF",
         fontSize: 60,
         fontWeight: 'bold',
         textAlign: "center"
@@ -263,41 +272,52 @@ const styles = StyleSheet.create({
     },
     info: {
         color: "#FE8AE3",
+        fontWeight: 'bold',
         fontSize: 15,
         textAlign: "center",
-        marginBottom: 20,
-        marginLeft: 10,
-        marginRight: 10,
+        marginBottom: WIDTH*0.05,
+        marginLeft: WIDTH*0.05,
+        marginRight: WIDTH*0.05,
     },
     smallInput: {
         textAlign: "center",
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 10,
+        marginLeft: WIDTH*0.1,
+        marginRight: WIDTH*0.1,
+        marginBottom: WIDTH*0.03,
         color: "white",
         borderRadius: 20,
         height: 40,
-        borderColor: "#4D907D",
-        borderWidth: 4
+        borderColor: "#1DB954",
+        borderWidth: 0.8
     }, 
    button: {
     backgroundColor: "#FF2DB6",
     color: "white",
    },
    dropdown: {
-    width: 300,
-    borderColor: "#4D907D",
+    width: WIDTH*0.8,
+    borderColor: "#1DB954",
     borderRadius: 20,
-    borderWidth: 4,
+    borderWidth: 0.8,
     alignSelf: "center",
-    marginBottom: 10,
+    marginBottom: WIDTH*0.02,
+    backgroundColor: "black",
   },
-  placeholderStyles: {
-    color: "grey",
+  listItemLabelStyle: {
+    color: "white",
+  },
+  dropDownContainerStyle: {
+    backgroundColor: "black",
+    borderColor: "#1DB954",
+    width: WIDTH*0.82,
+    marginLeft: 35,
+  },
+  textStyle: {
+    color:"white",
   },
    footer: {
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: WIDTH*0.2,
    },
    dobbutton: {
     justifyContent: 'flex-start',
@@ -314,15 +334,19 @@ const styles = StyleSheet.create({
    DOBsmallInput: {
     flexDirection:"row",
     alignItems: "left",
-    marginLeft: 30,
-    marginRight: 30,
-    marginBottom: 10,
+    marginLeft: WIDTH*0.1,
+    marginRight: WIDTH*0.1,
+    marginBottom: WIDTH*0.03,
     color: "white",
     borderRadius: 20,
     height: 45,
-    borderColor: "#4D907D",
-    borderWidth: 4
-   }
+    borderColor: "#1DB954",
+    borderWidth: 0.8
+   },
+   placeholderStyles: {
+    color: "white",
+    textAlign: "center"
+  },
 });
 
 export default NewUserQuestions;

@@ -1,13 +1,15 @@
 import React, { useState, useCallback, Component, useEffect } from "react";
-import { Keyboard, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, TextInput, Dimensions } from 'react-native';
 import DropDownPicker from "react-native-dropdown-picker";
 import {useForm, Controller} from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Button } from '@rneui/themed';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 // export default class Survey extends Component {
-
+  const WIDTH = Dimensions.get('window').width;
+  const HEIGHT = Dimensions.get('window').height;
 const Survey = () => { 
   const navigation = useNavigation(); 
 
@@ -105,6 +107,7 @@ const Survey = () => {
   }
   const { handleSubmit, control } = useForm();
   return (
+    <KeyboardAwareScrollView  style={styles.container} >
       <View style={styles.container}>
         <View style={styles.header}>
         <Button 
@@ -135,18 +138,21 @@ const Survey = () => {
                       setItems={setQuestions}
                       placeholder="Choose your first question"
                       placeholderStyle={styles.placeholderStyles}
+                      textStyle={styles.textStyle}
+                      listItemLabelStyle={styles.listItemLabelStyle}
                       onOpen={onQuestionOpen}
                       // onChange={onChange}
                       onChangeValue={onChange}
                       position="absolute"
                       zIndexInverse={1}
                       dropDownDirection={"BOTTOM"}
-                      dropDownContainerStyle={{
-                        borderColor: "#4D907D",
-                        alignSelf: "center",
-                        width: 350,
-                        height: 100,
-                      }}
+                      dropDownContainerStyle={styles.dropDownContainerStyle}
+                      // dropDownContainerStyle={{
+                      //   borderColor: "#4D907D",
+                      //   alignSelf: "center",
+                      //   width: 350,
+                      //   height: 100,
+                      // }}
                       />
                   </View>
               )}
@@ -173,17 +179,20 @@ const Survey = () => {
                       setItems={setQuestions2}
                       placeholder="Choose your second question"
                       placeholderStyle={styles.placeholderStyles}
+                      textStyle={styles.textStyle}
+                      listItemLabelStyle={styles.listItemLabelStyle}
                       onOpen={onQuestion2Open}
                       onChangeValue={onChange2}
                       zIndex={3000}
                       zIndexInverse={1000}
                       dropDownDirection={"TOP"}
-                      dropDownContainerStyle={{
-                        borderColor: "#4D907D",
-                        alignSelf: "center",
-                        width: 350,
-                        height: 100,
-                      }}
+                      dropDownContainerStyle={styles.dropDownContainerStyle}
+                      // dropDownContainerStyle={{
+                      //   borderColor: "#4D907D",
+                      //   alignSelf: "center",
+                      //   width: 350,
+                      //   height: 100,
+                      // }}
                       />
                   </View>
               )}
@@ -209,18 +218,18 @@ const Survey = () => {
                       setValue={setQuestion3Value}
                       setItems={setQuestions3}
                       placeholder="Choose your third question"
+                      textStyle={styles.textStyle}
                       placeholderStyle={styles.placeholderStyles}
+                      listItemLabelStyle={styles.listItemLabelStyle}
+                    // dropDownContainerStyle={styles.dropDownContainerStyle}
+                    // searchPlaceholder={styles.searchPlaceholder}
                       onOpen={onQuestion3Open}
                       onChangeValue={onChange3}
                       zIndex={3000}
                       zIndexInverse={1000}
                       dropDownDirection={"TOP"}
-                      dropDownContainerStyle={{
-                        borderColor: "#4D907D",
-                        alignSelf: "center",
-                        width: 350,
-                        height: 100,
-                      }}
+                      dropDownContainerStyle={styles.dropDownContainerStyle}
+                      
                       />
                   </View>
               )}
@@ -245,6 +254,7 @@ const Survey = () => {
             />
         </View>
     </View>
+    </KeyboardAwareScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -257,29 +267,53 @@ const styles = StyleSheet.create({
       alignItems: "left",
   },
     dropdown: {
-      borderColor: "#4D907D",
+      borderColor: "#1DB954",
       borderRadius: 20,
-      borderWidth: 4,
+      borderWidth: 1,
       alignSelf: "center",
       width: 300,
     },
     input: {
         backgroundColor: "white",
-        height: 120,
+        height: HEIGHT*0.13,
         paddingLeft: 10,
         paddingRight: 10,
         marginLeft: 30,
         marginRight: 30,
-        marginTop: 5,
-        marginBottom: 5,
+        marginBottom: 32,
         backgroundColor: "#black",
         color: "white",
         borderRadius: 20,
-        borderColor: "#4D907D",
-        borderWidth: 4
+        borderColor: "#1DB954",
+        borderWidth: 1
    },
+   dropdown: {
+    width: WIDTH*0.8,
+    borderColor: "#1DB954",
+    borderRadius: 20,
+    borderWidth: 0.8,
+    alignSelf: "center",
+    marginBottom: WIDTH*0.02,
+    backgroundColor: "black",
+  },
+  listItemLabelStyle: {
+    color: "white",
+    textAlign: "center"
+  },
+  dropDownContainerStyle: {
+    backgroundColor: "black",
+    borderColor: "#1DB954",
+    width: WIDTH*0.82,
+    marginLeft: 35,
+    height: HEIGHT*0.15,
+  },
+  textStyle: {
+    color:"white",
+    textAlign: "center"
+  },
    placeholderStyles: {
-    color: "grey",
+    color: "white",
+    textAlign: "center"
   },
   footer: {
     alignItems: "center",

@@ -22,9 +22,6 @@ function Card({id}){
     const [Q1, setQ1] = useState([]);
     const [Q2, setQ2] = useState([]);
     const [Q3, setQ3] = useState([]);
-    const [Q1id, setQ1id] = useState([]);
-    const [Q2id, setQ2id] = useState([]);
-    const [Q3id, setQ3id] = useState([]);
     const [pic1,setPic1] = useState({});
     const [pic2,setPic2] = useState([]);
     const [pic3,setPic3] = useState([]);
@@ -61,73 +58,63 @@ const pics = [
 
 ]
 
- // Function to get user data from the server
+async function getUserById(id) {
+  return axios
+          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`).catch((error) => {
+        // Handle any errors that occur
+        console.error(error);
+        }
+        )
+}
+
     const getData = async ({id}) => {
-      await axios
-          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
-          .then((response) => {
-            console.log(id);
-            setName(response ["data"] ["name"]);
-            setBio(response["data"]["bio"]);
-            setAnswer1(response["data"]["answer1"])
-            setAnswer2(response["data"]["answer2"])
-            setAnswer3(response["data"]["answer3"])
-            setQ1id(response["data"]["questionid1"])
-            setQ2id(response["data"]["questionid2"] )
-            setQ3id(response["data"]["questionid3"])
-            getAge(response["data"]["birthdate"])
+      const response = await getUserById(id);
 
-            GetGender(response["data"]["gender"])
-            GetOrientation(response["data"]["orientation"])
-            SetTopSongs(response["data"]["spotifydata"]["topsongs"])
-            SetTopGenres(response["data"]["spotifydata"]["topgenres"])
-            SetTopArtists(response["data"]["spotifydata"]["topartists"])
+      console.log(response.data);
+      setName(response["data"]["name"]);
+      setBio(response["data"]["bio"]);
+      setAnswer1(response["data"]["answer1"])
+      setAnswer2(response["data"]["answer2"])
+      setAnswer3(response["data"]["answer3"])
+      
+      getAge(response["data"]["birthdate"])
+      GetGender(response["data"]["gender"])
+      GetOrientation(response["data"]["orientation"])
+      SetTopSongs(response["data"]["spotifydata"]["topsongs"])
+      SetTopGenres(response["data"]["spotifydata"]["topgenres"])
+      SetTopArtists(response["data"]["spotifydata"]["topartists"])
 
-            // Convert profile pictures to base64
-            const pic1Data= (response["data"]["profilepictures"]["picture1"]["data"])
-            const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
+      
+      const questions = await getQuestions();
 
-            const pic2Data= (response["data"]["profilepictures"]["picture2"]["data"])
-            const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
+      const q1id = response["data"]["questionid1"]
+      const q2id = response["data"]["questionid2"]
+      const q3id = response["data"]["questionid3"]
 
-            const pic3Data= (response["data"]["profilepictures"]["picture3"]["data"])
-            const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
 
-            const pic4Data= (response["data"]["profilepictures"]["picture4"]["data"])
-            const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
+      setQ1(questions["data"][q1id]["questiontext"])
+      setQ2(questions["data"][q2id]["questiontext"])
+      setQ3(questions["data"][q3id]["questiontext"])
 
-            // Store profile pictures in state
-            setPic1(pic1Conversion)
-            setPic2(pic2Conversion)
-            setPic3(pic3Conversion)
-            setPic4(pic4Conversion)
-            getQuestions()
+      setLoaded(true);
 
-          }).catch((error) => {
-            // Handle any errors that occur
-            console.error(error);
-        });
 
-  };
+      setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
+      setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
+      setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
+      setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
 
-  // Function to get question data from the server
-  const getQuestions = async () => {
-    await axios
+      
+      
+    };
+
+  const getQuestions = () => {
+    return axios
         .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
-        .then((response) => {
-
-          // Store questions in state
-          setQ1(response["data"][Q1id]["questiontext"])
-          setQ2(response["data"][Q2id]["questiontext"])
-          setQ3(response["data"][Q3id]["questiontext"])
-          setLoaded(true);
-        }).catch((error) => {
-          // Handle any errors that occur
+        .catch((error) => {
           console.error(error);
       });
-
 };
-
 
 //  Using the Axios library to make HTTP requests to retrieve data from a server.
 // Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
@@ -173,18 +160,27 @@ const pics = [
     setAge(yearsOld)
   }
 
+  function binaryToBase64(data) {
+    return new Buffer.from(data).toString('base64');
+  }
+
   const GetGender=(gender) => {
-    if (gender == "F") SetGender("Female")
-    if (gender == "M") SetGender("Male")
-    if (gender == "N") SetGender("Non Binary")
+    map  = {
+      "F": "Female",
+      "M": "Male",
+      "N": "Non Binary"
+    }
+    SetGender(map[gender])
   }
 
   const GetOrientation=(orientation) => {
-    if (orientation="S") SetOrientation("Straight")
-    if (orientation="B") SetOrientation("Bisexual")
-    if (orientation="G") SetOrientation("Gay")
-    if (orientation="P") SetOrientation("Pansexual")
-
+    map = {
+      "S": "Straight",
+      "B": "Bisexual",
+      "G": "Gay",
+      "P": "Pansexual",
+    }
+    SetOrientation(map[orientation]);
   }
 
     return (
@@ -346,7 +342,8 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       borderWidth:1,
-      borderColor:'#3EFF2D',
+      // borderColor:'#3EFF2D',
+      borderColor:'#1DB954',
       backgroundColor:"#000000",
       marginHorizontal:40,
       marginTop:20,
@@ -356,7 +353,8 @@ const styles = StyleSheet.create({
       
     },
     imageContainer: {
-      borderColor:'#3EFF2D',
+      // borderColor:'#3EFF2D',
+      borderColor:'#1DB954',
       borderWidth:1,
       borderRadius:20,
       height: Layout.window.height/2-120,
@@ -383,7 +381,8 @@ const styles = StyleSheet.create({
       flexShrink: 1
     },
     name: {
-      color: '#fff',
+      // color: '#fff',
+      color: '#FE8AE3',
       fontSize:28,
     },
     genderAndOrientation: {
@@ -395,15 +394,17 @@ const styles = StyleSheet.create({
       color: '#5E5E5E',
       fontSize:34,
       borderRadius:'100%',
-      borderColor:'#3EFF2D',
-       marginLeft:20,
+      // borderColor:'#3EFF2D',
+      borderColor:'#1DB954',
+      marginLeft:20,
       borderWidth:1,
       height:90,
       width:90,
       justifyContent:'center',
     },
     percentage: {
-      color: '#fff',
+      // color: '#fff',
+      color: '#1DB954',
       alignSelf: 'center',
       fontSize:30,
   

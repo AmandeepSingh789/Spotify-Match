@@ -30,7 +30,9 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
  - - Survey Advanced (Screen)
  - - Add Images (Screen)
  - - Home Page (Tab.Navigator and Screen)
+  - - - - Percentage Breakdown (Pop up)
   - - - Matches (Screen)
+   - - - - Socials (Screen)
   - - - Profile (Screen)
 
 
@@ -68,3 +70,5 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
     react-native-cards-swipe
     react-native-gesture-handler
     buffer
+
+    expo-auth-session

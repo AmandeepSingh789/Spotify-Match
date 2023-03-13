@@ -23,10 +23,12 @@ import {
   ActivityIndicator,
   ImageBase,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
  } from 'react-native';
 
-
+ const WIDTH = Dimensions.get('window').width;
+ const HEIGHT = Dimensions.get('window').height;
 export default function Add_images() {
   const navigation = useNavigation(); 
   const [image1, setImage1] = useState(null);
@@ -171,11 +173,10 @@ export default function Add_images() {
 
 
       <TouchableOpacity style={styles.button} onPress={pickImages}>
-        <Text style={styles.buttonText}>Choose Images...</Text>
+        <Text style={styles.buttonText}>Choose Images</Text>
       </TouchableOpacity>
 
       <Button
-        style={styles.button}
         title="Submit"
         onPress={() => {
           SaveToPhone(image1);
@@ -184,7 +185,8 @@ export default function Add_images() {
           SaveToPhone(image4);
           navigation.navigate('Home');
         }}
-        color="#19AC52"
+        color="#1DB954"
+        
       />
 
     </SafeAreaView>
@@ -201,22 +203,26 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 40,
-    fontFamily: 'Inter-Bold',
+    fontSize: 45,
+    alignSelf: 'center',
+    fontWeight: "bold",
+    // fontFamily: 'Inter-Bold',
     color: '#fff',
     margin: 20,
-    alignSelf: 'flex-start'
+    // alignSelf: 'flex-start'
   },
 
   subtitle: {
     fontSize: 14,
-    color: "#1DB954",
-    marginRight: 20,
-    alignSelf: 'flex-end'
+    color: "#FE8AE3",
+    fontWeight: "bold",
+    alignSelf: 'center',
+    // marginRight: 20,
+    // alignSelf: 'flex-end'
   },
 
   imageContainer: {
-    margin: 50,
+    margin: HEIGHT*0.04,
     alignSelf: 'center'
   }, 
   
@@ -244,16 +250,18 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    margin: 10,
     backgroundColor: '#1DB954',
     alignItems: 'center',
     alignSelf: 'center',
-    padding: 20,
+    padding: 15,
     borderRadius: 50,
+    marginBottom: 10,
   },
 
   buttonText: {
-    fontFamily:'Inter-Bold'
+    fontWeight: "bold",
+    color: "black"
+    // fontFamily:'Inter-Bold'
   }
 
 });
