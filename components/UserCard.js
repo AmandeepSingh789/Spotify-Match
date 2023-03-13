@@ -53,23 +53,20 @@ const pics = [
 ]
 
 async function getUserById(id) {
-  axios
-          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`,
-          {
-            responseType: 'json, arraybuffer',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/pdf'
-            }
-        }).catch((error) => {
+  return axios
+          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`).catch((error) => {
         // Handle any errors that occur
         console.error(error);
-        }
-        )
+        })
 }
 
     const getData = async ({id}) => {
       const response = await getUserById(id);
+      console.log(id)
+
+      const q1 = response["data"]["questionid1"];
+      const q2 = response["data"]["questionid2"];
+      const q3 = response["data"]["questionid3"];
   
       console.log(response.data);
       setName(response["data"]["name"]);
@@ -77,9 +74,9 @@ async function getUserById(id) {
       setAnswer1(response["data"]["answer1"])
       setAnswer2(response["data"]["answer2"])
       setAnswer3(response["data"]["answer3"])
-      await setQ1id(response["data"]["questionid1"])
-      await setQ2id(response["data"]["questionid2"])
-      await setQ3id(response["data"]["questionid3"])
+      setQ1id(response["data"]["questionid1"])
+      setQ2id(response["data"]["questionid2"])
+      setQ3id(response["data"]["questionid3"])
       getAge(response["data"]["birthdate"])
 
       setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
@@ -89,9 +86,9 @@ async function getUserById(id) {
       
       const questions = await getQuestions();
 
-      setQ1(response["data"][Q1id]["questiontext"])
-      setQ2(response["data"][Q2id]["questiontext"])
-      setQ3(response["data"][Q3id]["questiontext"])
+      setQ1(response["data"][q1]["questiontext"])
+      setQ2(response["data"][q2]["questiontext"])
+      setQ3(response["data"][q3]["questiontext"])
       setLoaded(true);
 
           
