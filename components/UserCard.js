@@ -1,17 +1,18 @@
 import React from 'react'
-import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView, Pressable, Modal } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
-import { useEffect,useState } from 'react'
+import { useEffect,useState, } from 'react'
 import axios from "axios"
 import {Buffer} from 'buffer';
 
-// http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/0000000000000000000000
+
 const compatibility='80%'
 
+// Card component that displays user information
 function Card({id}){
   
-
+// State variables to store user data
     const [Name, setName] = useState([]);
     const [Bio, setBio] = useState([]);
     const [Age, setAge] = useState([]);
@@ -21,19 +22,24 @@ function Card({id}){
     const [Q1, setQ1] = useState([]);
     const [Q2, setQ2] = useState([]);
     const [Q3, setQ3] = useState([]);
-    const [Q1id, setQ1id] = useState([]);
-    const [Q2id, setQ2id] = useState([]);
-    const [Q3id, setQ3id] = useState([]);
     const [pic1,setPic1] = useState({});
     const [pic2,setPic2] = useState([]);
     const [pic3,setPic3] = useState([]);
     const [pic4,setPic4] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [gender, SetGender]  = useState([]);
+    const [orientation, SetOrientation] = useState([]);
+    const [TopSongs, SetTopSongs] = useState([]);
+    const [TopGenres, SetTopGenres] = useState([]);
+    const [TopArtists, SetTopArtists] = useState([]);
+
+// Array of pictures
 const pics = [
   {
     id:1,
-    // url:'https://picsum.photos/id/237/1080',
     uri:'data:image/jpeg;base64,'+ pic1,
 
   },
@@ -62,36 +68,43 @@ async function getUserById(id) {
 
     const getData = async ({id}) => {
       const response = await getUserById(id);
-      console.log(id)
 
-      const q1 = response["data"]["questionid1"];
-      const q2 = response["data"]["questionid2"];
-      const q3 = response["data"]["questionid3"];
-  
       console.log(response.data);
       setName(response["data"]["name"]);
       setBio(response["data"]["bio"]);
       setAnswer1(response["data"]["answer1"])
       setAnswer2(response["data"]["answer2"])
       setAnswer3(response["data"]["answer3"])
-      setQ1id(response["data"]["questionid1"])
-      setQ2id(response["data"]["questionid2"])
-      setQ3id(response["data"]["questionid3"])
+      
       getAge(response["data"]["birthdate"])
+      GetGender(response["data"]["gender"])
+      GetOrientation(response["data"]["orientation"])
+      SetTopSongs(response["data"]["spotifydata"]["topsongs"])
+      SetTopGenres(response["data"]["spotifydata"]["topgenres"])
+      SetTopArtists(response["data"]["spotifydata"]["topartists"])
+
+      
+      const questions = await getQuestions();
+
+      const q1id = response["data"]["questionid1"]
+      const q2id = response["data"]["questionid2"]
+      const q3id = response["data"]["questionid3"]
+
+
+      setQ1(questions["data"][q1id]["questiontext"])
+      setQ2(questions["data"][q2id]["questiontext"])
+      setQ3(questions["data"][q3id]["questiontext"])
+
+      setLoaded(true);
+
 
       setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
       setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
       setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
       setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+
       
-      const questions = await getQuestions();
-
-      setQ1(response["data"][q1]["questiontext"])
-      setQ2(response["data"][q2]["questiontext"])
-      setQ3(response["data"][q3]["questiontext"])
-      setLoaded(true);
-
-          
+      
     };
 
   const getQuestions = () => {
@@ -102,23 +115,23 @@ async function getUserById(id) {
       });
 };
 
-  useEffect(() => {
-
+//  Using the Axios library to make HTTP requests to retrieve data from a server.
+// Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
+// Once the requests are complete, it uses the axios.spread() method to access the response data.
+  axios.all([getData({id}), getQuestions()])
+  .then(axios.spread(function (data, questions) {
     getData({id});
-    
+
+}));
+
+  useEffect(() => {
+    console.log("loaded", loaded);
   }, []); 
 
 
-  // let [response, setResponse] = useState();
-  // const [loading, setLoading] = useState(false);
-  // useEffect(async () => {
-  //   const fetchData = async () => {
-  //     fetch("https://dummy.restapiexample.com/api/v1/employee/1")
-  //     
-
+  // Flatlist Image Item
   const Item = ({item}) => (
-    
-    
+
     <View style={styles.imageContainer}>
       {/* <Image source={{uri:"data:image/jpeg;base64,"+ `${pic2}`}}
       resizeMode="cover"
@@ -133,6 +146,8 @@ async function getUserById(id) {
     </View>
 
   );
+
+  // Function to get age from DOB
   const getAge =(DOB) =>{
     var date = new Date(DOB)
     let today = new Date()
@@ -148,9 +163,27 @@ async function getUserById(id) {
     return new Buffer.from(data).toString('base64');
   }
 
+  const GetGender=(gender) => {
+    map  = {
+      "F": "Female",
+      "M": "Male",
+      "N": "Non Binary"
+    }
+    SetGender(map[gender])
+  }
+
+  const GetOrientation=(orientation) => {
+    map = {
+      "S": "Straight",
+      "B": "Bisexual",
+      "G": "Gay",
+      "P": "Pansexual",
+    }
+    SetOrientation(map[orientation]);
+  }
+
     return (
 
-    
         <View style={styles.container}>
         <ScrollView>
         {/* Image Container */}
@@ -174,16 +207,50 @@ async function getUserById(id) {
         {/* Box with Name,Age and Meter*/}
          <View style={styles.upperBox}>
 
-          <Text style={styles.name}>
-             {`${Name}, ${Age}`}
-            
-             {/* Name, Age  */}
-            
-          </Text>
+          <View style={styles.basicInfo}>
+            <Text style={styles.name}>
+              {`${Name}, ${Age}`}
+              
+            </Text>
+            <Text style={styles.genderAndOrientation}>
+              {`${gender}, ${orientation}`}            
+            </Text>
+          </View>
              
            <View style={styles.meter}>
-             
-            <Text style={styles.percentage}>{compatibility}</Text>
+
+          {/* POPUP CODE BEGINS */}
+           <View style={styles.centeredView}>
+            <Modal
+              
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
+                  <Pressable
+                    style={[styles.button]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>X</Text>
+                  </Pressable>
+                  <Text style={styles.modalText}>Compatiable songs:  </Text>
+                  <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+                  {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
+                </View>
+              </View>
+            </Modal>
+            <Pressable
+              onPress={() => setModalVisible(true)}>
+              <Text style={styles.percentage}>{compatibility}</Text>
+            </Pressable>
+          </View>
+       {/* POPUP CODE ENDS */}
+
+            {/* <Text style={styles.percentage}>{compatibility}</Text> */}
           </View> 
          </View>  
 
@@ -194,9 +261,13 @@ async function getUserById(id) {
         <Text style={styles.bio}>
           {Bio}          
           </Text>
-      
+        
         </View>
         <Divider style={styles.divider} />
+           
+          <Text style={styles.topInfo}>Top Genres: </Text>
+          <Text style={styles.topInfo}>{`${TopGenres}`} </Text>
+          <Divider style={styles.divider} />
         
         <View >
         <Text style={styles.desc}>
@@ -213,6 +284,10 @@ async function getUserById(id) {
         </View>
         <Divider style={styles.divider} />
 
+        <Text style={styles.topInfo}>Top Songs:  </Text>
+        <Text style={styles.topInfo}>{`${TopSongs}`} </Text>
+        <Divider style={styles.divider} />
+
         <View >
         <Text style={styles.desc}>
 
@@ -226,6 +301,10 @@ async function getUserById(id) {
         {`A: ${Answer2}`}
         </Text>
         </View>
+
+        <Divider style={styles.divider} />
+        <Text style={styles.topInfo}>Top Artists: </Text>
+        <Text style={styles.topInfo}>{`${TopArtists}`} </Text>
         
         <Divider style={styles.divider} />
         <View >
@@ -297,10 +376,18 @@ const styles = StyleSheet.create({
       justifyContent:'center',
   
       },
+    basicInfo: {
+      flexShrink: 1
+    },
     name: {
       // color: '#fff',
       color: '#FE8AE3',
       fontSize:28,
+    },
+    genderAndOrientation: {
+      color: '#fff',
+      fontSize:18,
+      
     },
      meter: {
       color: '#5E5E5E',
@@ -345,6 +432,53 @@ const styles = StyleSheet.create({
       width: Layout.window.width - 120,
       margin: 10,
       alignSelf: 'center',
+    },
+
+    ////
+    // the X button to hide the modal
+    button: {
+      margin: 5,
+      backgroundColor: '#FE8AE3',
+      alignItems: "flex-end",
+      width: Layout.window.width - 150,
+    },
+    // the text of the X button modal
+    textStyle: {
+      color: '#000',
+      fontWeight: 'bold',
+      fontSize: 20,
+
+    },
+    // the text of the popup, which is top songs, genres, etc
+    modalText: {
+      marginBottom: 5,
+      color: "#000",
+      fontWeight: "bold",
+    },
+    // centering the popup
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    // style of the popup window
+    modalView: {
+      backgroundColor: "#FE8AE3",
+      borderRadius: 20,
+      borderWidth: 2,
+      borderColor: "#FE8AE3",
+      alignItems: 'center',
+      paddingBottom: 10,
+      
+    },
+    topInfo: {
+      color: '#fff',
+      alignSelf: 'center',
+      marginTop: 5,
+      marginHorizontal: 30,
+      fontSize: 20,
+      flexShrink: 1,
     },
     
   })
