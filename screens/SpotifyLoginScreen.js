@@ -34,6 +34,7 @@ import {
   setTopTracks
 } from '../redux/UserData';
 import { updateUserData, updatePictures, questionBank, fetchUserData } from '../redux/UserData';
+// import { set } from "react-native-reanimated";
 
 const logo = require('../assets/spotify_match_logo.png');
 
@@ -296,9 +297,15 @@ const SpotifyLoginScreen = () => {
     )
   }
 
+  const setData = (userID) => {
+    dispatch(setID(userID))
+    dispatch(fetchUserData(userID));
+    console.log(id)
+  }
 
 
-  console.log(token);
+  var userID;
+  // console.log(token);
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params;
@@ -309,26 +316,21 @@ const SpotifyLoginScreen = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setToken('');
+      // setToken('');
 
 
       const profile = await getSpotifyUser(token);
-      var userID;
+      // var userID;
       if (profile.data) {
         userID = profile.data.id;
+        setData(userID)
       }
 
-      // dispatch(setID(userID))
-
-      console.log(userID)
-      
-      dispatch(fetchUserData(userID));
 
       const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID)
         .catch((response) => { console.log(response) });
 
-      if (userExists && token != null) {
-        
+      if (userExists) {
         navigation.navigate('Home');
 
       } else {
@@ -336,14 +338,14 @@ const SpotifyLoginScreen = () => {
         let trackids = await getTopTracks(token, userID);
         // console.log(trackids);
         await getAudioFeatures(trackids, token, userID);
-        
-
       }
     }
 
     fetchData();
   }, [token]);
 
+  // dispatch(setID(userID))
+  // dispatch(fetchUserData(userID));
 
 
   return (

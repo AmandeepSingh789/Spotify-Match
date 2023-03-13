@@ -128,7 +128,7 @@ export default function Edit_user_profile() {
 
     } = useSelector(((state) => state.id));
 
-    console.log(id)
+    console.log(spotifydata)
 
     const [image1, setImage1] = useState(picture1);
     const [image2, setImage2] = useState(picture2);

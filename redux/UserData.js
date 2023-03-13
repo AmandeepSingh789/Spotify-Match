@@ -293,25 +293,29 @@ const userDataSlice = createSlice({
         state.bio = action.payload["bio"]
         state.socials = action.payload["instagram"]
 
-        if (action.payload["profilepictures"]["picture1"]) {
-          state.picture1 = new Buffer.from(action.payload["profilepictures"]["picture1"]["data"]).toString('base64')
-          // console.log(state.picture1.length)
+        if (action.payload["profilepictures"]) {
+          if (action.payload["profilepictures"]["picture1"]) {
+            state.picture1 = new Buffer.from(action.payload["profilepictures"]["picture1"]["data"]).toString('base64')
+            // console.log(state.picture1.length)
+          }
+
+          if (action.payload["profilepictures"]["picture2"]) {
+            state.picture2 = new Buffer.from(action.payload["profilepictures"]["picture2"]["data"]).toString('base64')
+            // console.log(state.picture2.length)
+          }
+
+          if (action.payload["profilepictures"]["picture3"]) {
+            state.picture3 = new Buffer.from(action.payload["profilepictures"]["picture3"]["data"]).toString('base64')
+            // console.log(state.picture3.length)
+          }
+
+          if (action.payload["profilepictures"]["picture4"]) {
+            state.picture4 = new Buffer.from(action.payload["profilepictures"]["picture4"]["data"]).toString('base64')
+            // console.log(state.picture4.length)
+          }
+
         }
 
-        if (action.payload["profilepictures"]["picture2"]) {
-          state.picture2 = new Buffer.from(action.payload["profilepictures"]["picture2"]["data"]).toString('base64')
-          // console.log(state.picture2.length)
-        }
-
-        if (action.payload["profilepictures"]["picture3"]) {
-          state.picture3 = new Buffer.from(action.payload["profilepictures"]["picture3"]["data"]).toString('base64')
-          // console.log(state.picture3.length)
-        }
-
-        if (action.payload["profilepictures"]["picture4"]) {
-          state.picture4 = new Buffer.from(action.payload["profilepictures"]["picture4"]["data"]).toString('base64')
-          // console.log(state.picture4.length)
-        }
 
         state.spotifydata = action.payload["spotifydata"]
         state.topartists = action.payload["topartists"]
