@@ -10,9 +10,10 @@ import axios from 'axios';
 const SocialsScreen = (id) => {
   const navigation = useNavigation();
   let matchId = id.route.params.id;
-
-  matchId = "0"; //keep as 0 for now
   console.log(matchId);
+
+  // matchId = "0"; //keep as 0 for now
+  // console.log(matchId);
 
   const [instagramSocial, setInstagram] = useState("");
   const [spotifySocial, setSpotify] = useState("");
@@ -30,11 +31,16 @@ const SocialsScreen = (id) => {
 
   const deleteMatch = () => {
     axios
-      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches' + matchId)
+      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',
+        {
+          "swiperid": 0,
+          "swipeeid": matchId,
+        }
+      )
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         navigation.navigate("Matches");
-      }) 
+      })
   };
 
   useEffect(() => {
@@ -61,7 +67,8 @@ const SocialsScreen = (id) => {
             />
             <Text 
               style={styles.instagram}
-              onPress={() => Linking.openURL('http://instagram.com/' + instagramSocial)}
+              // onPress={() => Linking.openURL('http://instagram.com/' + instagramSocial)}
+              onPress={() => Linking.openURL('http://instagram.com/jerry')}
             > 
               Instagram
             </Text>
@@ -71,7 +78,7 @@ const SocialsScreen = (id) => {
             />
             <Text 
               style={styles.spotify}
-              onPress={() => Linking.openURL('https://open.spotify.com/user/flower4518')}
+              onPress={() => Linking.openURL('https://open.spotify.com/user/31n5wbv4w7eriltts4rppwwqaldq')}
               // onPress={() => Linking.openURL('https://open.spotify.com/user/' + spotifyMatchId)}
             > 
               Spotify

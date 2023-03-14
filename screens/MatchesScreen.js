@@ -28,7 +28,7 @@ import {
   import * as React from "react";
   import { useRef } from "react";
   import { LinearGradient } from "expo-linear-gradient";
-  import { useNavigation } from "@react-navigation/native";
+  import { useNavigation, useIsFocused } from "@react-navigation/native";
   import { useEffect, useState } from "react";
   import axios from 'axios';
   import { Buffer } from 'buffer';
@@ -107,6 +107,7 @@ import {
   const {height} = Dimensions.get('window');
   
   const MatchScreen = () => {
+
     // state: {
     //   screenHeight: 0
     // }
@@ -118,19 +119,24 @@ import {
     // };
   
     const [matches, setMatches] = useState([]);
+    const isFocused = useIsFocused();
 
     const getMatches = () => {
       axios
         .get('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/0')
         .then((response) => {
+          console.log(response.data);
           setMatches(response ["data"])
         })
     };
-  
+
     useEffect(() => {
       getMatches();     
     }, []);
 
+    useEffect(() => {
+      isFocused && getMatches()
+    },[isFocused]);
 
     const scrollEnabled = matches.length > 9;
   
