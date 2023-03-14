@@ -6,6 +6,7 @@ import { useEffect,useState, } from 'react'
 import axios from "axios"
 import {Buffer} from 'buffer';
 
+import {questionBank} from '../redux/UserData';
 
 const compatibility='80%'
 
@@ -58,7 +59,8 @@ const pics = [
 
 ]
 
-async function getUserById(id) {
+async function getUserById({id}) {
+  console.log("rendering card: " + id);
   return axios
           .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`).catch((error) => {
         // Handle any errors that occur
@@ -67,7 +69,8 @@ async function getUserById(id) {
 }
 
     const getData = async ({id}) => {
-      const response = await getUserById(id);
+      setLoaded(false);
+      const response = await getUserById({id});
 
       console.log(response.data);
       setName(response["data"]["name"]);
@@ -83,57 +86,37 @@ async function getUserById(id) {
       SetTopGenres(response["data"]["topgenres"])
       SetTopArtists(response["data"]["topartists"])
 
-      
-      const questions = await getQuestions();
-
       const q1id = response["data"]["questionid1"]
       const q2id = response["data"]["questionid2"]
       const q3id = response["data"]["questionid3"]
 
-
-      setQ1(questions["data"][q1id]["questiontext"])
-      setQ2(questions["data"][q2id]["questiontext"])
-      setQ3(questions["data"][q3id]["questiontext"])
+      setQ1(questionBank._z[q1id].value)
+      setQ2(questionBank._z[q2id].value)
+      setQ3(questionBank._z[q3id].value)
 
       setLoaded(true);
 
 
-      setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
-      setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
-      setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
-      setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
-
-      
+      // setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
+      // setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
+      // setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
+      // setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
       
     };
-
-  const getQuestions = () => {
-    return axios
-        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
-        .catch((error) => {
-          console.error(error);
-      });
-};
 
 //  Using the Axios library to make HTTP requests to retrieve data from a server.
 // Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
 // Once the requests are complete, it uses the axios.spread() method to access the response data.
 
 
-//   axios.all([getData({id}), getQuestions()])
+// axios.all([getData({id}), getQuestions()])
 //   .then(axios.spread(function (data, questions) {
 //     getData({id});
-
 // }));
 
 useEffect(() => {
-  getData(id);
+  getData({id});
 }, []);
-
-  useEffect(() => {
-    console.log("loaded", loaded);
-  }, []); 
-
 
   // Flatlist Image Item
   const Item = ({item}) => (

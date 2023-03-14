@@ -7,23 +7,6 @@ import { useRef,useState,useEffect} from 'react';
 import CardsSwipe from 'react-native-cards-swipe';
 import axios from "axios";
 
-const users=[
-  {
-  id:1
-},
-{
-  id:2
-},
-{
-  id:3
-},
-{
-  id:4
-},
-]
-
-// const ex_id= "0000000000000000000000"
-
 export default function App() {
   const [Matches, setMatches] = useState([]);
   const [numMatches, setNumMatches] = useState([]);
@@ -35,7 +18,7 @@ export default function App() {
         .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/0`)
         .then((response) => {
           
-          setNumMatches(response ["data"])
+          setNumMatches(response["data"])
           setMatches(response)
           setuserIds(response.data.map((item, index) => ({
           userid: item.id.trim(),
@@ -68,7 +51,6 @@ export default function App() {
         )}
         renderCard={({userid}) => (
           <View >
-            
             <UserCard id={userid}/>
           </View>
           
