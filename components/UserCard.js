@@ -66,7 +66,7 @@ async function getUserById({id}) {
         // Handle any errors that occur
         console.error(error);
         })
-}
+};
 
     const getData = async ({id}) => {
       setLoaded(false);
@@ -104,19 +104,10 @@ async function getUserById({id}) {
       
     };
 
-//  Using the Axios library to make HTTP requests to retrieve data from a server.
-// Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
-// Once the requests are complete, it uses the axios.spread() method to access the response data.
-
-
-// axios.all([getData({id}), getQuestions()])
-//   .then(axios.spread(function (data, questions) {
-//     getData({id});
-// }));
 
 useEffect(() => {
   getData({id});
-}, []);
+}, [id]);
 
   // Flatlist Image Item
   const Item = ({item}) => (
@@ -153,7 +144,7 @@ useEffect(() => {
   }
 
   const GetGender=(gender) => {
-    map  = {
+    let map  = {
       "F": "Female",
       "M": "Male",
       "N": "Non Binary"
@@ -162,7 +153,7 @@ useEffect(() => {
   }
 
   const GetOrientation=(orientation) => {
-    map = {
+    let map = {
       "S": "Straight",
       "B": "Bisexual",
       "G": "Gay",
