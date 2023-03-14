@@ -126,16 +126,23 @@ const NewUserQuestions = () => {
 
   const ageCheck = () => {
     let today = new Date();
-    console.log(birthdate.getFullYear());
-    console.log(today.getFullYear());
+    // console.log(birthdate.getFullYear());
+    // console.log(today.getFullYear());
 
-    let tempAge = today.getFullYear() - birthdate.getFullYear();
+    if (birthdate) {
+      let tempAge = today.getFullYear() - birthdate.getFullYear();
 
-    if (tempAge > 18) {
-      return true;
+      if (tempAge > 18) {
+        return true;
+      } else {
+        return false;
+      }
+
     } else {
-      return false;
+      return false
     }
+
+    
   }
 
   // const showDatePicker = () => {
