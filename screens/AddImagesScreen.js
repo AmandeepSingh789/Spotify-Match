@@ -37,7 +37,7 @@ import {
   setPicture4,
 } from '../redux/UserData';
 
-import { updatePictures, createUser } from '../redux/UserData';
+import { createPictures, createUser } from '../redux/UserData';
 
 
 export default function Add_images() {
@@ -146,6 +146,61 @@ export default function Add_images() {
     }
   }
 
+  const postData = () => {
+    console.log({
+      "id": id,
+      "name": name,
+      "birthdate": birthdate,
+      "email": email,
+      "gender": gender,
+      "orientation": orientation,
+      "location": location,
+      "pronouns": pronouns,
+      "bio": bio,
+      "questionid1": question1,
+      "questionid2": question2,
+      "questionid3": question3,
+      "answer1": answer1,
+      "answer2": answer2,
+      "answer3": answer3,
+      "instagram": socials
+    })
+    if (name != null && birthdate != null && gender != null && orientation != null && location && pronouns && bio && question1 != null && question2 != null && question3 != null && answer1 && answer2 && answer3 && socials && image1 && image2 && image3 && image4) {
+      console.log("Creating user");
+      createUser({
+        "id": id,
+        "name": name,
+        "birthdate": birthdate,
+        "email": email,
+        "gender": gender,
+        "orientation": orientation,
+        "location": location,
+        "pronouns": pronouns,
+        "bio": bio,
+        "questionid1": question1,
+        "questionid2": question2,
+        "questionid3": question3,
+        "answer1": answer1,
+        "answer2": answer2,
+        "answer3": answer3,
+        "instagram": socials
+      })
+
+      console.log("Creating Profile Pictures");
+
+      createPictures({
+        "id": id,
+        "image1": image1,
+        "image2": image2,
+        "image3": image3,
+        "image4": image4,
+      });
+      navigation.navigate('Home');
+    } else {
+      alert("Please fill out all fields!");
+    }
+  }
+
 
   // console.log(name)
   return (
@@ -218,58 +273,7 @@ export default function Add_images() {
       />
 
       <TouchableOpacity style={styles.button} onPress={() => {
-        console.log({
-          "id": id,
-          "name": name,
-          "birthdate": birthdate,
-          "email": email,
-          "gender": gender,
-          "orientation": orientation,
-          "location": location,
-          "pronouns": pronouns,
-          "bio": bio,
-          "questionid1": question1,
-          "questionid2": question2,
-          "questionid3": question3,
-          "answer1": answer1,
-          "answer2": answer2,
-          "answer3": answer3,
-          "instagram": socials
-        })
-        if (name && birthdate && gender && orientation && location && pronouns && bio && question1 && question2 && question3 && answer1 && answer2 && answer3 && socials && image1 && image2 && image3 && image4) {
-          createUser({
-            "id": id,
-            "name": name,
-            "birthdate": birthdate,
-            "email": email,
-            "gender": gender,
-            "orientation": orientation,
-            "location": location,
-            "pronouns": pronouns,
-            "bio": bio,
-            "questionid1": question1,
-            "questionid2": question2,
-            "questionid3": question3,
-            "answer1": answer1,
-            "answer2": answer2,
-            "answer3": answer3,
-            "instagram": socials
-          })
-
-
-          updatePictures({
-            "id": id,
-            "image1": image1,
-            "image2": image2,
-            "image3": image3,
-            "image4": image4,
-          });
-          navigation.navigate('Home');
-        } else {
-          alert("Please fill out all fields!");
-        }
-
-        
+        postData();
       }}>
         <Text style={styles.buttonText}>Complete Profile!</Text>
       </TouchableOpacity>

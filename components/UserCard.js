@@ -1,17 +1,18 @@
 import React from 'react'
-import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, View, FlatList,ScrollView, Pressable, Modal } from 'react-native'
 import { Divider, Icon, Text } from '@rneui/themed'
 import Layout from '../ constants/Layout'
-import { useEffect,useState } from 'react'
+import { useEffect,useState, } from 'react'
 import axios from "axios"
 import {Buffer} from 'buffer';
 
-// http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/0000000000000000000000
+
 const compatibility='80%'
 
+// Card component that displays user information
 function Card({id}){
   
-
+// State variables to store user data
     const [Name, setName] = useState([]);
     const [Bio, setBio] = useState([]);
     const [Age, setAge] = useState([]);
@@ -21,19 +22,24 @@ function Card({id}){
     const [Q1, setQ1] = useState([]);
     const [Q2, setQ2] = useState([]);
     const [Q3, setQ3] = useState([]);
-    const [Q1id, setQ1id] = useState([]);
-    const [Q2id, setQ2id] = useState([]);
-    const [Q3id, setQ3id] = useState([]);
     const [pic1,setPic1] = useState({});
     const [pic2,setPic2] = useState([]);
     const [pic3,setPic3] = useState([]);
     const [pic4,setPic4] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [gender, SetGender]  = useState([]);
+    const [orientation, SetOrientation] = useState([]);
+    const [TopSongs, SetTopSongs] = useState([]);
+    const [TopGenres, SetTopGenres] = useState([]);
+    const [TopArtists, SetTopArtists] = useState([]);
+
+// Array of pictures
 const pics = [
   {
     id:1,
-    // url:'https://picsum.photos/id/237/1080',
     uri:'data:image/jpeg;base64,'+ pic1,
 
   },
@@ -52,83 +58,86 @@ const pics = [
 
 ]
 
-    const getData = ({id}) => {
-      axios
-          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`)
-          .then((response) => {
-            console.log(id);
-            setName(response["data"][0]["name"]);
-            setBio(response["data"][0]["bio"]);
-            setAnswer1(response["data"][0]["answer1"])
-            setAnswer2(response["data"][0]["answer2"])
-            setAnswer3(response["data"][0]["answer3"])
-            setQ1id(response["data"][0]["questionid1"])
-            setQ2id(response["data"][0]["questionid2"])
-            setQ3id(response["data"][0]["questionid3"])
-            getAge(response["data"][0]["birthdate"])
-            // console.log(`${id}YE HAI ${id}`);
+async function getUserById(id) {
+  return axios
+          .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/users/${id}`).catch((error) => {
+        // Handle any errors that occur
+        console.error(error);
+        })
+}
 
-            const pic1Data= (response["data"][0]["picture1"]["data"])
-            const pic1Conversion = new Buffer.from(pic1Data).toString('base64')
+    const getData = async ({id}) => {
+      const response = await getUserById(id);
 
-            const pic2Data= (response["data"][0]["picture2"]["data"])
-            const pic2Conversion = new Buffer.from(pic2Data).toString('base64')
+      console.log(response.data);
+      setName(response["data"]["name"]);
+      setBio(response["data"]["bio"]);
+      setAnswer1(response["data"]["answer1"])
+      setAnswer2(response["data"]["answer2"])
+      setAnswer3(response["data"]["answer3"])
+      
+      getAge(response["data"]["birthdate"])
+      GetGender(response["data"]["gender"])
+      GetOrientation(response["data"]["orientation"])
+      SetTopSongs(response["data"]["topsongs"])
+      SetTopGenres(response["data"]["topgenres"])
+      SetTopArtists(response["data"]["topartists"])
 
-            const pic3Data= (response["data"][0]["picture3"]["data"])
-            const pic3Conversion = new Buffer.from(pic3Data).toString('base64')
+      
+      const questions = await getQuestions();
 
-            const pic4Data= (response["data"][0]["picture4"]["data"])
-            const pic4Conversion = new Buffer.from(pic4Data).toString('base64')
+      const q1id = response["data"]["questionid1"]
+      const q2id = response["data"]["questionid2"]
+      const q3id = response["data"]["questionid3"]
 
-            setPic1(pic1Conversion)
-            setPic2(pic2Conversion)
-            setPic3(pic3Conversion)
-            setPic4(pic4Conversion)
-            getQuestions()
 
-          }).catch((error) => {
-            // Handle any errors that occur
-            console.error(error);
-        });
+      setQ1(questions["data"][q1id]["questiontext"])
+      setQ2(questions["data"][q2id]["questiontext"])
+      setQ3(questions["data"][q3id]["questiontext"])
 
-  };
+      setLoaded(true);
+
+
+      setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
+      setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
+      setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
+      setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+
+      
+      
+    };
+
   const getQuestions = () => {
-    axios
+    return axios
         .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/`)
-        .then((response) => {
-          // const question1 = response["data"][Q1id]["questiontext"]
-
-          // const question2 = response["data"][Q2id]["questiontext"]
-
-          // const question3 = response["data"][Q3id]["questiontext"]
-          setQ1(response["data"][Q1id]["questiontext"])
-          setQ2(response["data"][Q2id]["questiontext"])
-          setQ3(response["data"][Q3id]["questiontext"])
-          setLoaded(true);
-        }).catch((error) => {
-          // Handle any errors that occur
+        .catch((error) => {
           console.error(error);
       });
-
 };
 
-  useEffect(() => {
+//  Using the Axios library to make HTTP requests to retrieve data from a server.
+// Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
+// Once the requests are complete, it uses the axios.spread() method to access the response data.
 
-    getData({id});
-    
+
+//   axios.all([getData({id}), getQuestions()])
+//   .then(axios.spread(function (data, questions) {
+//     getData({id});
+
+// }));
+
+useEffect(() => {
+  getData(id);
+}, []);
+
+  useEffect(() => {
+    console.log("loaded", loaded);
   }, []); 
 
 
-  // let [response, setResponse] = useState();
-  // const [loading, setLoading] = useState(false);
-  // useEffect(async () => {
-  //   const fetchData = async () => {
-  //     fetch("https://dummy.restapiexample.com/api/v1/employee/1")
-  //     
-
+  // Flatlist Image Item
   const Item = ({item}) => (
-    
-    
+
     <View style={styles.imageContainer}>
       {/* <Image source={{uri:"data:image/jpeg;base64,"+ `${pic2}`}}
       resizeMode="cover"
@@ -143,6 +152,8 @@ const pics = [
     </View>
 
   );
+
+  // Function to get age from DOB
   const getAge =(DOB) =>{
     var date = new Date(DOB)
     let today = new Date()
@@ -154,9 +165,31 @@ const pics = [
     setAge(yearsOld)
   }
 
+  function binaryToBase64(data) {
+    return new Buffer.from(data).toString('base64');
+  }
+
+  const GetGender=(gender) => {
+    let map  = {
+      "F": "Female",
+      "M": "Male",
+      "N": "Non Binary"
+    }
+    SetGender(map[gender])
+  }
+
+  const GetOrientation=(orientation) => {
+    let map = {
+      "S": "Straight",
+      "B": "Bisexual",
+      "G": "Gay",
+      "P": "Pansexual",
+    }
+    SetOrientation(map[orientation]);
+  }
+
     return (
 
-    
         <View style={styles.container}>
         <ScrollView>
         {/* Image Container */}
@@ -180,16 +213,50 @@ const pics = [
         {/* Box with Name,Age and Meter*/}
          <View style={styles.upperBox}>
 
-          <Text style={styles.name}>
-             {`${Name}, ${Age}`}
-            
-             {/* Name, Age  */}
-            
-          </Text>
+          <View style={styles.basicInfo}>
+            <Text style={styles.name}>
+              {`${Name}, ${Age}`}
+              
+            </Text>
+            <Text style={styles.genderAndOrientation}>
+              {`${gender}, ${orientation}`}            
+            </Text>
+          </View>
              
            <View style={styles.meter}>
-             
-            <Text style={styles.percentage}>{compatibility}</Text>
+
+          {/* POPUP CODE BEGINS */}
+           <View style={styles.centeredView}>
+            <Modal
+              
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
+                  <Pressable
+                    style={[styles.button]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>X</Text>
+                  </Pressable>
+                  <Text style={styles.modalText}>Compatiable songs:  </Text>
+                  <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+                  {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
+                </View>
+              </View>
+            </Modal>
+            <Pressable
+              onPress={() => setModalVisible(true)}>
+              <Text style={styles.percentage}>{compatibility}</Text>
+            </Pressable>
+          </View>
+       {/* POPUP CODE ENDS */}
+
+            {/* <Text style={styles.percentage}>{compatibility}</Text> */}
           </View> 
          </View>  
 
@@ -200,9 +267,13 @@ const pics = [
         <Text style={styles.bio}>
           {Bio}          
           </Text>
-      
+        
         </View>
         <Divider style={styles.divider} />
+           
+          <Text style={styles.topInfo}>Top Genres: </Text>
+          <Text style={styles.topInfo}>{`${TopGenres}`} </Text>
+          <Divider style={styles.divider} />
         
         <View >
         <Text style={styles.desc}>
@@ -219,6 +290,10 @@ const pics = [
         </View>
         <Divider style={styles.divider} />
 
+        <Text style={styles.topInfo}>Top Songs:  </Text>
+        <Text style={styles.topInfo}>{`${TopSongs}`} </Text>
+        <Divider style={styles.divider} />
+
         <View >
         <Text style={styles.desc}>
 
@@ -232,6 +307,10 @@ const pics = [
         {`A: ${Answer2}`}
         </Text>
         </View>
+
+        <Divider style={styles.divider} />
+        <Text style={styles.topInfo}>Top Artists: </Text>
+        <Text style={styles.topInfo}>{`${TopArtists}`} </Text>
         
         <Divider style={styles.divider} />
         <View >
@@ -303,10 +382,18 @@ const styles = StyleSheet.create({
       justifyContent:'center',
   
       },
+    basicInfo: {
+      flexShrink: 1
+    },
     name: {
       // color: '#fff',
       color: '#FE8AE3',
       fontSize:28,
+    },
+    genderAndOrientation: {
+      color: '#fff',
+      fontSize:18,
+      
     },
      meter: {
       color: '#5E5E5E',
@@ -351,6 +438,53 @@ const styles = StyleSheet.create({
       width: Layout.window.width - 120,
       margin: 10,
       alignSelf: 'center',
+    },
+
+    ////
+    // the X button to hide the modal
+    button: {
+      margin: 5,
+      backgroundColor: '#FE8AE3',
+      alignItems: "flex-end",
+      width: Layout.window.width - 150,
+    },
+    // the text of the X button modal
+    textStyle: {
+      color: '#000',
+      fontWeight: 'bold',
+      fontSize: 20,
+
+    },
+    // the text of the popup, which is top songs, genres, etc
+    modalText: {
+      marginBottom: 5,
+      color: "#000",
+      fontWeight: "bold",
+    },
+    // centering the popup
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    // style of the popup window
+    modalView: {
+      backgroundColor: "#FE8AE3",
+      borderRadius: 20,
+      borderWidth: 2,
+      borderColor: "#FE8AE3",
+      alignItems: 'center',
+      paddingBottom: 10,
+      
+    },
+    topInfo: {
+      color: '#fff',
+      alignSelf: 'center',
+      marginTop: 5,
+      marginHorizontal: 30,
+      fontSize: 20,
+      flexShrink: 1,
     },
     
   })

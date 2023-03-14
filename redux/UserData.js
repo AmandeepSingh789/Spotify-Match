@@ -9,20 +9,21 @@ import * as FileSystem from 'expo-file-system';
 
 
 
-export const createUser = createAsyncThunk('UserData/createUser', async (data) => {
-  await axios.post("http://spotify-match.us-west-1.elasticbeanstalk.com/users", data)
+export const createUser = async (data) => {
+  console.log("Creating user with data:");
+  console.log(data);
+  axios.post("http://spotify-match.us-west-1.elasticbeanstalk.com/users", data)
     .then(function (response) {
       console.log(response);
     })
     .catch(function (error) {
       console.log(error);
     });
-});
+};
 
 
 export const fetchUserData = createAsyncThunk('UserData/fetchUserData', async (id) => {
   const response = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + id);
-  getQuestions();
   // console.log(response.data)
   return response.data;
 });
@@ -31,12 +32,34 @@ export const fetchUserData = createAsyncThunk('UserData/fetchUserData', async (i
 export const updateUserData = createAsyncThunk('UserData/updateUserData', async (data) => {
   await axios.put('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + data["id"], data)
     .then(function (response) {
-      console.log(response);
+      // console.log(response);
     })
     .catch(function (error) {
       console.log(error);
     });
 });
+
+export const createPictures = async (data) => {
+  console.log("Creating profile pictures");
+  // console.log(data);
+  const images = {
+    id: data["id"],
+    picture1: await formatImage(data["image1"]),
+    picture2: await formatImage(data["image2"]),
+    picture3: await formatImage(data["image3"]),
+    picture4: await formatImage(data["image4"]),
+  };
+
+  // console.log(images)
+
+  await axios.post("http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/", images)
+    .then(function (response) {
+      // console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 export const updatePictures = async (data) => {
   // console.log(data);
@@ -52,7 +75,7 @@ export const updatePictures = async (data) => {
 
   await axios.put("http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/" + images["id"], images)
     .then(function (response) {
-      console.log(response);
+      // console.log(response);
     })
     .catch(function (error) {
       console.log(error);
@@ -71,6 +94,7 @@ export const getQuestions = async () => {
   for (let i = 0; i < questionData["data"].length; i++) {
     questionBank.push({ key: questionData["data"][i]["questionid"], value: questionData["data"][i]["questiontext"] });
   }
+  console.log(questionBank)
 };
 
 

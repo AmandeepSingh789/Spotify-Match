@@ -73,6 +73,8 @@ const Survey = () => {
 
   } = useSelector(((state) => state.id));
   const navigation = useNavigation();
+  
+  getQuestions();
   // getQuestions();
 
   // const [keyboardStatus, setKeyboardStatus] = useState('');
@@ -379,7 +381,7 @@ const Survey = () => {
                   answer2,
                   answer3
                 })
-                if (question1 && question2 && question3 && answer1 && answer2 && answer3) {
+                if (question1 != null && question2 != null && question3 != null && answer1 && answer2 && answer3) {
                   console.log({
                     question1,
                     question2,

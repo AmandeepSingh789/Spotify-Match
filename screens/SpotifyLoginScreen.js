@@ -1,20 +1,3 @@
-// import React, { Component } from "react";
-// import { StyleSheet, Text, View, Button } from 'react-native';
-
-// export default class SpotifyLoginClass extends Component {
-//     render() {
-//         return (
-//             <View >
-//             <Text style={{color: 'green'}}> Spotify Login Page </Text>
-//             <Button
-//                 title="Go to Survey"
-//                 onPress={() => this.props.navigation.navigate('SurveyGeneralQuestions')}
-//             />
-//           </View>
-//         );
-//     }
-// }
-
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { Button } from "@rneui/base";
@@ -31,7 +14,8 @@ import {
   setSpotifyData,
   setTopArtists,
   setTopGenres,
-  setTopTracks
+  setTopTracks,
+  setEmail
 } from '../redux/UserData';
 import { updateUserData, updatePictures, questionBank, fetchUserData } from '../redux/UserData';
 // import { set } from "react-native-reanimated";
@@ -47,46 +31,6 @@ const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 };
-
-
-// async function postData (data, endpoint, id) {
-//   axios
-//     .post(
-//       'http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/' + endpoint + id,
-//       {
-//         data: data,
-//       }
-//     ).catch ((error) => {
-//       console.error(error);
-//     })
-// }
-
-
-
-// async function createUser(profileData) {
-//       axios
-//           .post(
-//           'http://spotify-match.us-west-1.elasticbeanstalk.com/users',
-//           {
-//               "id": profileData.id,
-//               "name": profileData.display_name,
-//               "birthdate": "1972-04-12T07:00:00.000Z",
-//               "email": profileData.email,
-//               "gender": "M",
-//               "orientation": "P",
-//               "location": profileData.country,
-//               "pronouns": null,
-//               "bio": null,
-//               "questionid1": null,
-//               "questionid2": null,
-//               "questionid3": null,
-//               "answer1": null,
-//               "answer2": null,
-//               "answer3": null
-//           }).catch(function(error) {
-//               console.log(error);
-//           })
-// }
 
 async function getSpotifyUser(token) {
   if (token) {
@@ -195,13 +139,8 @@ const SpotifyLoginScreen = () => {
           i += 1;
         }
 
-        // console.log(genreList)
-
         dispatch(setTopGenres(genreList));
         dispatch(setTopArtists(artists));
-
-        // postData(artists, "topartists/", userID);
-        // postData(genreList, "topgenres/", userID);
 
       })
   }
@@ -218,7 +157,6 @@ const SpotifyLoginScreen = () => {
         }
       }
       ).then(function (topTracks) {
-        // console.log("Top Tracks");
         let tracks = []
         let trackids = []
         for (let i = 0; i < topTracks.data.items.length; i += 1) {
@@ -230,13 +168,9 @@ const SpotifyLoginScreen = () => {
           }
           tracks.push(track)
           trackids.push(trackInfo.id)
-          // console.log(track)
         }
-        // console.log("\n")
 
         dispatch(setTopTracks(tracks));
-
-        // postData(tracks, "toptracks/", userID);
         return trackids;
       }
       )
@@ -297,9 +231,9 @@ const SpotifyLoginScreen = () => {
     )
   }
 
-  const setData = (userID) => {
-    dispatch(setID(userID))
-    dispatch(fetchUserData(userID));
+  const setData = (userID, email) => {
+    dispatch(setID(userID));
+    dispatch(setEmail(email));
     console.log(id)
   }
 
@@ -314,30 +248,35 @@ const SpotifyLoginScreen = () => {
     }
   }, [response]);
 
+
   useEffect(() => {
     async function fetchData() {
       // setToken('');
-
 
       const profile = await getSpotifyUser(token);
       // var userID;
       if (profile.data) {
         userID = profile.data.id;
-        setData(userID)
+        email = profile.data.email;
+        setData(userID, email)
       }
-
 
       const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID)
         .catch((response) => { console.log(response) });
 
-      if (userExists) {
-        navigation.navigate('Home');
 
+      console.log(userExists.data);
+
+      if (userExists.data) {
+        dispatch(fetchUserData(userID));
+        navigation.navigate('Home');
       } else {
+
         await getTopArtists(token, userID);
         let trackids = await getTopTracks(token, userID);
         // console.log(trackids);
         await getAudioFeatures(trackids, token, userID);
+        navigation.navigate('SurveyGeneralQuestions');
       }
     }
 

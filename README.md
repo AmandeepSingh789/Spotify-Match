@@ -30,7 +30,9 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
  - - Survey Advanced (Screen)
  - - Add Images (Screen)
  - - Home Page (Tab.Navigator and Screen)
+  - - - - Percentage Breakdown (Pop up)
   - - - Matches (Screen)
+   - - - - Socials (Screen)
   - - - Profile (Screen)
 
 
@@ -71,7 +73,10 @@ OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clear
     buffer
 
     expo-auth-session
+<<<<<<< HEAD
 
     @reduxjs/toolkit
     redux
     react-redux
+=======
+>>>>>>> main
