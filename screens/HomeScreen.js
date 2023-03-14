@@ -7,26 +7,28 @@ import { useRef,useState,useEffect} from 'react';
 import CardsSwipe from 'react-native-cards-swipe';
 import axios from "axios";
 
+// Importing Redux store
+import { useDispatch, useSelector } from 'react-redux';
+
 export default function App() {
   const [Matches, setMatches] = useState([]);
   const [numMatches, setNumMatches] = useState([]);
 
   const [userIds, setuserIds] = useState([]);
 
+  const dispatch = useDispatch();
+  var {LoginUserId} = useSelector(((state) => state.id));
+
   const getMatches= () => {
     axios
-        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/0`)
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/${LoginUserId}`)
         .then((response) => {
-          
           setNumMatches(response["data"])
           setMatches(response)
           setuserIds(response.data.map((item, index) => ({
-          userid: item.id.trim(),
-          index: index
-        })));
-        console.log(userIds)
-
-          
+            userid: item.id.trim(),
+            index: index
+          })));         
         });
   };
   useEffect(() => {
