@@ -137,7 +137,7 @@ export default function Edit_user_profile() {
     // const questionBank = getQuestions();
 
     // console.log(questionBank._z);
-    console.log(userToken);
+    // console.log(userToken);
 
 
 
@@ -163,12 +163,17 @@ export default function Edit_user_profile() {
         { key: '6', value: 'Other' },
     ]
 
-    console.log(genders[gender].value)
 
     // var tempGender = "Gender";
     // if (gender != null) {
     //     tempGender = genders[gender+1].value
     // }
+
+    console.log(gender)
+    console.log(orientation)
+
+    var tempGender = "Gender";
+    var tempOrientation = "Orientation";
 
     // var tempOrientation = "Orientation";
     // if (orientation != null) {
@@ -317,9 +322,10 @@ export default function Edit_user_profile() {
                     <View>
                         <Text style={styles.fieldTitle}>Gender:</Text>
                         <SelectList
-                            placeholder={genders[gender-1].value}
-                            setSelected={(gender) => dispatch(setGender(gender))}
+                            placeholder={gender}
+                            setSelected={(gender) => {dispatch(setGender(gender))}}
                             data={genders}
+                            save='value'
                             inputStyles={styles.selectionBoxText}
                             boxStyles={styles.selectionBox}
                             dropdownTextStyles={styles.selectionBoxDropdownText}
@@ -332,9 +338,10 @@ export default function Edit_user_profile() {
                     <View>
                         <Text style={styles.fieldTitle}>Sexual Orientation:</Text>
                         <SelectList
-                            placeholder={sexualOrientations[orientation-1].value}
-                            setSelected={(value) => dispatch(setOrientation(value))}
+                            placeholder={orientation}
+                            setSelected={(value) => {dispatch(setOrientation(value))}}
                             data={sexualOrientations}
+                            save='value'
                             inputStyles={styles.selectionBoxText}
                             boxStyles={styles.selectionBox}
                             dropdownTextStyles={styles.selectionBoxDropdownText}
@@ -397,7 +404,7 @@ export default function Edit_user_profile() {
                 {/* Answer 1 */}
                 <TextInput
                     value={answer1}
-                    onChangeText={(value) => dispatch(setAnswer1(value))}
+                    onChangeText={(value) => {dispatch(setAnswer1(value))}}
                     placeholder={'Answer1'}
                     style={styles.textInput}
                     multiline={true}
@@ -407,7 +414,7 @@ export default function Edit_user_profile() {
                 <SelectList
                     // placeholder={questionBank[question2]["value"]}
                     placeholder={tempQuestion2}
-                    setSelected={(value) => dispatch(setQuestion2(value))}
+                    setSelected={(value) => {dispatch(setQuestion2(value))}}
                     data={questionBank._z}
                     save="key"
                     inputStyles={styles.QselectionBoxText}
@@ -421,7 +428,7 @@ export default function Edit_user_profile() {
                 {/* Answer 2 */}
                 <TextInput
                     value={answer2}
-                    onChangeText={(answer) => setAnswer2(answer)}
+                    onChangeText={(value) => {dispatch(setAnswer2(value))}}
                     placeholder={'Answer2'}
                     style={styles.textInput}
                     multiline={true}
@@ -431,7 +438,7 @@ export default function Edit_user_profile() {
                 <SelectList
                     // placeholder={questionBank[question3]["value"]}
                     placeholder={tempQuestion3}
-                    setSelected={(value) => dispatch(setQuestion3(value))}
+                    setSelected={(value) => {dispatch(setQuestion3(value))}}
                     data={questionBank._z}
                     save="key"
                     inputStyles={styles.QselectionBoxText}
@@ -445,7 +452,7 @@ export default function Edit_user_profile() {
                 {/* Answer 3 */}
                 <TextInput
                     value={answer3}
-                    onChangeText={(answer) => setAnswer3(answer)}
+                    onChangeText={(answer) => {dispatch(setAnswer3(answer))}}
                     placeholder={'Answer3'}
                     style={styles.textInput}
                     multiline={true}
@@ -502,7 +509,7 @@ export default function Edit_user_profile() {
                                 "image4": image4,
                             });
 
-                            console.log(gender)
+                            console.log("banana")
 
                             dispatch(updateUserData({
                                 "id": id,
@@ -527,27 +534,27 @@ export default function Edit_user_profile() {
                         }}
                     />
                     <Button color='#a00' title="Log Out" onPress={() => {
-                        dispatch(setID(null));
-                        dispatch(setName(null));
-                        dispatch(setEmail(null));
-                        dispatch(setGender(null));
-                        dispatch(setLocation(null));
-                        dispatch(setOrientation(null));
-                        dispatch(setPronouns(null));
-                        dispatch(setAnswer1(null));
-                        dispatch(setAnswer2(null));
-                        dispatch(setAnswer3(null));
-                        dispatch(setQuestion1(null));
-                        dispatch(setQuestion2(null));
-                        dispatch(setQuestion3(null));
-                        dispatch(setBirthdate(null));
-                        dispatch(setBio(null));
-                        dispatch(setSocials(null));
-                        dispatch(setPicture1(null));
-                        dispatch(setPicture2(null));
-                        dispatch(setPicture3(null));
-                        dispatch(setPicture4(null));
-                        dispatch(setUserToken(null));
+                        // dispatch(setID(null));
+                        // dispatch(setName(null));
+                        // dispatch(setEmail(null));
+                        // dispatch(setGender(null));
+                        // dispatch(setLocation(null));
+                        // dispatch(setOrientation(null));
+                        // dispatch(setPronouns(null));
+                        // dispatch(setAnswer1(null));
+                        // dispatch(setAnswer2(null));
+                        // dispatch(setAnswer3(null));
+                        // dispatch(setQuestion1(null));
+                        // dispatch(setQuestion2(null));
+                        // dispatch(setQuestion3(null));
+                        // dispatch(setBirthdate(null));
+                        // dispatch(setBio(null));
+                        // dispatch(setSocials(null));
+                        // dispatch(setPicture1(null));
+                        // dispatch(setPicture2(null));
+                        // dispatch(setPicture3(null));
+                        // dispatch(setPicture4(null));
+
                         navigation.navigate('Spotify Login Screen');
 
                     }}></Button>

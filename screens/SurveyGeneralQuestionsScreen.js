@@ -89,15 +89,15 @@ const NewUserQuestions = () => {
     { key: '6', value: 'Other' },
   ]
 
-  var genderPlaceholder = "Select gender";
-  if (gender) {
-    genderPlaceholder = genders[gender-1].value
-  }
+  // var genderPlaceholder = "Select gender";
+  // if (gender) {
+  //   genderPlaceholder = genders[gender-1].value
+  // }
 
-  var orientationPlaceholder = "Select orientation";
-  if (orientation) {
-    orientationPlaceholder = sexualOrientations[orientation-1].value
-  }
+  // var orientationPlaceholder = "Select orientation";
+  // if (orientation) {
+  //   orientationPlaceholder = sexualOrientations[orientation-1].value
+  // }
   
   // getQuestions();
 
@@ -282,8 +282,9 @@ const NewUserQuestions = () => {
           <Text style={styles.questions}>Gender</Text>
 
           <SelectList
-            placeholder={genderPlaceholder}
+            placeholder="Gender"
             setSelected={(value) => dispatch(setGender(value))}
+            save="value"
             data={genders}
             inputStyles={styles.selectionBoxText}
             boxStyles={styles.selectionBox}
@@ -324,8 +325,9 @@ const NewUserQuestions = () => {
 
           <Text style={styles.questions}>Sexual Orientation</Text>
           <SelectList
-            placeholder={orientationPlaceholder}
+            placeholder="Orientation"
             setSelected={(value) => dispatch(setOrientation(value))}
+            save='value'
             data={sexualOrientations}
             inputStyles={styles.selectionBoxText}
             boxStyles={styles.selectionBox}

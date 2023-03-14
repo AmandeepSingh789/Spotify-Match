@@ -32,7 +32,7 @@ export const fetchUserData = createAsyncThunk('UserData/fetchUserData', async (i
 export const updateUserData = createAsyncThunk('UserData/updateUserData', async (data) => {
   await axios.put('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + data["id"], data)
     .then(function (response) {
-      // console.log(response);
+      console.log(response);
     })
     .catch(function (error) {
       console.log(error);
@@ -75,7 +75,7 @@ export const updatePictures = async (data) => {
 
   await axios.put("http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/" + images["id"], images)
     .then(function (response) {
-      // console.log(response);
+      console.log(response);
     })
     .catch(function (error) {
       console.log(error);
@@ -181,13 +181,46 @@ const userDataSlice = createSlice({
       state.email = action.payload
     },
     setGender(state, action) {
+      // switch (action.payload) {
+      //   case 'Male':
+      //     state.gender = 'M';
+      //     break;
+      //   case 'Female':
+      //     state.gender = 'F';
+      //     break;
+      //   default:
+      //     state.gender = 'O';
+      // }
       state.gender = action.payload
+      console.log(state.gender);
     },
     setLocation(state, action) {
       state.location = action.payload
     },
     setOrientation(state, action) {
+      // console.log(action.payload)
+      // switch (action.payload) {
+      //   case 'Straight':
+      //     state.orientation = 'S';
+      //     break;
+      //   case 'Gay':
+      //     state.orientation = 'G';
+      //     break;
+      //   case 'Lesbian':
+      //     state.orientation = 'L';
+      //     break;
+      //   case 'Bisexual':
+      //     state.orientation = 'B';
+      //     break;
+      //   case 'Pansexual':
+      //     state.orientation = 'P';
+      //     break;
+      //   default:
+      //     state.orientation = 'O';
+      // }
+      
       state.orientation = action.payload
+      console.log(state.orientation)
     },
     setPronouns(state, action) {
       state.pronouns = action.payload

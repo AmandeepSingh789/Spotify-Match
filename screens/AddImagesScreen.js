@@ -167,13 +167,50 @@ export default function Add_images() {
     })
     if (name != null && birthdate != null && gender != null && orientation != null && location && pronouns && bio && question1 != null && question2 != null && question3 != null && answer1 && answer2 && answer3 && socials && image1 && image2 && image3 && image4) {
       console.log("Creating user");
+
+
+      var tempGender = "";
+      switch (gender) {
+        case "Male":
+          tempGender = "M";
+          break;
+        case "Female":
+          tempGender = "F";
+          break;
+        default:
+          tempGender = "O";
+          break;
+      }
+
+      var tempOrientation = "";
+      switch (orientation) {
+        case "Straight":
+          tempOrientation = "S";
+          break;
+        case "Gay":
+          tempOrientation = "G";
+          break;
+        case "Lesbian":
+          tempOrientation = "L";
+          break;
+        case "Bisexual":
+          tempOrientation = "B";
+          break;
+        case "Pansexual":
+          tempOrientation = "P";
+          break;
+        default:
+          tempOrientation = "O";
+          break;
+      }
+
       createUser({
         "id": id,
         "name": name,
         "birthdate": birthdate,
         "email": email,
-        "gender": gender,
-        "orientation": orientation,
+        "gender": tempGender,
+        "orientation": tempOrientation,
         "location": location,
         "pronouns": pronouns,
         "bio": bio,
