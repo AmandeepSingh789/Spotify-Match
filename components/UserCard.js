@@ -153,7 +153,7 @@ useEffect(() => {
   }
 
   const GetGender=(gender) => {
-    let map  = {
+    map  = {
       "F": "Female",
       "M": "Male",
       "N": "Non Binary"
@@ -162,7 +162,7 @@ useEffect(() => {
   }
 
   const GetOrientation=(orientation) => {
-    let map = {
+    map = {
       "S": "Straight",
       "B": "Bisexual",
       "G": "Gay",

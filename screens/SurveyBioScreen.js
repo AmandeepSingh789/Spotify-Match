@@ -69,6 +69,7 @@ const Bio = () => {
 
   } = useSelector(((state) => state.id));
   const navigation = useNavigation();
+
   // const [keyboardStatus, setKeyboardStatus] = useState('');
 
   //   const onLayoutRootView = useCallback(async () => {
