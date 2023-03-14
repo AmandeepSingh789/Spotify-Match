@@ -6,6 +6,7 @@ import UserCard from '../components/UserCard';
 import { Linking } from 'react-native';
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { match } from "assert";
 
 const SocialsScreen = (id) => {
   const navigation = useNavigation();
@@ -18,6 +19,29 @@ const SocialsScreen = (id) => {
   const [instagramSocial, setInstagram] = useState("");
   const [spotifySocial, setSpotify] = useState("");
   const [spotifyMatchId, setId] = useState("");
+  const [userIds, setuserIds] = useState([]);
+  const [logged_userID, setlogged_userID] = useState();
+
+  setlogged_userID("312y4f3aszlc46xjgxawtkwlssei");
+
+  const getuserIDfromMatches = () => {
+    axios
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/${setlogged_userID}`)
+        .then((response) => {
+          setuserIds(response.data.map((item, index) => ({
+          userid: item.id.trim(),
+          index: index
+        })));
+        console.log(userIds)
+
+          
+        });
+  }; 
+  useEffect(() => {
+
+    getuserIDfromMatches();
+
+  }, []);
 
   const getSocials = () => {
     axios
@@ -28,20 +52,36 @@ const SocialsScreen = (id) => {
         setId(response.data.id);
       })
   };
-
-  const deleteMatch = () => {
+  // onSwipedLeft ={(id) => {
+  //   const leftData = {
+  //     swipeeid:userIds[id].userid,
+  //     swiperid: 1,
+  //     liked: false,
+  //   }
+  //   console.log('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',leftData);
+  //   axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',leftData)
+  //   .then((response) => {
+  //     console.log('Match saved:', response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.log('Error saving match:', error);
+  //   });
+  // }}
+  const deleteMatch = (matchId) => {
+    const deleteData = {
+      swiperid: "312y4f3aszlc46xjgxawtkwlssei",
+      swipeeid: userIds[matchId].userid
+    }
     axios
-      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',
-        {
-          "swiperid": 0,
-          "swipeeid": matchId,
-        }
+      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/', deleteData
       )
       .then((response) => {
         console.log(response.data);
         navigation.navigate("Matches");
       })
   };
+  
+  
 
   useEffect(() => {
     getSocials();     
