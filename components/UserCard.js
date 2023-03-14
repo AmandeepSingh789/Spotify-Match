@@ -79,9 +79,9 @@ async function getUserById(id) {
       getAge(response["data"]["birthdate"])
       GetGender(response["data"]["gender"])
       GetOrientation(response["data"]["orientation"])
-      SetTopSongs(response["data"]["topsongs"])
-      SetTopGenres(response["data"]["topgenres"])
-      SetTopArtists(response["data"]["topartists"])
+      SetTopSongs(response["data"]["spotifydata"]["topsongs"])
+      SetTopGenres(response["data"]["spotifydata"]["topgenres"])
+      SetTopArtists(response["data"]["spotifydata"]["topartists"])
 
       
       const questions = await getQuestions();
@@ -118,17 +118,11 @@ async function getUserById(id) {
 //  Using the Axios library to make HTTP requests to retrieve data from a server.
 // Specifically, it makes two requests using the axios.all() method to fetch data based on an id and questions.
 // Once the requests are complete, it uses the axios.spread() method to access the response data.
+  axios.all([getData({id}), getQuestions()])
+  .then(axios.spread(function (data, questions) {
+    getData({id});
 
-
-//   axios.all([getData({id}), getQuestions()])
-//   .then(axios.spread(function (data, questions) {
-//     getData({id});
-
-// }));
-
-useEffect(() => {
-  getData(id);
-}, []);
+}));
 
   useEffect(() => {
     console.log("loaded", loaded);
@@ -170,7 +164,7 @@ useEffect(() => {
   }
 
   const GetGender=(gender) => {
-    let map  = {
+    map  = {
       "F": "Female",
       "M": "Male",
       "N": "Non Binary"
@@ -179,7 +173,7 @@ useEffect(() => {
   }
 
   const GetOrientation=(orientation) => {
-    let map = {
+    map = {
       "S": "Straight",
       "B": "Bisexual",
       "G": "Gay",

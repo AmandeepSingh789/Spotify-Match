@@ -163,7 +163,7 @@ export default function Edit_user_profile() {
         { key: '6', value: 'Other' },
     ]
 
-    console.log(genders[gender].value)
+    // console.log(genders[gender].value)
 
     // var tempGender = "Gender";
     // if (gender != null) {
@@ -317,7 +317,7 @@ export default function Edit_user_profile() {
                     <View>
                         <Text style={styles.fieldTitle}>Gender:</Text>
                         <SelectList
-                            placeholder={genders[gender-1].value}
+                            placeholder={gender}
                             setSelected={(gender) => dispatch(setGender(gender))}
                             data={genders}
                             inputStyles={styles.selectionBoxText}
@@ -332,7 +332,7 @@ export default function Edit_user_profile() {
                     <View>
                         <Text style={styles.fieldTitle}>Sexual Orientation:</Text>
                         <SelectList
-                            placeholder={sexualOrientations[orientation-1].value}
+                            placeholder={orientation}
                             setSelected={(value) => dispatch(setOrientation(value))}
                             data={sexualOrientations}
                             inputStyles={styles.selectionBoxText}
