@@ -93,7 +93,6 @@ import { updateUserData, updatePictures, getQuestions, questionBank } from '../r
 // Global width variable
 const WIDTH = Dimensions.get('window').width;
 
-
 export default function Edit_user_profile() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -164,7 +163,18 @@ export default function Edit_user_profile() {
         { key: '6', value: 'Other' },
     ]
 
-    console.log(questionBank)
+    // console.log(genders[gender].value)
+
+    // var tempGender = "Gender";
+    // if (gender != null) {
+    //     tempGender = genders[gender+1].value
+    // }
+
+    // var tempOrientation = "Orientation";
+    // if (orientation != null) {
+    //     tempOrientation = sexualOrientations[orientation+1].value
+    // }
+    
 
     var tempQuestion1 = "Question1"
     if (question1 != null) {

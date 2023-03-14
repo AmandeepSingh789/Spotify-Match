@@ -44,7 +44,7 @@ async function getSpotifyUser(token) {
           'Content-Type': 'application/json',
         }
       }
-      )
+    )
   }
 }
 
@@ -248,7 +248,7 @@ const SpotifyLoginScreen = () => {
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params;
-      // setToken(access_token);
+      setToken(access_token);
       dispatch(setUserToken(access_token));
       // token = access_token;
     }
@@ -258,10 +258,10 @@ const SpotifyLoginScreen = () => {
   useEffect(() => {
     async function fetchData() {
       // setToken('');
-      console.log(userToken);
-      // console.log(token)
+      // console.log(userToken);
+      console.log(token)
 
-      const profile = await getSpotifyUser(userToken);
+      const profile = await getSpotifyUser(token);
 
       // var userID;
 

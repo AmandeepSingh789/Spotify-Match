@@ -73,8 +73,9 @@ const Survey = () => {
 
   } = useSelector(((state) => state.id));
   const navigation = useNavigation();
+  console.log(questionBank._z)
   
-  getQuestions();
+  // getQuestions();
   // getQuestions();
 
   // const [keyboardStatus, setKeyboardStatus] = useState('');
@@ -231,7 +232,7 @@ const Survey = () => {
           <SelectList
             placeholder='Select Question 1'
             setSelected={(value) => dispatch(setQuestion1(value))}
-            data={questionBank}
+            data={questionBank._z}
             save="key"
             inputStyles={styles.selectionBoxText}
             boxStyles={styles.selectionBox}
@@ -288,7 +289,7 @@ const Survey = () => {
           <SelectList
             placeholder='Select Question 2'
             setSelected={(value) => dispatch(setQuestion2(value))}
-            data={questionBank}
+            data={questionBank._z}
             save="key"
             inputStyles={styles.selectionBoxText}
             boxStyles={styles.selectionBox}
@@ -343,7 +344,7 @@ const Survey = () => {
           <SelectList
             placeholder='Select Question 3'
             setSelected={(value) => dispatch(setQuestion3(value))}
-            data={questionBank}
+            data={questionBank._z}
             save="key"
             inputStyles={styles.selectionBoxText}
             boxStyles={styles.selectionBox}
