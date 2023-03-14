@@ -1,16 +1,22 @@
 import React, { useState, useCallback, Component, useEffect } from "react";
-import { Keyboard, StyleSheet, Text, View, TextInput, Dimensions } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Dimensions,
+} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { useForm, Controller } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { Button } from '@rneui/themed';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { SelectList } from 'react-native-dropdown-select-list';
-
+import { useForm, Controller } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/AntDesign";
+import { Button } from "@rneui/themed";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SelectList } from "react-native-dropdown-select-list";
 
 // Importing Redux store
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   setName,
   setEmail,
@@ -31,14 +37,18 @@ import {
   setPicture2,
   setPicture3,
   setPicture4,
-} from '../redux/UserData';
-import { updateUserData, updatePictures, questionBank, getQuestions } from '../redux/UserData';
+} from "../redux/UserData";
+import {
+  updateUserData,
+  updatePictures,
+  questionBank,
+  getQuestions,
+} from "../redux/UserData";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
 // export default class Survey extends Component {
-const WIDTH = Dimensions.get('window').width;
-const HEIGHT = Dimensions.get('window').height;
+const WIDTH = Dimensions.get("window").width;
+const HEIGHT = Dimensions.get("window").height;
 const Survey = () => {
   const dispatch = useDispatch();
   var {
@@ -70,11 +80,10 @@ const Survey = () => {
     toptracks,
     topgenres,
     topartists,
-
-  } = useSelector(((state) => state.id));
+  } = useSelector((state) => state.id);
   const navigation = useNavigation();
-  console.log(questionBank._z)
-  
+  console.log(questionBank._z);
+
   // getQuestions();
   // getQuestions();
 
@@ -172,27 +181,24 @@ const Survey = () => {
   // }
   // const { handleSubmit, control } = useForm();
 
-
   return (
-    <KeyboardAwareScrollView style={styles.container} >
+    <KeyboardAwareScrollView style={styles.container}>
       <SafeAreaView>
         <View style={styles.container}>
           <View style={styles.header}>
             <Button
               type="clear"
-              icon={
-                <Icon
-                  name="arrowleft"
-                  size={25}
-                  color="gray"
-                />
-              }
-              onPress={() => navigation.navigate('SurveyBio')}
+              icon={<Icon name="arrowleft" size={25} color="gray" />}
+              onPress={() => navigation.navigate("SurveyBio")}
             />
           </View>
 
-          <Text style={styles.questions}> Select questions that will appear on your profile so that other people can get to know you better! </Text>
-          
+          <Text style={styles.questions}>
+            {" "}
+            Select questions that will appear on your profile so that other
+            people can get to know you better!{" "}
+          </Text>
+
           {/* <Controller
           name="question1"
           defaultValue=""
@@ -230,7 +236,7 @@ const Survey = () => {
         /> */}
 
           <SelectList
-            placeholder='Select Question 1'
+            placeholder="Select Question 1"
             setSelected={(value) => dispatch(setQuestion1(value))}
             data={questionBank._z}
             save="key"
@@ -239,16 +245,18 @@ const Survey = () => {
             dropdownTextStyles={styles.selectionBoxDropdownText}
             dropdownStyles={styles.selectionBoxDropdown}
             search={false}
-            arrowicon={<Text style={{ color: '#fff' }}>⌄</Text>}
+            arrowicon={<Text style={{ color: "#fff" }}>⌄</Text>}
           />
 
           <TextInput
             style={styles.input}
             multiline={true}
             onSubmitEditing={Keyboard.dismiss}
-            onChangeText={(value) => {dispatch(setAnswer1(value))}}
+            onChangeText={(value) => {
+              dispatch(setAnswer1(value));
+            }}
             placeholder={answer1}
-            placeholderTextColor='#fff'
+            placeholderTextColor="#fff"
           />
 
           {/* <Controller
@@ -287,7 +295,7 @@ const Survey = () => {
         /> */}
 
           <SelectList
-            placeholder='Select Question 2'
+            placeholder="Select Question 2"
             setSelected={(value) => dispatch(setQuestion2(value))}
             data={questionBank._z}
             save="key"
@@ -296,18 +304,19 @@ const Survey = () => {
             dropdownTextStyles={styles.selectionBoxDropdownText}
             dropdownStyles={styles.selectionBoxDropdown}
             search={false}
-            arrowicon={<Text style={{ color: '#fff' }}>⌄</Text>}
+            arrowicon={<Text style={{ color: "#fff" }}>⌄</Text>}
           />
 
           <TextInput
             style={styles.input}
             multiline={true}
             onSubmitEditing={Keyboard.dismiss}
-            onChangeText={(value) => {dispatch(setAnswer2(value))}}
+            onChangeText={(value) => {
+              dispatch(setAnswer2(value));
+            }}
             placeholder={answer2}
-            placeholderTextColor='#fff'
+            placeholderTextColor="#fff"
           />
-
 
           {/* <Controller
           name="question3"
@@ -342,7 +351,7 @@ const Survey = () => {
         /> */}
 
           <SelectList
-            placeholder='Select Question 3'
+            placeholder="Select Question 3"
             setSelected={(value) => dispatch(setQuestion3(value))}
             data={questionBank._z}
             save="key"
@@ -351,28 +360,24 @@ const Survey = () => {
             dropdownTextStyles={styles.selectionBoxDropdownText}
             dropdownStyles={styles.selectionBoxDropdown}
             search={false}
-            arrowicon={<Text style={{ color: '#fff' }}>⌄</Text>}
+            arrowicon={<Text style={{ color: "#fff" }}>⌄</Text>}
           />
 
           <TextInput
             style={styles.input}
             multiline={true}
             onSubmitEditing={Keyboard.dismiss}
-            onChangeText={(value) => {dispatch(setAnswer3(value))}}
+            onChangeText={(value) => {
+              dispatch(setAnswer3(value));
+            }}
             placeholder={answer3}
-            placeholderTextColor='#fff'
+            placeholderTextColor="#fff"
           />
 
           <View style={styles.footer}>
             <Button
               type="clear"
-              icon={
-                <Icon
-                  name="arrowright"
-                  size={25}
-                  color="white"
-                />
-              }
+              icon={<Icon name="arrowright" size={25} color="white" />}
               onPress={() => {
                 console.log({
                   question1,
@@ -380,22 +385,28 @@ const Survey = () => {
                   question3,
                   answer1,
                   answer2,
+                  answer3,
+                });
+                if (
+                  question1 != null &&
+                  question2 != null &&
+                  question3 != null &&
+                  answer1 &&
+                  answer2 &&
                   answer3
-                })
-                if (question1 != null && question2 != null && question3 != null && answer1 && answer2 && answer3) {
+                ) {
                   console.log({
                     question1,
                     question2,
                     question3,
                     answer1,
                     answer2,
-                    answer3
-                  })
-                  navigation.navigate('AddImages');
+                    answer3,
+                  });
+                  navigation.navigate("AddImages");
                 } else {
                   alert("Please fill out all fields!");
                 }
-                
               }}
             />
           </View>
@@ -403,13 +414,12 @@ const Survey = () => {
       </SafeAreaView>
     </KeyboardAwareScrollView>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "black",
-    flex: 1
+    flex: 1,
   },
   header: {
     // marginTop: 40,
@@ -434,7 +444,7 @@ const styles = StyleSheet.create({
     color: "white",
     borderRadius: 20,
     borderColor: "#1DB954",
-    borderWidth: 0.8
+    borderWidth: 0.8,
   },
   dropdown: {
     width: WIDTH * 0.8,
@@ -447,7 +457,7 @@ const styles = StyleSheet.create({
   },
   listItemLabelStyle: {
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
   },
   dropDownContainerStyle: {
     backgroundColor: "black",
@@ -458,11 +468,11 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
   },
   placeholderStyles: {
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
   },
   footer: {
     alignItems: "center",
@@ -470,7 +480,7 @@ const styles = StyleSheet.create({
   questions: {
     textAlign: "center",
     color: "#FE8AE3",
-    fontWeight: 'bold',
+    fontWeight: "bold",
     margin: 15,
   },
   footer: {
@@ -478,9 +488,8 @@ const styles = StyleSheet.create({
     marginTop: WIDTH * 0.05,
   },
 
-
   selectionBox: {
-    justifyContent: 'center',
+    justifyContent: "center",
     width: WIDTH * 0.8,
     borderColor: "#1DB954",
     borderRadius: 20,
@@ -491,9 +500,9 @@ const styles = StyleSheet.create({
   },
 
   selectionBoxText: {
-    color: '#fff',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    color: "#fff",
+    justifyContent: "center",
+    alignSelf: "center",
     fontSize: 17,
     // width: WIDTH * 0.3
   },
@@ -509,7 +518,7 @@ const styles = StyleSheet.create({
   },
 
   selectionBoxDropdownText: {
-    color: '#fff'
+    color: "#fff",
   },
 });
 

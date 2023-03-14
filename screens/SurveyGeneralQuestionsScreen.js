@@ -1,19 +1,25 @@
-import React, { useState, setState, useCallback, Component, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, Dimensions } from 'react-native';
+import React, {
+  useState,
+  setState,
+  useCallback,
+  Component,
+  useEffect,
+} from "react";
+import { StyleSheet, Text, View, TextInput, Dimensions } from "react-native";
 // import { Dropdown } from 'react-native-material-dropdown';
 import DropDownPicker from "react-native-dropdown-picker";
-import { useForm, Controller } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { Button } from '@rneui/themed';
+import { useForm, Controller } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/AntDesign";
+import { Button } from "@rneui/themed";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import axios from 'axios';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { SelectList } from 'react-native-dropdown-select-list';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import axios from "axios";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SelectList } from "react-native-dropdown-select-list";
 
 // Importing Redux store
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   setName,
   setEmail,
@@ -34,11 +40,16 @@ import {
   setPicture2,
   setPicture3,
   setPicture4,
-} from '../redux/UserData';
-import { updateUserData, updatePictures, questionBank, getQuestions } from '../redux/UserData';
+} from "../redux/UserData";
+import {
+  updateUserData,
+  updatePictures,
+  questionBank,
+  getQuestions,
+} from "../redux/UserData";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const WIDTH = Dimensions.get('window').width;
+const WIDTH = Dimensions.get("window").width;
 
 const NewUserQuestions = () => {
   const dispatch = useDispatch();
@@ -71,23 +82,22 @@ const NewUserQuestions = () => {
     // toptracks,
     // topgenres,
     // topartists,
-
-  } = useSelector(((state) => state.name));
+  } = useSelector((state) => state.name);
 
   const genders = [
-    { key: '1', value: 'Male' },
-    { key: '2', value: 'Female' },
-    { key: '3', value: 'Other' },
-  ]
+    { key: "1", value: "Male" },
+    { key: "2", value: "Female" },
+    { key: "3", value: "Other" },
+  ];
 
   const sexualOrientations = [
-    { key: '1', value: 'Straight' },
-    { key: '2', value: 'Gay' },
-    { key: '3', value: 'Lesbian' },
-    { key: '4', value: 'Bisexual' },
-    { key: '5', value: 'Pansexual' },
-    { key: '6', value: 'Other' },
-  ]
+    { key: "1", value: "Straight" },
+    { key: "2", value: "Gay" },
+    { key: "3", value: "Lesbian" },
+    { key: "4", value: "Bisexual" },
+    { key: "5", value: "Pansexual" },
+    { key: "6", value: "Other" },
+  ];
 
   // var genderPlaceholder = "Select gender";
   // if (gender) {
@@ -98,13 +108,12 @@ const NewUserQuestions = () => {
   // if (orientation) {
   //   orientationPlaceholder = sexualOrientations[orientation-1].value
   // }
-  
+
   // getQuestions();
 
   // if (sexualOrientations[orientation].value) {
   //   orientationPlaceholder = sexualOrientations[orientation].value;
   // }
-  
 
   // const [userID, setUserID] = useState(1);
   // const [name, setName] = useState(null);
@@ -137,13 +146,10 @@ const NewUserQuestions = () => {
       } else {
         return false;
       }
-
     } else {
-      return false
+      return false;
     }
-
-    
-  }
+  };
 
   // const showDatePicker = () => {
   //   setDatePickerVisible(true);
@@ -196,19 +202,24 @@ const NewUserQuestions = () => {
   // console.log(name)
 
   return (
-    <KeyboardAwareScrollView style={styles.container} >
+    <KeyboardAwareScrollView style={styles.container}>
       <SafeAreaView>
         <View style={styles.container}>
           <Text style={styles.welcome}> Welcome! </Text>
           {/* <Text  style={styles.spotifyUsername}>spotify_username!</Text> */}
-          <Text style={styles.info}> Please fill out the information below to complete your profile. </Text>
+          <Text style={styles.info}>
+            {" "}
+            Please fill out the information below to complete your profile.{" "}
+          </Text>
 
           <Text style={styles.questions}> What is your name? </Text>
           <TextInput
             placeholder={name}
             style={styles.smallInput}
-            placeholderTextColor='#fff'
-            onChangeText={(value) => { dispatch(setName(value)) }}
+            placeholderTextColor="#fff"
+            onChangeText={(value) => {
+              dispatch(setName(value));
+            }}
           />
 
           <Text style={styles.questions}> Date of Birth? </Text>
@@ -242,8 +253,9 @@ const NewUserQuestions = () => {
             onPress={showDatePicker} 
           />
         </View> */}
-            <DateTimePicker style={{ flex: 0.7 }}
-              // display="default" 
+            <DateTimePicker
+              style={{ flex: 0.7 }}
+              // display="default"
               display="calendar"
               value={selectedDate}
               themeVariant="dark"
@@ -252,19 +264,18 @@ const NewUserQuestions = () => {
                   type,
                   nativeEvent: { timestamp },
                 } = event;
-                console.log(event.type)
-                if (event.type == 'set') {
+                console.log(event.type);
+                if (event.type == "set") {
                   // console.log(date.getDate());
                   // setBirthday(date);
                   // let today = new Date()
 
                   // console.log(date.getFullYear())
                   // console.log(today.getFullYear())
-                  
+
                   // console.log(date.getUTCFullYear())
                   // date.getFullYear
-                  dispatch(setBirthdate(date))
-                  
+                  dispatch(setBirthdate(date));
                 }
               }}
             />
@@ -273,11 +284,9 @@ const NewUserQuestions = () => {
           {selectedDate ? selectedDate.toLocaleDateString() : 'No date selected'}
         </Text>
         </View> */}
-
           </View>
 
           {/* <TextInput style={styles.smallInput} /> */}
-
 
           <Text style={styles.questions}>Gender</Text>
 
@@ -291,7 +300,7 @@ const NewUserQuestions = () => {
             dropdownTextStyles={styles.selectionBoxDropdownText}
             dropdownStyles={styles.selectionBoxDropdown}
             search={false}
-            arrowicon={<Text style={{ color: '#fff' }}>⌄</Text>}
+            arrowicon={<Text style={{ color: "#fff" }}>⌄</Text>}
           />
 
           {/* <Controller
@@ -327,14 +336,14 @@ const NewUserQuestions = () => {
           <SelectList
             placeholder="Orientation"
             setSelected={(value) => dispatch(setOrientation(value))}
-            save='value'
+            save="value"
             data={sexualOrientations}
             inputStyles={styles.selectionBoxText}
             boxStyles={styles.selectionBox}
             dropdownTextStyles={styles.selectionBoxDropdownText}
             dropdownStyles={styles.selectionBoxDropdown}
             search={false}
-            arrowicon={<Text style={{ color: '#fff' }}>⌄</Text>}
+            arrowicon={<Text style={{ color: "#fff" }}>⌄</Text>}
           />
 
           {/* <Controller
@@ -372,7 +381,7 @@ const NewUserQuestions = () => {
           <TextInput
             style={styles.smallInput}
             placeholder={pronouns}
-            placeholderTextColor='#fff'
+            placeholderTextColor="#fff"
             onChangeText={(value) => dispatch(setPronouns(value))}
           />
 
@@ -380,40 +389,32 @@ const NewUserQuestions = () => {
           <TextInput
             style={styles.smallInput}
             placeholder={location}
-            placeholderTextColor='#fff'
+            placeholderTextColor="#fff"
             onChangeText={(value) => dispatch(setLocation(value))}
           />
-
 
           <View style={styles.footer}>
             <Button
               type="clear"
-              icon={
-                <Icon
-                  name="arrowright"
-                  size={25}
-                  color="white"
-                />
-              }
+              icon={<Icon name="arrowright" size={25} color="white" />}
               onPress={() => {
                 console.log({
                   name,
                   gender,
                   birthdate,
                   pronouns,
-                  location
-                })
+                  location,
+                });
                 console.log(ageCheck());
                 if (name && gender && birthdate && pronouns && location) {
                   if (ageCheck()) {
-                    navigation.navigate('SurveyBio');
+                    navigation.navigate("SurveyBio");
                   } else {
-                    alert("Invalid Age. Must be over 18.")
+                    alert("Invalid Age. Must be over 18.");
                   }
                 } else {
                   alert("Please fill out all fields!");
                 }
-                
               }}
             />
           </View>
@@ -423,14 +424,10 @@ const NewUserQuestions = () => {
   );
 };
 
-
-
-
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "black",
-    flex: 5
+    flex: 5,
   },
   questions: {
     textAlign: "center",
@@ -440,18 +437,18 @@ const styles = StyleSheet.create({
     marginTop: WIDTH * 0.11,
     color: "#FFF",
     fontSize: 60,
-    fontWeight: 'bold',
-    textAlign: "center"
+    fontWeight: "bold",
+    textAlign: "center",
   },
   spotifyUsername: {
     color: "#FF2DB6",
     textAlign: "center",
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   info: {
     color: "#FE8AE3",
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 15,
     textAlign: "center",
     marginBottom: WIDTH * 0.05,
@@ -467,7 +464,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 40,
     borderColor: "#1DB954",
-    borderWidth: 1
+    borderWidth: 1,
   },
   button: {
     backgroundColor: "#FF2DB6",
@@ -499,14 +496,14 @@ const styles = StyleSheet.create({
     marginBottom: WIDTH * 0.2,
   },
   dobbutton: {
-    justifyContent: 'flex-start',
-    display: 'flex',
+    justifyContent: "flex-start",
+    display: "flex",
     alignContent: "left",
   },
   dob: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     color: "white",
-    display: 'flex',
+    display: "flex",
     marginTop: 12,
     marginLeft: 20,
   },
@@ -520,15 +517,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 45,
     borderColor: "#1DB954",
-    borderWidth: 1
+    borderWidth: 1,
   },
   placeholderStyles: {
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
   },
 
   selectionBox: {
-    justifyContent: 'center',
+    justifyContent: "center",
     width: WIDTH * 0.8,
     borderColor: "#1DB954",
     borderRadius: 20,
@@ -539,23 +536,23 @@ const styles = StyleSheet.create({
   },
 
   selectionBoxText: {
-    color: '#fff',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
+    color: "#fff",
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center",
     fontSize: 15,
-    width: WIDTH * 0.4
+    width: WIDTH * 0.4,
   },
 
   selectionBoxDropdown: {
-    color: '#fff',
+    color: "#fff",
     width: 120,
-    alignSelf: 'center',
-    marginBottom: 20
+    alignSelf: "center",
+    marginBottom: 20,
   },
 
   selectionBoxDropdownText: {
-    color: '#fff'
+    color: "#fff",
   },
 });
 

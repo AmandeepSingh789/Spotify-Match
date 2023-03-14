@@ -1,15 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { React, useEffect, useRef, useState, useCallback } from 'react';
-import { Camera } from 'expo-camera';
-import { shareAsync } from 'expo-sharing';
-import { useFonts } from 'expo-font';
-import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { StatusBar } from "expo-status-bar";
+import { React, useEffect, useRef, useState, useCallback } from "react";
+import { Camera } from "expo-camera";
+import { shareAsync } from "expo-sharing";
+import { useFonts } from "expo-font";
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
+import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/AntDesign";
 
-import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
-
+import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library";
 
 import {
   SafeAreaView,
@@ -24,21 +23,19 @@ import {
   ActivityIndicator,
   ImageBase,
   TouchableOpacity,
-  TouchableHighlight
-} from 'react-native';
-
+  TouchableHighlight,
+} from "react-native";
 
 // Import Redux store
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   setPicture1,
   setPicture2,
   setPicture3,
   setPicture4,
-} from '../redux/UserData';
+} from "../redux/UserData";
 
-import { createPictures, createUser } from '../redux/UserData';
-
+import { createPictures, createUser } from "../redux/UserData";
 
 export default function Add_images() {
   const dispatch = useDispatch();
@@ -71,16 +68,13 @@ export default function Add_images() {
     toptracks,
     topgenres,
     topartists,
-
-  } = useSelector(((state) => state.id));
+  } = useSelector((state) => state.id);
 
   const navigation = useNavigation();
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
-
-
 
   const pickImages = async () => {
     // no permission needed
@@ -92,9 +86,8 @@ export default function Add_images() {
       quality: 1,
       selectionLimit: 4,
       orderedSelection: true,
-      base64: true
+      base64: true,
     });
-
 
     if (!result.canceled) {
       setImage1(result.assets[0].uri);
@@ -117,7 +110,7 @@ export default function Add_images() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64: true
+      base64: true,
     });
 
     console.log(result);
@@ -144,30 +137,48 @@ export default function Add_images() {
         console.log("image 4");
       }
     }
-  }
+  };
 
   const postData = () => {
     console.log({
-      "id": id,
-      "name": name,
-      "birthdate": birthdate,
-      "email": email,
-      "gender": gender,
-      "orientation": orientation,
-      "location": location,
-      "pronouns": pronouns,
-      "bio": bio,
-      "questionid1": question1,
-      "questionid2": question2,
-      "questionid3": question3,
-      "answer1": answer1,
-      "answer2": answer2,
-      "answer3": answer3,
-      "instagram": socials
-    })
-    if (name != null && birthdate != null && gender != null && orientation != null && location && pronouns && bio && question1 != null && question2 != null && question3 != null && answer1 && answer2 && answer3 && socials && image1 && image2 && image3 && image4) {
+      id: id,
+      name: name,
+      birthdate: birthdate,
+      email: email,
+      gender: gender,
+      orientation: orientation,
+      location: location,
+      pronouns: pronouns,
+      bio: bio,
+      questionid1: question1,
+      questionid2: question2,
+      questionid3: question3,
+      answer1: answer1,
+      answer2: answer2,
+      answer3: answer3,
+      instagram: socials,
+    });
+    if (
+      name != null &&
+      birthdate != null &&
+      gender != null &&
+      orientation != null &&
+      location &&
+      pronouns &&
+      bio &&
+      question1 != null &&
+      question2 != null &&
+      question3 != null &&
+      answer1 &&
+      answer2 &&
+      answer3 &&
+      socials &&
+      image1 &&
+      image2 &&
+      image3 &&
+      image4
+    ) {
       console.log("Creating user");
-
 
       var tempGender = "";
       switch (gender) {
@@ -205,39 +216,38 @@ export default function Add_images() {
       }
 
       createUser({
-        "id": id,
-        "name": name,
-        "birthdate": birthdate,
-        "email": email,
-        "gender": tempGender,
-        "orientation": tempOrientation,
-        "location": location,
-        "pronouns": pronouns,
-        "bio": bio,
-        "questionid1": question1,
-        "questionid2": question2,
-        "questionid3": question3,
-        "answer1": answer1,
-        "answer2": answer2,
-        "answer3": answer3,
-        "instagram": socials
-      })
+        id: id,
+        name: name,
+        birthdate: birthdate,
+        email: email,
+        gender: tempGender,
+        orientation: tempOrientation,
+        location: location,
+        pronouns: pronouns,
+        bio: bio,
+        questionid1: question1,
+        questionid2: question2,
+        questionid3: question3,
+        answer1: answer1,
+        answer2: answer2,
+        answer3: answer3,
+        instagram: socials,
+      });
 
       console.log("Creating Profile Pictures");
 
       createPictures({
-        "id": id,
-        "image1": image1,
-        "image2": image2,
-        "image3": image3,
-        "image4": image4,
+        id: id,
+        image1: image1,
+        image2: image2,
+        image3: image3,
+        image4: image4,
       });
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     } else {
       alert("Please fill out all fields!");
     }
-  }
-
+  };
 
   // console.log(name)
   return (
@@ -249,7 +259,7 @@ export default function Add_images() {
         name="arrowleft"
         size={25}
         color="gray"
-        onPress={() => navigation.navigate('SurveyGeneralQuestions')}
+        onPress={() => navigation.navigate("SurveyGeneralQuestions")}
       />
 
       {/* <View style={styles.header}>
@@ -269,38 +279,49 @@ export default function Add_images() {
 
       {/* <Text style={styles.title}>Add Images</Text> */}
 
-      <Text style={styles.questions}>Add images to your profile! Tap 'Choose images' to select them. Tap an image to edit it.</Text>
+      <Text style={styles.questions}>
+        Add images to your profile! Tap 'Choose images' to select them. Tap an
+        image to edit it.
+      </Text>
       {/* <Text style={styles.questions}>Tap an image to edit it.</Text> */}
 
-
       <View style={styles.imageContainer}>
-
         <View style={styles.imageView}>
-          <TouchableOpacity onPress={() => { changeImage(1); }}>
+          <TouchableOpacity
+            onPress={() => {
+              changeImage(1);
+            }}
+          >
             <Image source={{ uri: image1 }} style={styles.image} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { changeImage(2); }}>
+          <TouchableOpacity
+            onPress={() => {
+              changeImage(2);
+            }}
+          >
             <Image source={{ uri: image2 }} style={styles.image} />
           </TouchableOpacity>
-
         </View>
 
-
-
         <View style={styles.imageView}>
-          <TouchableOpacity onPress={() => { changeImage(3); }}>
+          <TouchableOpacity
+            onPress={() => {
+              changeImage(3);
+            }}
+          >
             <Image source={{ uri: image3 }} style={styles.image} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { changeImage(4); }}>
+          <TouchableOpacity
+            onPress={() => {
+              changeImage(4);
+            }}
+          >
             <Image source={{ uri: image4 }} style={styles.image} />
           </TouchableOpacity>
         </View>
       </View>
-
-
-
 
       <Button
         style={styles.button}
@@ -309,79 +330,77 @@ export default function Add_images() {
         color="#19AC52"
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => {
-        postData();
-      }}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          postData();
+        }}
+      >
         <Text style={styles.buttonText}>Complete Profile!</Text>
       </TouchableOpacity>
-
     </SafeAreaView>
-
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: "#000",
   },
 
   header: {
     margin: 10,
     alignItems: "left",
-
   },
 
   title: {
     fontSize: 40,
-    color: '#fff',
+    color: "#fff",
     margin: 20,
-    alignSelf: 'flex-start'
+    alignSelf: "flex-start",
   },
 
   subtitle: {
     fontSize: 14,
     color: "#1DB954",
     marginRight: 20,
-    alignSelf: 'flex-end'
+    alignSelf: "flex-end",
   },
 
   imageContainer: {
     margin: 50,
     marginTop: 25,
-    alignSelf: 'center'
+    alignSelf: "center",
   },
 
   imageView: {
-    flexDirection: 'row',
-    alignSelf: 'center'
+    flexDirection: "row",
+    alignSelf: "center",
   },
 
   profilePicture: {
-    borderColor: '#1DB954',
+    borderColor: "#1DB954",
     borderWidth: 1,
     width: 200,
     height: 200,
     borderRadius: 43,
-    margin: 5
+    margin: 5,
   },
 
   image: {
-    borderColor: '#1DB954',
+    borderColor: "#1DB954",
     borderWidth: 1,
     width: 160,
     height: 160,
     borderRadius: 33,
-    margin: 5
+    margin: 5,
   },
 
   button: {
     margin: 40,
-    backgroundColor: '#1DB954',
-    alignItems: 'center',
-    alignSelf: 'center',
+    backgroundColor: "#1DB954",
+    alignItems: "center",
+    alignSelf: "center",
     padding: 20,
     borderRadius: 50,
   },
@@ -392,8 +411,7 @@ const styles = StyleSheet.create({
   questions: {
     textAlign: "center",
     color: "#FE8AE3",
-    fontWeight: 'bold',
+    fontWeight: "bold",
     margin: 24,
   },
-
 });

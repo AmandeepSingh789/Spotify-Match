@@ -1,18 +1,16 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useDispatch, useSelector } from 'react-redux';
-import { encode, decode } from 'base64-arraybuffer';
+import { useDispatch, useSelector } from "react-redux";
+import { encode, decode } from "base64-arraybuffer";
 import { Buffer } from "buffer";
-import * as ImageManipulator from 'expo-image-manipulator';
-import * as FileSystem from 'expo-file-system';
-
-
-
+import * as ImageManipulator from "expo-image-manipulator";
+import * as FileSystem from "expo-file-system";
 
 export const createUser = async (data) => {
   console.log("Creating user with data:");
   console.log(data);
-  axios.post("http://spotify-match.us-west-1.elasticbeanstalk.com/users", data)
+  axios
+    .post("http://spotify-match.us-west-1.elasticbeanstalk.com/users", data)
     .then(function (response) {
       console.log(response);
     })
@@ -21,23 +19,34 @@ export const createUser = async (data) => {
     });
 };
 
+export const fetchUserData = createAsyncThunk(
+  "UserData/fetchUserData",
+  async (id) => {
+    const response = await axios.get(
+      "http://spotify-match.us-west-1.elasticbeanstalk.com/users/" + id
+    );
+    // console.log(response.data)
+    return response.data;
+  }
+);
 
-export const fetchUserData = createAsyncThunk('UserData/fetchUserData', async (id) => {
-  const response = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + id);
-  // console.log(response.data)
-  return response.data;
-});
-
-
-export const updateUserData = createAsyncThunk('UserData/updateUserData', async (data) => {
-  await axios.put('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + data["id"], data)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-});
+export const updateUserData = createAsyncThunk(
+  "UserData/updateUserData",
+  async (data) => {
+    await axios
+      .put(
+        "http://spotify-match.us-west-1.elasticbeanstalk.com/users/" +
+          data["id"],
+        data
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+);
 
 export const createPictures = async (data) => {
   console.log("Creating profile pictures");
@@ -52,7 +61,11 @@ export const createPictures = async (data) => {
 
   // console.log(images)
 
-  await axios.post("http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/", images)
+  await axios
+    .post(
+      "http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/",
+      images
+    )
     .then(function (response) {
       // console.log(response);
     })
@@ -73,7 +86,12 @@ export const updatePictures = async (data) => {
 
   // console.log(images)
 
-  await axios.put("http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/" + images["id"], images)
+  await axios
+    .put(
+      "http://spotify-match.us-west-1.elasticbeanstalk.com/profilepictures/" +
+        images["id"],
+      images
+    )
     .then(function (response) {
       console.log(response);
     })
@@ -82,9 +100,10 @@ export const updatePictures = async (data) => {
     });
 };
 
-
 export const getQuestions = async () => {
-  const questionData = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/');
+  const questionData = await axios.get(
+    "http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/"
+  );
   console.log(questionData["data"].length);
 
   var questionBank = [];
@@ -94,38 +113,39 @@ export const getQuestions = async () => {
   // }
 
   for (let i = 0; i < questionData["data"].length; i++) {
-    questionBank.push({ key: questionData["data"][i]["questionid"], value: questionData["data"][i]["questiontext"] });
+    questionBank.push({
+      key: questionData["data"][i]["questionid"],
+      value: questionData["data"][i]["questiontext"],
+    });
   }
   // console.log(questionBank)
   return questionBank;
 };
 export var questionBank = getQuestions();
 
-
-
 export const formatImage = async (image) => {
-  if (image[0] == '/') {
-    const shortByteArray = Buffer.from(image, 'base64');
-    const shortByteA = `\\x${shortByteArray.toString('hex')}`;
-    return shortByteA
+  if (image[0] == "/") {
+    const shortByteArray = Buffer.from(image, "base64");
+    const shortByteA = `\\x${shortByteArray.toString("hex")}`;
+    return shortByteA;
   }
   const resizedImage = await ImageManipulator.manipulateAsync(
     image,
     [{ resize: { width: 200, height: 200 } }],
-    { format: 'jpeg' }
+    { format: "jpeg" }
   );
 
-  const newuri = resizedImage.uri
+  const newuri = resizedImage.uri;
 
-  var base64 = await FileSystem.readAsStringAsync(newuri, { encoding: 'base64' }).catch(error => console.log(error));
+  var base64 = await FileSystem.readAsStringAsync(newuri, {
+    encoding: "base64",
+  }).catch((error) => console.log(error));
 
-  const byteArray = Buffer.from(base64, 'base64');
-  const byteaValue = `\\x${byteArray.toString('hex')}`;
+  const byteArray = Buffer.from(base64, "base64");
+  const byteaValue = `\\x${byteArray.toString("hex")}`;
 
   return byteaValue;
 };
-
-
 
 const userDataSlice = createSlice({
   name: "userdata",
@@ -144,9 +164,9 @@ const userDataSlice = createSlice({
     question3: null,
 
     answers: null,
-    answer1: '',
-    answer2: '',
-    answer3: '',
+    answer1: "",
+    answer2: "",
+    answer3: "",
 
     birthdate: null,
     bio: null,
@@ -156,7 +176,6 @@ const userDataSlice = createSlice({
     picture2: null,
     picture3: null,
     picture4: null,
-
 
     spotifydata: null,
     topartists: null,
@@ -172,13 +191,13 @@ const userDataSlice = createSlice({
 
   reducers: {
     setID(state, action) {
-      state.id = action.payload
+      state.id = action.payload;
     },
     setName(state, action) {
-      state.name = action.payload
+      state.name = action.payload;
     },
     setEmail(state, action) {
-      state.email = action.payload
+      state.email = action.payload;
     },
     setGender(state, action) {
       // switch (action.payload) {
@@ -191,11 +210,11 @@ const userDataSlice = createSlice({
       //   default:
       //     state.gender = 'O';
       // }
-      state.gender = action.payload
+      state.gender = action.payload;
       console.log(state.gender);
     },
     setLocation(state, action) {
-      state.location = action.payload
+      state.location = action.payload;
     },
     setOrientation(state, action) {
       // console.log(action.payload)
@@ -218,190 +237,185 @@ const userDataSlice = createSlice({
       //   default:
       //     state.orientation = 'O';
       // }
-      
-      state.orientation = action.payload
-      console.log(state.orientation)
+
+      state.orientation = action.payload;
+      console.log(state.orientation);
     },
     setPronouns(state, action) {
-      state.pronouns = action.payload
+      state.pronouns = action.payload;
     },
 
     setQuestionids(state, action) {
-      state.questionids = action.payload
+      state.questionids = action.payload;
     },
 
     setQuestion1(state, action) {
-      state.question1 = action.payload
+      state.question1 = action.payload;
     },
     setQuestion2(state, action) {
-      state.question2 = action.payload
+      state.question2 = action.payload;
     },
     setQuestion3(state, action) {
-      state.question3 = action.payload
+      state.question3 = action.payload;
     },
-
 
     setAnswers(state, action) {
-      state.answers = action.payload
+      state.answers = action.payload;
     },
     setAnswer1(state, action) {
-      state.answer1 = action.payload
+      state.answer1 = action.payload;
     },
     setAnswer2(state, action) {
-
-      state.answer2 = action.payload
+      state.answer2 = action.payload;
     },
     setAnswer3(state, action) {
-      state.answer3 = action.payload
+      state.answer3 = action.payload;
     },
-
 
     setBirthdate(state, action) {
       state.birthdate = action.payload;
     },
     setBio(state, action) {
-      state.bio = action.payload
+      state.bio = action.payload;
     },
     setSocials(state, action) {
       state.socials = action.payload;
     },
     setPicture1(state, action) {
-      state.picture1 = action.payload
+      state.picture1 = action.payload;
     },
     setPicture2(state, action) {
-      state.picture2 = action.payload
+      state.picture2 = action.payload;
     },
     setPicture3(state, action) {
-      state.picture3 = action.payload
+      state.picture3 = action.payload;
     },
     setPicture4(state, action) {
-      state.picture4 = action.payload
+      state.picture4 = action.payload;
     },
 
     setUserToken(state, action) {
-      state.userToken = action.payload
+      state.userToken = action.payload;
     },
-
 
     setSpotifyData(state, action) {
-      state.spotifydata = action.payload
+      state.spotifydata = action.payload;
     },
     setTopArtists(state, action) {
-      state.topartists = action.payload
+      state.topartists = action.payload;
     },
     setTopTracks(state, action) {
-      state.toptracks = action.payload
+      state.toptracks = action.payload;
     },
     setTopGenres(state, action) {
-      state.topgenres = action.payload
-    }
-
+      state.topgenres = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUserData.pending, state => {
-      state.loading = true
-    })
+    builder.addCase(fetchUserData.pending, (state) => {
+      state.loading = true;
+    });
     builder.addCase(fetchUserData.fulfilled, (state, action) => {
       if (action.payload) {
         state.userExists = true;
-        state.id = action.payload["id"]
-        state.name = action.payload["name"]
+        state.id = action.payload["id"];
+        state.name = action.payload["name"];
 
         console.log(state.name);
-        state.email = action.payload["email"]
+        state.email = action.payload["email"];
 
-        if (action.payload["gender"] == 'M') {
-          state.gender = 'Male';
-        } else if (action.payload["gender"] == 'F') {
-          state.gender = 'Female';
+        if (action.payload["gender"] == "M") {
+          state.gender = "Male";
+        } else if (action.payload["gender"] == "F") {
+          state.gender = "Female";
         } else {
-          state.gender = 'Other';
+          state.gender = "Other";
         }
 
-        state.location = action.payload["location"]
+        state.location = action.payload["location"];
         // console.log(state.location)
 
-
         switch (action.payload["orientation"]) {
-          case 'S':
-            state.orientation = 'Straight';
+          case "S":
+            state.orientation = "Straight";
             break;
-          case 'G':
-            state.orientation = 'Gay';
+          case "G":
+            state.orientation = "Gay";
             break;
-          case 'L':
-            state.orientation = 'Lesbian';
+          case "L":
+            state.orientation = "Lesbian";
             break;
-          case 'B':
-            state.orientation = 'Bisexual';
+          case "B":
+            state.orientation = "Bisexual";
             break;
-          case 'P':
-            state.orientation = 'Pansexual';
+          case "P":
+            state.orientation = "Pansexual";
             break;
           default:
-            state.orientation = 'Other';
+            state.orientation = "Other";
         }
 
-        state.pronouns = action.payload["pronouns"]
+        state.pronouns = action.payload["pronouns"];
 
+        state.question1 = action.payload["questionid1"];
+        state.question2 = action.payload["questionid2"];
+        state.question3 = action.payload["questionid3"];
 
-        state.question1 = action.payload["questionid1"]
-        state.question2 = action.payload["questionid2"]
-        state.question3 = action.payload["questionid3"]
+        state.answer1 = action.payload["answer1"];
+        state.answer2 = action.payload["answer2"];
+        state.answer3 = action.payload["answer3"];
 
-        state.answer1 = action.payload["answer1"]
-        state.answer2 = action.payload["answer2"]
-        state.answer3 = action.payload["answer3"]
-
-        state.birthdate = action.payload["birthdate"]
-        state.bio = action.payload["bio"]
-        state.socials = action.payload["instagram"]
+        state.birthdate = action.payload["birthdate"];
+        state.bio = action.payload["bio"];
+        state.socials = action.payload["instagram"];
 
         if (action.payload["profilepictures"]) {
           if (action.payload["profilepictures"]["picture1"]) {
-            state.picture1 = new Buffer.from(action.payload["profilepictures"]["picture1"]["data"]).toString('base64')
+            state.picture1 = new Buffer.from(
+              action.payload["profilepictures"]["picture1"]["data"]
+            ).toString("base64");
             // console.log(state.picture1.length)
           }
 
           if (action.payload["profilepictures"]["picture2"]) {
-            state.picture2 = new Buffer.from(action.payload["profilepictures"]["picture2"]["data"]).toString('base64')
+            state.picture2 = new Buffer.from(
+              action.payload["profilepictures"]["picture2"]["data"]
+            ).toString("base64");
             // console.log(state.picture2.length)
           }
 
           if (action.payload["profilepictures"]["picture3"]) {
-            state.picture3 = new Buffer.from(action.payload["profilepictures"]["picture3"]["data"]).toString('base64')
+            state.picture3 = new Buffer.from(
+              action.payload["profilepictures"]["picture3"]["data"]
+            ).toString("base64");
             // console.log(state.picture3.length)
           }
 
           if (action.payload["profilepictures"]["picture4"]) {
-            state.picture4 = new Buffer.from(action.payload["profilepictures"]["picture4"]["data"]).toString('base64')
+            state.picture4 = new Buffer.from(
+              action.payload["profilepictures"]["picture4"]["data"]
+            ).toString("base64");
             // console.log(state.picture4.length)
           }
-
         }
 
+        state.spotifydata = action.payload["spotifydata"];
+        state.topartists = action.payload["topartists"];
+        state.toptracks = action.payload["toptracks"];
+        state.topgenres = action.payload["topgenres"];
 
-        state.spotifydata = action.payload["spotifydata"]
-        state.topartists = action.payload["topartists"]
-        state.toptracks = action.payload["toptracks"]
-        state.topgenres = action.payload["topgenres"]
-
-        state.loading = false
-
+        state.loading = false;
       } else {
-        state.userExists = false
+        state.userExists = false;
       }
+    });
 
-    })
-
-    builder.addCase(fetchUserData.rejected, state => {
-      state.loading = false
-      state.userExists = false
-    })
-  }
+    builder.addCase(fetchUserData.rejected, (state) => {
+      state.loading = false;
+      state.userExists = false;
+    });
+  },
 });
-
-
 
 export const {
   setID,
@@ -434,5 +448,5 @@ export const {
   setTopTracks,
 
   setUserToken,
-} = userDataSlice.actions
-export default userDataSlice.reducer
+} = userDataSlice.actions;
+export default userDataSlice.reducer;
