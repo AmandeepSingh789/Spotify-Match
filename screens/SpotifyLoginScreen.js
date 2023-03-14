@@ -59,6 +59,8 @@ const SpotifyLoginScreen = () => {
     userToken,
   } = useSelector(((state) => state.id));
 
+  console.log(id)
+
   const navigation = useNavigation();
 
   const [token, setToken] = useState('');
