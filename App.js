@@ -117,7 +117,7 @@ function TabNavigation() {
           if (rn === homeScreenName) {
             iconName = focused ? "person" : "person-outline";
           } else if (rn === matchesScreenName) {
-            iconName = focused ? "chatbox" : "chatbox-outline";
+            iconName = focused ? "heart" : "heart-circle-outline";
           } else if (rn === profileScreenName) {
             iconName = focused ? "person-circle" : "person-circle-outline";
           }
