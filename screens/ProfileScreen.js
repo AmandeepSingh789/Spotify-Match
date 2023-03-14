@@ -85,8 +85,9 @@ import {
     setPicture3,
     setPicture4,
     setID,
+    setUserToken,
 } from '../redux/UserData';
-import { updateUserData, updatePictures, questionBank } from '../redux/UserData';
+import { updateUserData, updatePictures, getQuestions, questionBank } from '../redux/UserData';
 
 
 // Global width variable
@@ -126,9 +127,20 @@ export default function Edit_user_profile() {
         topgenres,
         topartists,
 
+        userToken,
     } = useSelector(((state) => state.id));
 
-    console.log(spotifydata)
+    // console.log(question1)
+    // console.log(question2)
+    // console.log(question3)
+
+    // console.log(questionBank);
+    // const questionBank = getQuestions();
+
+    // console.log(questionBank._z);
+    console.log(userToken);
+
+
 
     const [image1, setImage1] = useState(picture1);
     const [image2, setImage2] = useState(picture2);
@@ -152,24 +164,20 @@ export default function Edit_user_profile() {
         { key: '6', value: 'Other' },
     ]
 
-    // console.log(picture1)
+    console.log(questionBank)
 
     var tempQuestion1 = "Question1"
-    if (question1) {
-        tempQuestion1 = questionBank[question1]["value"]
+    if (question1 != null) {
+        tempQuestion1 = questionBank._z[question1].value
     }
     var tempQuestion2 = "Question2"
-    if (question2) {
-        tempQuestion2 = questionBank[question2]["value"]
+    if (question2 != null) {
+        tempQuestion2 = questionBank._z[question2].value
     }
     var tempQuestion3 = "Question3"
-    if (question3) {
-        tempQuestion3 = questionBank[question3]["value"]
+    if (question3 != null) {
+        tempQuestion3 = questionBank._z[question3].value
     }
-
-
-
-
 
 
 
@@ -364,7 +372,7 @@ export default function Edit_user_profile() {
                     // placeholder={questionBank[question1]["value"]}
                     placeholder={tempQuestion1}
                     setSelected={(value) => dispatch(setQuestion1(value))}
-                    data={questionBank}
+                    data={questionBank._z}
                     save="key"
                     inputStyles={styles.QselectionBoxText}
                     boxStyles={styles.selectionBox}
@@ -388,7 +396,7 @@ export default function Edit_user_profile() {
                     // placeholder={questionBank[question2]["value"]}
                     placeholder={tempQuestion2}
                     setSelected={(value) => dispatch(setQuestion2(value))}
-                    data={questionBank}
+                    data={questionBank._z}
                     save="key"
                     inputStyles={styles.QselectionBoxText}
                     boxStyles={styles.selectionBox}
@@ -410,9 +418,9 @@ export default function Edit_user_profile() {
                 {/* Question 3 */}
                 <SelectList
                     // placeholder={questionBank[question3]["value"]}
-                    placeholder={tempQuestion2}
+                    placeholder={tempQuestion3}
                     setSelected={(value) => dispatch(setQuestion3(value))}
-                    data={questionBank}
+                    data={questionBank._z}
                     save="key"
                     inputStyles={styles.QselectionBoxText}
                     boxStyles={styles.selectionBox}
@@ -527,6 +535,7 @@ export default function Edit_user_profile() {
                         dispatch(setPicture2(null));
                         dispatch(setPicture3(null));
                         dispatch(setPicture4(null));
+                        dispatch(setUserToken(null));
                         navigation.navigate('Spotify Login Screen');
 
                     }}></Button>
@@ -711,7 +720,8 @@ const styles = StyleSheet.create({
 
     QselectionBoxDropdown: {
         color: '#fff',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        width: WIDTH * 0.8
     },
 
     QselectionBoxDropdownText: {

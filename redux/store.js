@@ -36,6 +36,7 @@ import toptracksReducer from './UserData'
 import loadingReducer from './UserData'
 import userExistsReducer from './UserData'
 
+import userTokenReducer from './UserData'
 
 // import dataReducer from './UserData'
 
@@ -77,9 +78,10 @@ export const store = configureStore({
     topgenres: topgenresReducer,
     topartitsts: topartistsReducer,
 
-
     loading: loadingReducer,
     userExists: userExistsReducer,
+
+    userToken: userTokenReducer,
 
     // data: dataReducer,
   }

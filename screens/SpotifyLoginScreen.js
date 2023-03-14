@@ -15,7 +15,8 @@ import {
   setTopArtists,
   setTopGenres,
   setTopTracks,
-  setEmail
+  setEmail,
+  setUserToken
 } from '../redux/UserData';
 import { updateUserData, updatePictures, questionBank, fetchUserData } from '../redux/UserData';
 // import { set } from "react-native-reanimated";
@@ -55,6 +56,7 @@ const SpotifyLoginScreen = () => {
     topartists,
     toptracks,
     topgenres,
+    userToken,
   } = useSelector(((state) => state.id));
 
   const navigation = useNavigation();
@@ -81,6 +83,7 @@ const SpotifyLoginScreen = () => {
       ],
       usePKCE: false,
       redirectUri: "exp://localhost:19000/",
+
     },
     {
       authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -231,19 +234,22 @@ const SpotifyLoginScreen = () => {
     )
   }
 
-  const setData = (userID, email) => {
+  const setData = (userID, userEmail) => {
     dispatch(setID(userID));
-    dispatch(setEmail(email));
+    dispatch(setEmail(userEmail));
+    // dispatch(fetchUserData(id));
     console.log(id)
   }
 
 
   var userID;
+  var userEmail;
   // console.log(token);
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params;
-      setToken(access_token);
+      // setToken(access_token);
+      dispatch(setUserToken(access_token));
       // token = access_token;
     }
   }, [response]);
@@ -252,20 +258,27 @@ const SpotifyLoginScreen = () => {
   useEffect(() => {
     async function fetchData() {
       // setToken('');
+      console.log(userToken);
+      // console.log(token)
 
-      const profile = await getSpotifyUser(token);
+      const profile = await getSpotifyUser(userToken);
+
       // var userID;
+
       if (profile.data) {
         userID = profile.data.id;
-        email = profile.data.email;
-        setData(userID, email)
+        userEmail = profile.data.email;
+        setData(userID, userEmail)
       }
 
       const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/' + userID)
         .catch((response) => { console.log(response) });
 
+      // const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/')
+      // .catch((response) => { console.log(response) });
 
       console.log(userExists.data);
+      // console.log(id)
 
       if (userExists.data) {
         dispatch(fetchUserData(userID));

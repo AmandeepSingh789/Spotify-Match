@@ -124,6 +124,20 @@ const NewUserQuestions = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   // const [datePickerVisible, setDatePickerVisible] = useState(false);
 
+  const ageCheck = () => {
+    let today = new Date();
+    console.log(birthdate.getFullYear());
+    console.log(today.getFullYear());
+
+    let tempAge = today.getFullYear() - birthdate.getFullYear();
+
+    if (tempAge > 18) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // const showDatePicker = () => {
   //   setDatePickerVisible(true);
   // };
@@ -235,7 +249,15 @@ const NewUserQuestions = () => {
                 if (event.type == 'set') {
                   // console.log(date.getDate());
                   // setBirthday(date);
+                  // let today = new Date()
+
+                  // console.log(date.getFullYear())
+                  // console.log(today.getFullYear())
+                  
+                  // console.log(date.getUTCFullYear())
+                  // date.getFullYear
                   dispatch(setBirthdate(date))
+                  
                 }
               }}
             />
@@ -372,11 +394,15 @@ const NewUserQuestions = () => {
                   pronouns,
                   location
                 })
+                console.log(ageCheck());
                 if (name && gender && birthdate && pronouns && location) {
-                  navigation.navigate('SurveyBio');
+                  if (ageCheck()) {
+                    navigation.navigate('SurveyBio');
+                  } else {
+                    alert("Invalid Age. Must be over 18.")
+                  }
                 } else {
                   alert("Please fill out all fields!");
-                  // navigation.navigate('SurveyBio');
                 }
                 
               }}

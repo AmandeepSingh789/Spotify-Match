@@ -82,20 +82,24 @@ export const updatePictures = async (data) => {
     });
 };
 
-export var questionBank = []
+
 export const getQuestions = async () => {
   const questionData = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/');
   console.log(questionData["data"].length);
 
-  if (questionBank.length > questionData["data"].length) {
-    questionBank = []
-  }
+  var questionBank = [];
+
+  // if (questionBank.length > questionData["data"].length) {
+  //   questionBank = []
+  // }
 
   for (let i = 0; i < questionData["data"].length; i++) {
     questionBank.push({ key: questionData["data"][i]["questionid"], value: questionData["data"][i]["questiontext"] });
   }
-  console.log(questionBank)
+  // console.log(questionBank)
+  return questionBank;
 };
+export var questionBank = getQuestions();
 
 
 
@@ -120,7 +124,6 @@ export const formatImage = async (image) => {
 
   return byteaValue;
 };
-
 
 
 
@@ -160,11 +163,13 @@ const userDataSlice = createSlice({
     toptracks: null,
     topgenres: null,
 
+    userToken: null,
 
     userExists: null,
     data: [],
     loading: false,
   },
+
   reducers: {
     setID(state, action) {
       state.id = action.payload
@@ -218,9 +223,7 @@ const userDataSlice = createSlice({
     },
 
 
-
     setBirthdate(state, action) {
-      // console.log(action.payload)
       state.birthdate = action.payload;
     },
     setBio(state, action) {
@@ -240,6 +243,10 @@ const userDataSlice = createSlice({
     },
     setPicture4(state, action) {
       state.picture4 = action.payload
+    },
+
+    setUserToken(state, action) {
+      state.userToken = action.payload
     },
 
 
@@ -391,6 +398,8 @@ export const {
   setSpotifyData,
   setTopArtists,
   setTopGenres,
-  setTopTracks
+  setTopTracks,
+
+  setUserToken,
 } = userDataSlice.actions
 export default userDataSlice.reducer
