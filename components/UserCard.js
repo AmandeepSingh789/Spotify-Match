@@ -14,6 +14,7 @@ import Layout from "../ constants/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { questionBank } from "../redux/UserData";
 
@@ -151,19 +152,22 @@ function Card({ id }) {
 
   const GetGender = (gender) => {
     let map = {
-      F: "Female",
-      M: "Male",
-      N: "Non Binary",
+      F: "Female,",
+      M: "Male,",
+      N: "Non Binary,",
+      O: "Non Binary,",
     };
     SetGender(map[gender]);
   };
 
   const GetOrientation = (orientation) => {
     let map = {
-      S: "Straight",
-      B: "Bisexual",
-      G: "Gay",
-      P: "Pansexual",
+      S: "Straight,",
+      B: "Bisexual,",
+      G: "Gay,",
+      L: "Lesbian,",
+      O: "",
+      P: "Pansexual,",
     };
     SetOrientation(map[orientation]);
   };
@@ -198,22 +202,30 @@ function Card({ id }) {
         </View>
 
         {/* -------------------------------------------------------------------- */}
-
+        <Pressable onPress={() => setModalVisible(true)}>
+          <View>
+            <Text style={styles.percentage}>
+              COMPATIBILITY: {compatibility}
+            </Text>
+          </View>
+        </Pressable>
         {/* Box with Name,Age and Meter*/}
         <View style={styles.upperBox}>
+          
           <View style={styles.basicInfo}>
             <Text style={styles.name}>{`${Name}, ${Age}`}</Text>
             <Text style={styles.genderAndOrientation}>
-              {`${gender}, ${orientation}, ${pronouns}`}            
+              {`${gender} ${orientation} ${pronouns}`}            
             </Text>
             <Text style={styles.location}>
               {`${location}`}            
             </Text>
           </View>
 
-          <View style={styles.meter}>
+          
+          {/* <View style={styles.meter}> */}
             {/* POPUP CODE BEGINS */}
-            <View style={styles.centeredView}>
+            {/* <View style={styles.centeredView}>
               <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -223,28 +235,30 @@ function Card({ id }) {
                 }}
               >
                 <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
+                  <View style={styles.modalView}> */}
                     {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
-                    <Pressable
+                    {/* <Pressable
                       style={[styles.button]}
                       onPress={() => setModalVisible(!modalVisible)}
                     >
                       <Text style={styles.textStyle}>X</Text>
                     </Pressable>
                     <Text style={styles.modalText}>Compatiable songs: </Text>
-                    <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+                    <Text style={styles.modalText}>{`${TopSongs}`} </Text> */}
                     {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
-                  </View>
+                  {/* </View>
                 </View>
               </Modal>
               <Pressable onPress={() => setModalVisible(true)}>
                 <Text style={styles.percentage}>{compatibility}</Text>
               </Pressable>
-            </View>
+            </View> */}
             {/* POPUP CODE ENDS */}
 
             {/* <Text style={styles.percentage}>{compatibility}</Text> */}
-          </View>
+          {/* </View> */}
+          
+
         </View>
 
         {/* -------------------------------------------------------------------- */}
@@ -313,7 +327,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
-    backgroundColor: "#000000",
+    backgroundColor: "#000",
     marginHorizontal: 40,
     marginTop: 20,
     marginBottom: 40,
@@ -351,16 +365,22 @@ const styles = StyleSheet.create({
     // color: '#fff',
     color: "#FE8AE3",
     fontSize: 28,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    // marginLeft: 10,
+    textAlign: 'center',
+    // flexShrink: 1
   },
   genderAndOrientation: {
     color: "#fff",
     fontSize: 15,
+    // marginLeft: 10,
+    textAlign:'center'
   },
   location: {
-    color: "#ff",
+    color: "#fff",
     fontSize: 15,
-
+    textAlign: 'center',
+    marginBottom: 15
   },
   meter: {
     color: "#5E5E5E",
@@ -368,19 +388,36 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
-    marginLeft: 20,
+    marginLeft: 15,
     borderWidth: 2,
-    height: 90,
-    width: 90,
+    marginRight: 20,
+    height: 70,
+    width: 70,
     justifyContent: "center",
   },
+  // compatibility: {
+  //   color: "#1DB954",
+  //   alignSelf: "center",
+  //   fontSize: 20,
+  //   marginBottom: 20
+  //   // fontWeight: 'bold'
+
+  // },
   percentage: {
     // color: '#fff',
-    marginBottom: 20,
-    color: "#1DB954",
+    // color: "#1DB954",
+    // alignSelf: "center",
+    // fontSize: 20,
+    // fontWeight: 'bold'
+    color: "#1DB950",
     alignSelf: "center",
-    fontSize: 27,
-    fontWeight: 'bold'
+    fontSize: 20,
+    top: -50,
+    marginBottom: -20,
+    fontWeight: 'bold',
+    textShadowColor: '#1DB954', 
+    textShadowOffset: { width: -1, height: 0 },
+    textShadowRadius: 10, 
   },
   desc: {
     color: "white",

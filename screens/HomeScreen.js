@@ -67,7 +67,7 @@ export default function App() {
           onSwipedLeft={(id) => {
             const leftData = {
               swipeeid: userIds[id].userid,
-              swiperid: 1,
+              swiperid: LoginUserId,
               liked: false,
             };
             console.log(
@@ -89,7 +89,7 @@ export default function App() {
           onSwipedRight={(id) => {
             const rightData = {
               swipeeid: userIds[id].userid,
-              swiperid: 1,
+              swiperid: LoginUserId,
               liked: true,
             };
             console.log(
