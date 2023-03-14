@@ -32,6 +32,8 @@ function Card({id}){
 
     const [gender, SetGender]  = useState([]);
     const [orientation, SetOrientation] = useState([]);
+    const [location, SetLocation] = useState([]);
+    const [pronouns, SetPronouns] = useState([]);
     const [TopSongs, SetTopSongs] = useState([]);
     const [TopGenres, SetTopGenres] = useState([]);
     const [TopArtists, SetTopArtists] = useState([]);
@@ -79,6 +81,8 @@ async function getUserById(id) {
       getAge(response["data"]["birthdate"])
       GetGender(response["data"]["gender"])
       GetOrientation(response["data"]["orientation"])
+      GetPronouns(response["data"]["pronouns"])
+      SetLocation(response["data"]["location"])
       SetTopSongs(response["data"]["spotifydata"]["topsongs"])
       SetTopGenres(response["data"]["spotifydata"]["topgenres"])
       SetTopArtists(response["data"]["spotifydata"]["topartists"])
@@ -182,6 +186,12 @@ async function getUserById(id) {
     SetOrientation(map[orientation]);
   }
 
+  const GetPronouns=(pronouns) => {
+    if (pronouns == null) SetPronouns("-/-");
+    else SetPronouns(pronouns);
+
+  }
+
     return (
 
         <View style={styles.container}>
@@ -213,7 +223,10 @@ async function getUserById(id) {
               
             </Text>
             <Text style={styles.genderAndOrientation}>
-              {`${gender}, ${orientation}`}            
+              {`${gender}, ${orientation}, ${pronouns}`}            
+            </Text>
+            <Text style={styles.genderAndOrientation}>
+              {`${location}`}            
             </Text>
           </View>
              
@@ -386,7 +399,7 @@ const styles = StyleSheet.create({
     },
     genderAndOrientation: {
       color: '#fff',
-      fontSize:18,
+      fontSize:15,
       
     },
      meter: {
@@ -403,6 +416,7 @@ const styles = StyleSheet.create({
     },
     percentage: {
       // color: '#fff',
+      marginBottom: 20,
       color: '#1DB954',
       alignSelf: 'center',
       fontSize:30,
