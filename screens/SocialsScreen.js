@@ -30,12 +30,14 @@ const SocialsScreen = (id) => {
   };
 
   const deleteMatch = () => {
+
+    const deleteData = {
+      swipeeid:0,
+      swiperid:matchId
+    }
     axios
-      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',
-        {
-          "swiperid": 0,
-          "swipeeid": matchId,
-        }
+      .put('http://spotify-match.us-west-1.elasticbeanstalk.com/matches/',deleteData
+        
       )
       .then((response) => {
         console.log(response.data);
