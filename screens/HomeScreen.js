@@ -6,6 +6,7 @@ import Layout from '../ constants/Layout';
 import { useRef,useState,useEffect} from 'react';
 import CardsSwipe from 'react-native-cards-swipe';
 import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
 
 const users=[
   {
@@ -29,10 +30,20 @@ export default function App() {
   const [numMatches, setNumMatches] = useState([]);
 
   const [userIds, setuserIds] = useState([]);
+  const [logged_userID, setlogged_userID] = useState()
+  const dispatch = useDispatch();
+  var {
+      id,
+
+  } = useSelector(((state) => state.id));
+
+  setlogged_userID(id)
+
+
 
   const getMatches= () => {
     axios
-        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/0`)
+        .get(`http://spotify-match.us-west-1.elasticbeanstalk.com/home/${setlogged_userID}`)
         .then((response) => {
           
           setNumMatches(response ["data"])
