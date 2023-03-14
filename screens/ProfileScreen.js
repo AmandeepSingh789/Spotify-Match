@@ -285,7 +285,7 @@ export default function Edit_user_profile() {
                 <View style={styles.horizontal}>
                     <View>
                         <Text style={styles.fieldTitle}>Birthdate:</Text>
-                        <Text style={styles.userBirthdateInput}>{userBirthday}</Text>
+                        <Text style={styles.userBirthdateInput}>{birthdate}</Text>
                     </View>
 
                     <View>

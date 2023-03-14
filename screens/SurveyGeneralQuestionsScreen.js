@@ -269,13 +269,16 @@ const NewUserQuestions = () => {
                   // console.log(date.getDate());
                   // setBirthday(date);
                   // let today = new Date()
+                  console.log(date.getDate());
+                  let userDate = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
 
                   // console.log(date.getFullYear())
                   // console.log(today.getFullYear())
+                  console.log(userDate)
 
                   // console.log(date.getUTCFullYear())
                   // date.getFullYear
-                  dispatch(setBirthdate(date));
+                  dispatch(setBirthdate(userDate));
                 }
               }}
             />
