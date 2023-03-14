@@ -41,6 +41,8 @@ function Card({ id }) {
 
   const [gender, SetGender] = useState([]);
   const [orientation, SetOrientation] = useState([]);
+  const [location, SetLocation] = useState([]);
+  const [pronouns, SetPronouns] = useState([]);
   const [TopSongs, SetTopSongs] = useState([]);
   const [TopGenres, SetTopGenres] = useState([]);
   const [TopArtists, SetTopArtists] = useState([]);
@@ -89,6 +91,8 @@ function Card({ id }) {
     getAge(response["data"]["birthdate"]);
     GetGender(response["data"]["gender"]);
     GetOrientation(response["data"]["orientation"]);
+    GetPronouns(response["data"]["pronouns"])
+    SetLocation(response["data"]["location"])
     SetTopSongs(response["data"]["topsongs"]);
     SetTopGenres(response["data"]["topgenres"]);
     SetTopArtists(response["data"]["topartists"]);
@@ -164,6 +168,15 @@ function Card({ id }) {
     SetOrientation(map[orientation]);
   };
 
+  const GetPronouns=(pronouns) => {
+    if (pronouns == null) {
+      SetPronouns("-/-");
+    }
+    else {
+      SetPronouns(pronouns);
+    }
+
+  }
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -191,7 +204,10 @@ function Card({ id }) {
           <View style={styles.basicInfo}>
             <Text style={styles.name}>{`${Name}, ${Age}`}</Text>
             <Text style={styles.genderAndOrientation}>
-              {`${gender}, ${orientation}`}
+              {`${gender}, ${orientation}, ${pronouns}`}            
+            </Text>
+            <Text style={styles.location}>
+              {`${location}`}            
             </Text>
           </View>
 
@@ -335,10 +351,16 @@ const styles = StyleSheet.create({
     // color: '#fff',
     color: "#FE8AE3",
     fontSize: 28,
+    fontWeight: 'bold'
   },
   genderAndOrientation: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 15,
+  },
+  location: {
+    color: "#ff",
+    fontSize: 15,
+
   },
   meter: {
     color: "#5E5E5E",
@@ -347,19 +369,21 @@ const styles = StyleSheet.create({
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
     marginLeft: 20,
-    borderWidth: 1,
+    borderWidth: 2,
     height: 90,
     width: 90,
     justifyContent: "center",
   },
   percentage: {
     // color: '#fff',
+    marginBottom: 20,
     color: "#1DB954",
     alignSelf: "center",
-    fontSize: 30,
+    fontSize: 27,
+    fontWeight: 'bold'
   },
   desc: {
-    color: "#fff",
+    color: "white",
     alignSelf: "flex-start",
     marginTop: 5,
     marginHorizontal: 30,
@@ -369,12 +393,14 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   bio: {
-    color: "#fff",
+    color: "#FE8AE3",
     alignSelf: "center",
+    justifyContent: 'center',
     marginTop: 5,
     marginHorizontal: 30,
     fontSize: 20,
     flexShrink: 1,
+    textAlign: 'center'
   },
 
   divider: {
