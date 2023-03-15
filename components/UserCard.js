@@ -16,7 +16,6 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import { Button } from "@rneui/base";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData } from "../redux/UserData";
 
 import { questionBank } from "../redux/UserData";
 
@@ -241,7 +240,6 @@ function Card({ id }) {
   }
 
   const getData = async ({ id }) => {
-    dispatch(fetchUserData(userID));
     setLoaded(false);
     const response = await getUserById({ id });
 
