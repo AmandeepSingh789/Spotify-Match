@@ -281,54 +281,39 @@
 //   });
 // });
 
-
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
+import SpotifyLoginScreen from '../screens/SpotifyLoginScreen';
 import { Provider } from 'react-redux';
-import { Button } from '@rneui/base';
-import configureStore from 'redux-mock-store';
-import SpotifyLoginScreen from "../screens/SpotifyLoginScreen";
+import { store } from '../redux/store';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const mockStore = configureStore([]);
 
-describe('Spotify Login Screen', () => {
-  let store;
-  let component;
+describe('SpotifyLoginScreen', () => {
+  // it('renders correctly', () => {
+  //   const { getByText } = render(<SpotifyLoginScreen />);
+  //   expect(getByText('Welcome')).toBeDefined();
+  //   expect(getByText('to')).toBeDefined();
+  //   expect(getByText('Login with Spotify')).toBeDefined();
+  // });
 
-  beforeEach(() => {
-    store = mockStore({
-      id: {
-        id: null,
-        spotifydata: null,
-        topartists: null,
-        toptracks: null,
-        topgenres: null,
-        userToken: null,
-        email: null,
-      },
-    });
-
-    component = (
+  it('calls promptAsync when Login button is pressed', () => {
+    // const promptAsync = jest.fn();
+    const Stack = createStackNavigator();
+    const { getByTestId } = render(
       <Provider store={store}>
-        <SpotifyLoginScreen />
-      </Provider>
-    );
-  });
-
-  it('should render the authentication button', () => {
-    const { getByTestId } = render(component);
-    const authButton = getByTestId('auth-button');
-
-    expect(authButton).toBeDefined();
-    expect(authButton.props.title).toBe('Log in with Spotify');
-  });
-
-  it('should dispatch the setUserToken action on button press', () => {
-    const { getByTestId } = render(component);
-    const authButton = getByTestId('auth-button');
-    fireEvent.press(authButton);
-
-    const actions = store.getActions();
-    expect(actions[0].type).toBe('SET_USER_TOKEN');
+               <NavigationContainer>
+                 <Stack.Navigator>
+                   <Stack.Screen
+                    name="SpotifyLoginScreen"
+                    component={SpotifyLoginScreen}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </Provider>);
+    const loginButton = getByTestId('LoginButton');
+    fireEvent.press(loginButton);
+    expect(promptAsync).toHaveBeenCalled();
   });
 });

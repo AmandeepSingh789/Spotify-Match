@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1678857480595" clover="3.2.0">
-  <project timestamp="1678857480595" name="All files">
-    <metrics statements="655" coveredstatements="53" conditionals="153" coveredconditionals="0" methods="176" coveredmethods="6" elements="984" coveredelements="59" complexity="0" loc="655" ncloc="655" packages="5" files="17" classes="17"/>
+<coverage generated="1678860055106" clover="3.2.0">
+  <project timestamp="1678860055106" name="All files">
+    <metrics statements="655" coveredstatements="65" conditionals="153" coveredconditionals="2" methods="176" coveredmethods="10" elements="984" coveredelements="77" complexity="0" loc="655" ncloc="655" packages="5" files="17" classes="17"/>
     <package name="Spotify-Match">
       <metrics statements="30" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="5" coveredmethods="0"/>
       <file name="App.js" path="/Users/mrinmoyeemishra/Spotify-Match/App.js">
@@ -215,9 +215,9 @@
         <line num="305" count="0" type="stmt"/>
         <line num="308" count="0" type="stmt"/>
         <line num="311" count="0" type="stmt"/>
-        <line num="315" count="2" type="stmt"/>
+        <line num="315" count="3" type="stmt"/>
         <line num="316" count="0" type="stmt"/>
-        <line num="318" count="2" type="stmt"/>
+        <line num="318" count="3" type="stmt"/>
         <line num="319" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="320" count="0" type="stmt"/>
         <line num="321" count="0" type="stmt"/>
@@ -267,18 +267,18 @@
         <line num="405" count="0" type="stmt"/>
         <line num="407" count="0" type="stmt"/>
         <line num="409" count="0" type="stmt"/>
-        <line num="413" count="2" type="stmt"/>
+        <line num="413" count="3" type="stmt"/>
         <line num="414" count="0" type="stmt"/>
         <line num="415" count="0" type="stmt"/>
         <line num="451" count="4" type="stmt"/>
       </file>
       <file name="store.js" path="/Users/mrinmoyeemishra/Spotify-Match/redux/store.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="43" count="2" type="stmt"/>
+        <line num="43" count="3" type="stmt"/>
       </file>
     </package>
     <package name="Spotify-Match.screens">
-      <metrics statements="416" coveredstatements="32" conditionals="113" coveredconditionals="0" methods="111" coveredmethods="2"/>
+      <metrics statements="416" coveredstatements="44" conditionals="113" coveredconditionals="2" methods="111" coveredmethods="6"/>
       <file name="AddImagesScreen.js" path="/Users/mrinmoyeemishra/Spotify-Match/screens/AddImagesScreen.js">
         <metrics statements="77" coveredstatements="1" conditionals="41" coveredconditionals="0" methods="11" coveredmethods="0"/>
         <line num="41" count="0" type="stmt"/>
@@ -546,21 +546,21 @@
         <line num="149" count="1" type="stmt"/>
       </file>
       <file name="SpotifyLoginScreen.js" path="/Users/mrinmoyeemishra/Spotify-Match/screens/SpotifyLoginScreen.js">
-        <metrics statements="93" coveredstatements="11" conditionals="12" coveredconditionals="0" methods="16" coveredmethods="2"/>
+        <metrics statements="93" coveredstatements="23" conditionals="12" coveredconditionals="2" methods="16" coveredmethods="6"/>
         <line num="29" count="2" type="stmt"/>
         <line num="31" count="2" type="stmt"/>
         <line num="32" count="2" type="stmt"/>
         <line num="33" count="2" type="stmt"/>
         <line num="35" count="2" type="stmt"/>
-        <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="41" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="43" count="0" type="stmt"/>
         <line num="52" count="2" type="stmt"/>
         <line num="53" count="5" type="stmt"/>
         <line num="55" count="2" type="stmt"/>
         <line num="57" count="2" type="stmt"/>
         <line num="59" count="2" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="63" count="2" type="stmt"/>
         <line num="92" count="0" type="stmt"/>
         <line num="102" count="0" type="stmt"/>
         <line num="103" count="0" type="stmt"/>
@@ -610,19 +610,19 @@
         <line num="220" count="0" type="stmt"/>
         <line num="221" count="0" type="stmt"/>
         <line num="228" count="0" type="stmt"/>
-        <line num="232" count="0" type="stmt"/>
+        <line num="232" count="2" type="stmt"/>
         <line num="233" count="0" type="stmt"/>
         <line num="234" count="0" type="stmt"/>
         <line num="236" count="0" type="stmt"/>
-        <line num="242" count="0" type="stmt"/>
-        <line num="243" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="242" count="2" type="stmt"/>
+        <line num="243" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="244" count="0" type="stmt"/>
         <line num="245" count="0" type="stmt"/>
         <line num="246" count="0" type="stmt"/>
-        <line num="251" count="0" type="stmt"/>
-        <line num="255" count="0" type="stmt"/>
-        <line num="257" count="0" type="stmt"/>
-        <line num="261" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="251" count="2" type="stmt"/>
+        <line num="255" count="1" type="stmt"/>
+        <line num="257" count="1" type="stmt"/>
+        <line num="261" count="1" type="cond" truecount="0" falsecount="2"/>
         <line num="262" count="0" type="stmt"/>
         <line num="263" count="0" type="stmt"/>
         <line num="264" count="0" type="stmt"/>
@@ -636,8 +636,8 @@
         <line num="287" count="0" type="stmt"/>
         <line num="289" count="0" type="stmt"/>
         <line num="290" count="0" type="stmt"/>
-        <line num="294" count="0" type="stmt"/>
-        <line num="300" count="0" type="stmt"/>
+        <line num="294" count="1" type="stmt"/>
+        <line num="300" count="2" type="stmt"/>
         <line num="318" count="0" type="stmt"/>
         <line num="326" count="2" type="stmt"/>
       </file>
