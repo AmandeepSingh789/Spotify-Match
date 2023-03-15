@@ -3971,9 +3971,10 @@ expo-linking@~4.0.0:
     qs "^6.11.0"
     url-parse "^1.5.9"
 
-expo-media-library@^15.2.2:
-  version "15.2.2"
-  resolved "https://registry.npmjs.org/expo-media-library/-/expo-media-library-15.2.2.tgz"
+expo-media-library@~15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/expo-media-library/-/expo-media-library-15.0.0.tgz#12b05bb2c3cc209a08acbd2d3e35ba0a6a141003"
+  integrity sha512-BO17VEElQHf2kK45Vuqm4QtutWsT5X4clO8DjTp2BUNvmY+JgOTKsjPs1LIQcNaaum64u/Gfp3V4HV2a6JnHJg==
 
 expo-modules-autolinking@1.0.2:
   version "1.0.2"
