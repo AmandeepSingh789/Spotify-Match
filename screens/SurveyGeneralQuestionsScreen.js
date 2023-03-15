@@ -133,23 +133,23 @@ const NewUserQuestions = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   // const [datePickerVisible, setDatePickerVisible] = useState(false);
 
-  const ageCheck = () => {
-    let today = new Date();
-    // console.log(birthdate.getFullYear());
-    // console.log(today.getFullYear());
+  // const ageCheck = () => {
+  //   let today = new Date();
+  //   // console.log(birthdate.getFullYear());
+  //   // console.log(today.getFullYear());
 
-    if (birthdate) {
-      let tempAge = today.getFullYear() - birthdate.getFullYear();
+  //   if (birthdate) {
+  //     let tempAge = today.getFullYear() - birthdate.getFullYear();
 
-      if (tempAge > 18) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  };
+  //     if (tempAge > 18) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   // const showDatePicker = () => {
   //   setDatePickerVisible(true);
@@ -408,13 +408,13 @@ const NewUserQuestions = () => {
                   pronouns,
                   location,
                 });
-                console.log(ageCheck());
+                // console.log(ageCheck());
                 if (name && gender && birthdate && pronouns && location) {
-                  if (ageCheck()) {
+                  // if (ageCheck()) {
                     navigation.navigate("SurveyBio");
-                  } else {
-                    alert("Invalid Age. Must be over 18.");
-                  }
+                  // } else {
+                    // alert("Invalid Age. Must be over 18.");
+                  // }
                 } else {
                   alert("Please fill out all fields!");
                 }

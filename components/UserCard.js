@@ -30,6 +30,12 @@ const NUMSHAREDSONGS = 5;
 const NUMSHAREDARTISTS = 5;
 
 
+const generateColor = () => {
+  let colors = ['#B9DD5C', '#D64000', '#FFD5C2', '#E3D9EB', '#C8E0FC', '#D6E3B4']
+
+  return colors[Math.floor(Math.random() * 5)]
+}
+
 const testUsers = {
   0: {
     pic1: require('../resources/Pfp/Jerry/Jerry_1.jpeg'),
@@ -249,6 +255,9 @@ function Card({ id }) {
     GetOrientation(response["data"]["orientation"]);
     GetPronouns(response["data"]["pronouns"])
     SetLocation(response["data"]["location"])
+    SetTopSongs(response["data"]["toptracks"]);
+    SetTopGenres(response["data"]["topgenres"]);
+    SetTopArtists(response["data"]["topartists"]);
 
 
     const q1id = response["data"]["questionid1"];
@@ -261,9 +270,9 @@ function Card({ id }) {
 
     setCompatibility(findCompatibilty(spotifydata, response["data"]["spotifydata"]));
 
-    SetTopGenres(getTopGenres(response["data"]["topgenres"]));
-    SetTopSongs(getTopSongs(response["data"]["toptracks"]));
-    SetTopArtists(getTopArtists(response["data"]["topartists"]));
+    SetTopGenres(response["data"]["topgenres"]);
+    SetTopSongs(response["data"]["toptracks"]);
+    SetTopArtists(response["data"]["topartists"]);
 
     setSharedGenres(getSharedGenres(topgenres, response["data"]["topgenres"]));
     setSharedSongs(getSharedSongs(toptracks, response["data"]["toptracks"]));
@@ -282,36 +291,6 @@ function Card({ id }) {
       setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
     }
   };
-
-  function getTopGenres(topGenres) {
-    let res = [];
-    let i = 0
-    while (i < NUMTOPGENRES && i < topGenres.length) {
-      res.push(topGenres[i].genre)
-      i++;
-    }
-    return res;
-  }
-
-  function getTopSongs(topSongs) {
-    let res = [];
-    let i = 0
-    while (i < NUMTOPSONGS && i < topSongs.length) {
-      res.push(topSongs[i].trackname)
-      i++;
-    }
-    return res;
-  }
-
-  function getTopArtists(topArtists) {
-    let res = [];
-    let i = 0
-    while (i < NUMTOPARTISTS && i < topArtists.length) {
-      res.push(topArtists[i].artistname)
-      i++;
-    }
-    return res;
-  }
 
   function getSharedGenres(genres1, genres2) {
     const genre1Names = genres1.map(genre => genre.genre);
@@ -542,7 +521,28 @@ function Card({ id }) {
             <Divider style={styles.divider} />
 
             <Text style={styles.topInfo}>Top Genres: </Text>
-            <Text style={styles.topInfo}>{`${TopGenres}`} </Text>
+            {/* <Text style={styles.topInfo}>{`${TopGenres}`} </Text> */}
+            <ScrollView
+              // showsHorizontalScrollIndicator={true}
+              // indicatorStyle={"white"}
+              scrollIndicatorInsets={{ top: 0, left: 20, bottom: 20, right: 20 }}
+              // pagingEnabled={true}
+              centerContent={true}
+              horizontal={true}
+              style={{
+                margin: 10
+              }}
+            // persistentScrollbar={true}
+            >
+              {
+                /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
+                TopGenres.slice(0, NUMTOPGENRES).map((e, index) => (
+                  <Text
+                    key={index}
+                    style={{ color: generateColor(), fontSize: 20 }}>{'    ' + e.genre + '   '}</Text>
+                ))
+              }
+            </ScrollView>
             <Divider style={styles.divider} />
 
             <View>
@@ -555,7 +555,28 @@ function Card({ id }) {
             <Divider style={styles.divider} />
 
             <Text style={styles.topInfo}>Top Songs: </Text>
-            <Text style={styles.topInfo}>{`${TopSongs}`} </Text>
+            {/* <Text style={styles.topInfo}>{`${TopSongs}`} </Text> */}
+            <ScrollView
+              // showsHorizontalScrollIndicator={true}
+              // indicatorStyle={"white"}
+              scrollIndicatorInsets={{ top: 0, left: 20, bottom: 20, right: 20 }}
+              // pagingEnabled={true}
+              centerContent={true}
+              horizontal={true}
+              style={{
+                margin: 10
+              }}
+            // persistentScrollbar={true}
+            >
+              {
+                /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
+                TopSongs.slice(0, NUMTOPSONGS).map((e, index) => (
+                  <Text
+                    key={index}
+                    style={{ color: generateColor(), fontSize: 20  }}>{'    ' + e.trackname + '   '}</Text>
+                ))
+              }
+            </ScrollView>
             <Divider style={styles.divider} />
 
             <View>
@@ -568,7 +589,29 @@ function Card({ id }) {
 
             <Divider style={styles.divider} />
             <Text style={styles.topInfo}>Top Artists: </Text>
-            <Text style={styles.topInfo}>{`${TopArtists}`} </Text>
+            {/* <Text style={styles.topInfo}>{`${TopArtists}`} </Text> */}
+            <ScrollView
+              // showsHorizontalScrollIndicator={true}
+              // indicatorStyle={"white"}
+              scrollIndicatorInsets={{ top: 0, left: 20, bottom: 20, right: 20 }}
+              // pagingEnabled={true}
+              centerContent={true}
+              horizontal={true}
+              style={{
+                margin: 10
+              }}
+            // persistentScrollbar={true}
+            >
+              {
+                /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
+                TopArtists.slice(0, NUMTOPARTISTS).map((e, index) => (
+                  <Text
+                    key={index}
+                    style={{ color: generateColor(), fontSize: 20 }}>{'    ' + e.artistname + '   '}</Text>
+                ))
+              }
+            </ScrollView>
+
 
             <Divider style={styles.divider} />
             <View>

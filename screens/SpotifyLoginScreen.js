@@ -35,6 +35,102 @@ const NUMTOPTRACKS = 50;
 const NUMTOPGENRES = 50;
 
 
+async function postDummyData() {
+  const genres = ["hip-hop", "lo-fi", "indie", "pop", "rock", "swedish-house", "death-metal", "math-rock", "jazz"];
+  const artists = [["Dua Lipa", "6M2wZ9GZgrQXHCFfjv46we"],
+  ["JAY-Z", "3nFkdlSjzX9mRTtwJOzDYB"],
+  ["Nujabes", "3Rq3YOF9YG9YfCWD4D56RZ"],
+  ["Men I Trust", "3zmfs9cQwzJl575W1ZYXeT"],
+  ["Rihanna", "5pKCCKE2ajJHZ9KAiaK11H"],
+  ["SZA", "7tYKF4w9nC0nq9CsPZTHyP"],
+  ["Thad Jones", "6DbqS0X8cSFOPGsvyze2yh"],
+  ["Miles Davis", "0kbYTNQb4Pb1rPbbaF0pT4"],
+  ["Doja Cat", "5cj0lLjcoR7YOSnhnX0Po5"]]
+  const tracks = [["Both Sides Of The Moon", "3zBCukLskhPfajaRaGgEvc"],
+  ["telepatía // acoustic", "2syQErCMMM1rXeZqtuaqxg"],
+  ["Aces", "4pV6Kx1T9L49PBFwH1g8ca"],
+  ["Mercury", "3ixe45hov7EBKXm8tYBmvX"],
+  ["Shibuya (feat. Syd)", "6WVSnyKQGzs1fosa2I3FMQ"],
+  ["One Beer", "4BnrGx9tWNF8aiXl1UhDBa"],
+  ["505", "58ge6dfP91o9oXMzq3XkIS"],
+  ["Cruisin to the Park", "3XITcXbaKS08ardf8ahKqM"],
+  ["Walkin", "1q8DwZtQen5fvyB7cKbShC"]]
+
+  // axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topartists/0',data).catch((error) => {console.error(error);});
+
+  for (let id = 0; id < 17; id++) {
+    var dummyGenres = [];
+    for (let i = 0; i < 10; i++) {
+      dummyGenres.push({
+        "genre": genres[Math.floor(Math.random() * 8)],
+        "rank": i + 1,
+      })
+    }
+
+    var dummyArtists = [];
+    for (let j = 0; j < 10; j++) {
+      let val = Math.floor(Math.random() * 8)
+      dummyArtists.push({
+        "artistid": artists[val][1],
+        "artistname": artists[val][0],
+        "rank": j + 1,
+      })
+    }
+
+    var dummyTracks = [];
+    for (let k = 0; k < 10; k++) {
+      let val = Math.floor(Math.random() * 8);
+      dummyTracks.push({
+        "rank": k + 1,
+        "trackid": tracks[val][1],
+        "trackname": tracks[val][0],
+      })
+    }
+
+    axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/',
+      {
+        "id": id,
+        "acousticness": Math.random(),
+        "danceability": Math.random(),
+        "energy": Math.random(),
+        "instrumentalness": Math.random(),
+        "liveness": Math.random(),
+        "speechiness": Math.random(),
+        "valence": Math.random()
+      }
+    ).catch((error) => { console.error(error); });
+
+    await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topartists/' + id,
+      {
+        "id": id,
+        "data": dummyArtists
+      }
+    ).catch((error) => { console.error(error); });
+
+    await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topgenres/' + id,
+      {
+        "id": id,
+        "data": dummyGenres
+      }
+    ).catch((error) => { console.error(error); });
+
+    await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/toptracks/' + id,
+      {
+        "id": id,
+        "data": dummyTracks
+      }
+    ).catch((error) => { console.error(error); });
+  }
+
+}
+
+// async function postNewUserData(id, endpoint, data) {
+
+// }
+
+
+
+
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
@@ -56,8 +152,6 @@ const SpotifyLoginScreen = () => {
   const dispatch = useDispatch();
   var { id, spotifydata, topartists, toptracks, topgenres, userToken } =
     useSelector((state) => state.id);
-
-  console.log(id);
 
   const navigation = useNavigation();
 
@@ -92,7 +186,7 @@ const SpotifyLoginScreen = () => {
 
   async function getTopArtists(token, userID) {
     // Get Top artists
-    axios
+    await axios
       .get("https://api.spotify.com/v1/me/top/artists", {
         params: { limit: NUMTOPARTISTS, offset: 0 },
         headers: {
@@ -101,7 +195,7 @@ const SpotifyLoginScreen = () => {
           "Content-Type": "application/json",
         },
       })
-      .then(function (topArtists) {
+      .then(async function (topArtists) {
         let genres = {};
         let artists = [];
 
@@ -140,6 +234,21 @@ const SpotifyLoginScreen = () => {
           i += 1;
         }
 
+        // console.log(artists);
+        axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topgenres/' + userID,
+          {
+            "id": userID,
+            "data": genreList
+          }
+        ).catch((error) => { console.error(error); });
+
+        axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topartists/' + userID,
+          {
+            "id": userID,
+            "data": artists
+          }
+        ).catch((error) => { console.error(error); });
+
         dispatch(setTopGenres(genreList));
         dispatch(setTopArtists(artists));
       });
@@ -155,7 +264,7 @@ const SpotifyLoginScreen = () => {
           "Content-Type": "application/json",
         },
       })
-      .then(function (topTracks) {
+      .then(async function (topTracks) {
         let tracks = [];
         let trackids = [];
         for (let i = 0; i < topTracks.data.items.length; i += 1) {
@@ -168,6 +277,13 @@ const SpotifyLoginScreen = () => {
           tracks.push(track);
           trackids.push(trackInfo.id);
         }
+
+        await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/toptracks/' + userID,
+          {
+            "id": userID,
+            "data": tracks
+          }
+        ).catch((error) => { console.error(error); });
 
         dispatch(setTopTracks(tracks));
         return trackids;
@@ -184,7 +300,7 @@ const SpotifyLoginScreen = () => {
           "Content-Type": "application/json",
         },
       })
-      .then(function (audioFeatures) {
+      .then(async function (audioFeatures) {
         let data = {
           id: userID,
           acousticness: 0,
@@ -227,6 +343,14 @@ const SpotifyLoginScreen = () => {
         // console.log("\n")
 
         // console.log(userID);
+        console.log(data);
+        await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/',
+          {
+            data
+          }
+        ).then((response) => {
+          console.log(response);
+        }).catch((error) => { console.error(error); });
 
         dispatch(setSpotifyData(data));
       });
@@ -252,6 +376,7 @@ const SpotifyLoginScreen = () => {
   }, [response]);
 
   useEffect(() => {
+    postDummyData();
     async function fetchData() {
       // setToken('');
       // console.log(userToken);
@@ -270,7 +395,7 @@ const SpotifyLoginScreen = () => {
       const userExists = await axios
         .get(
           "http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/" +
-            userID
+          userID
         )
         .catch((response) => {
           console.log(response);
@@ -280,10 +405,16 @@ const SpotifyLoginScreen = () => {
       // .catch((response) => { console.log(response) });
 
       console.log(userExists.data);
-      // console.log(id)
+      console.log(userID)
 
       if (userExists.data) {
+        // let trackids = await getTopTracks(token, userID);
+        // await getAudioFeatures(trackids, token, userID);
+        // await getTopArtists(token, userID);
+
         dispatch(fetchUserData(userID));
+      
+      
         navigation.navigate("Home");
       } else {
         await getTopArtists(token, userID);
@@ -293,7 +424,6 @@ const SpotifyLoginScreen = () => {
         navigation.navigate("SurveyGeneralQuestions");
       }
     }
-
     fetchData();
   }, [token]);
 

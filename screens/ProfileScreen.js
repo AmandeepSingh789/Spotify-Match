@@ -167,8 +167,15 @@ export default function Edit_user_profile() {
     //     tempGender = genders[gender+1].value
     // }
 
-    console.log(gender);
-    console.log(orientation);
+    // console.log(gender);
+    // console.log(orientation);
+
+    console.log(spotifydata);
+    console.log(topartists);
+    console.log(toptracks);
+    console.log(topgenres);
+
+
 
     //   var tempGender = "Gender";
     //   var tempOrientation = "Orientation";
