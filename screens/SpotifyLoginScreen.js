@@ -308,7 +308,7 @@ const SpotifyLoginScreen = () => {
       </View>
       <View style={{ bottom: -100 }}>
         <Button
-          id={'LoginButton'}
+          testID="LoginButton"
           disabled={!request}
           title="Login with Spotify"
           buttonStyle={styles.buttonStyle}

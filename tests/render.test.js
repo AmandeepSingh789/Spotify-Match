@@ -238,27 +238,45 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import SpotifyLoginScreen from '../screens/SpotifyLoginScreen';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
 
+// const middlewares = [thunk];
+// const mockStore = configureMockStore(middlewares);
+// const store = mockStore({});
 
 describe('SpotifyLoginScreen', () => {
-  // it('renders correctly', () => {
-  //   const { getByTestId } = render( <SpotifyLoginScreen />);
-  //   const loginButton = getByTestId('LoginButton');
-  //   expect(loginButton).toBeDefined();
-  // });
+  const Stack = createStackNavigator();
+  const navigation = {
+    navigate: jest.fn(),
+  };
 
-  it('triggers Spotify login when button is pressed', () => {
+  it('triggers Spotify login when button is pressed', async () => {
     const handleLogin = jest.fn();
-    const { getByTestId } = render(<SpotifyLoginScreen onLogin={handleLogin} />);
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="SpotifyLogin"
+              component={SpotifyLoginScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    );
     const loginButton = getByTestId('LoginButton');
     fireEvent.press(loginButton);
+
+    // Wait for the authentication process to finish
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     expect(handleLogin).toHaveBeenCalled();
   });
 });
-
-////////////////////////////////////////////////////////////////////
-

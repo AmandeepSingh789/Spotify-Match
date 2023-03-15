@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from "../redux/store";
 
 async function getData(id) {
-  const response =  axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + id)
+  const response =  await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/' + id)
   store.dispatch(setName(response.data.name));
 }
 
@@ -14,6 +14,6 @@ describe("tests getting user data", () => {
 
   it("should return Jerry for name", () => {
     const state = store.getState().name;
-    expect(state.name).toEqual(null);
+    expect(state.name).toEqual('Jerry');
   });
 });
