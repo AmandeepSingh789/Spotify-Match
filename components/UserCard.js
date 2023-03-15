@@ -15,20 +15,135 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
 import { Button } from "@rneui/base";
-import { LinearGradient } from "expo-linear-gradient";
-import * as FileSystem from 'expo-file-system';
-import { Asset } from "expo-asset"
+import { useDispatch, useSelector } from 'react-redux';
 
 
 import { questionBank } from "../redux/UserData";
 
-const compatibility = "80%";
 const picUri = '../resources/Pfp/';
 
-let test = require('../assets/test300x300.jpeg');
+const testUsers = {
+  0: {
+    pic1: require('../resources/Pfp/Jerry/Jerry_1.jpeg'),
+    pic2: require('../resources/Pfp/Jerry/Jerry_2.jpeg'),
+    pic3: require('../resources/Pfp/Jerry/Jerry_3.jpeg'),
+    pic4: require('../resources/Pfp/Jerry/Jerry_4.jpeg')
+  },
+  1: {
+    pic1: require('../resources/Pfp/George/George_1.jpeg'),
+    pic2: require('../resources/Pfp/George/George_2.jpeg'),
+    pic3: require('../resources/Pfp/George/George_3.jpeg'),
+    pic4: require('../resources/Pfp/George/George_4.jpeg')
+  },
+  2: {
+    pic1: require('../resources/Pfp/Elaine/Elaine_1.jpeg'),
+    pic2: require('../resources/Pfp/Elaine/Elaine_2.jpeg'),
+    pic3: require('../resources/Pfp/Elaine/Elaine_3.jpeg'),
+    pic4: require('../resources/Pfp/Elaine/Elaine_4.jpeg')
+    },
+  3: {
+    pic1: require('../resources/Pfp/JayQuellin/JayQuellin_1.jpeg'),
+    pic2: require('../resources/Pfp/JayQuellin/JayQuellin_2.jpeg'),
+    pic3: require('../resources/Pfp/JayQuellin/JayQuellin_3.jpeg'),
+    pic4: require('../resources/Pfp/JayQuellin/JayQuellin_4.jpeg')
+    },
+  4: {
+      pic1: require('../resources/Pfp/Balakay/Balakay_1.jpeg'),
+      pic2: require('../resources/Pfp/Balakay/Balakay_2.jpeg'),
+      pic3: require('../resources/Pfp/Balakay/Balakay_3.jpeg'),
+      pic4: require('../resources/Pfp/Balakay/Balakay_4.jpeg')
+    },
+  5: {
+      pic1: require('../resources/Pfp/Deenice/DeeNice_1.jpeg'),
+      pic2: require('../resources/Pfp/Deenice/DeeNice_2.jpeg'),
+      pic3: require('../resources/Pfp/Deenice/DeeNice_3.jpeg'),
+      pic4: require('../resources/Pfp/Deenice/DeeNice_4.jpeg')
+  },
+  6: {
+    pic1: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_1.jpeg'),
+    pic2: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_2.jpeg'),
+    pic3: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_3.jpeg'),
+    pic4: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_4.jpeg')
+    },
+  7: {
+    pic1: require('../resources/Pfp/Tymothee/Tymothee_1.jpeg'),
+    pic2: require('../resources/Pfp/Tymothee/Tymothee_2.jpeg'),
+    pic3: require('../resources/Pfp/Tymothee/Tymothee_3.jpeg'),
+    pic4: require('../resources/Pfp/Tymothee/Tymothee_4.jpeg')
+    },
+  8: {
+    pic1: require('../resources/Pfp/CallumGarcia/Callum_1.jpeg'),
+    pic2: require('../resources/Pfp/CallumGarcia/Callum_2.jpeg'),
+    pic3: require('../resources/Pfp/CallumGarcia/Callum_3.jpeg'),
+    pic4: require('../resources/Pfp/CallumGarcia/Callum_4.jpeg')
+    },
+  9: {
+    pic1: require('../resources/Pfp/Maggie/Maggie_1.jpeg'),
+    pic2: require('../resources/Pfp/Maggie/Maggie_2.jpeg'),
+    pic3: require('../resources/Pfp/Maggie/Maggie_3.jpeg'),
+    pic4: require('../resources/Pfp/Maggie/Maggie_4.jpeg')
+    },
+  10: {
+    pic1: require('../resources/Pfp/Chris/Chris_1.jpeg'),
+    pic2: require('../resources/Pfp/Chris/Chris_2.jpeg'),
+    pic3: require('../resources/Pfp/Chris/Chris_3.jpeg'),
+    pic4: require('../resources/Pfp/Chris/Chris_4.jpeg')
+    },
+  11: {
+    pic1: require('../resources/Pfp/Nina/Nina_1.jpeg'),
+    pic2: require('../resources/Pfp/Nina/Nina_2.jpeg'),
+    pic3: require('../resources/Pfp/Nina/Nina_3.jpeg'),
+    pic4: require('../resources/Pfp/Nina/Nina_4.jpeg')
+    },
+  12: {
+    pic1: require('../resources/Pfp/Alex/Alex_1.jpeg'),
+    pic2: require('../resources/Pfp/Alex/Alex_2.jpeg'),
+    pic3: require('../resources/Pfp/Alex/Alex_3.jpeg'),
+    pic4: require('../resources/Pfp/Alex/Alex_4.jpeg')
+    },
+  13: {
+    pic1: require('../resources/Pfp/Kara/Kara_1.jpeg'),
+    pic2: require('../resources/Pfp/Kara/Kara_2.jpeg'),
+    pic3: require('../resources/Pfp/Kara/Kara_3.jpeg'),
+    pic4: require('../resources/Pfp/Kara/Kara_4.jpeg')
+    },
+  14: {
+    pic1: require('../resources/Pfp/Sam/Sam_1.jpeg'),
+    pic2: require('../resources/Pfp/Sam/Sam_2.jpeg'),
+    pic3: require('../resources/Pfp/Sam/Sam_3.jpeg'),
+    pic4: require('../resources/Pfp/Sam/Sam_4.jpeg')
+    },
+  15: {
+    pic1: require('../resources/Pfp/Taylor/Taylor_1.jpeg'),
+    pic2: require('../resources/Pfp/Taylor/Taylor_2.jpeg'),
+    pic3: require('../resources/Pfp/Taylor/Taylor_3.jpeg'),
+    pic4: require('../resources/Pfp/Taylor/Taylor_4.jpeg')
+    },
+  16: {
+    pic1: require('../resources/Pfp/Gary/Gary_1.jpeg'),
+    pic2: require('../resources/Pfp/Gary/Gary_2.jpeg'),
+    pic3: require('../resources/Pfp/Gary/Gary_3.jpeg'),
+    pic4: require('../resources/Pfp/Gary/Gary_4.jpeg')
+    },
+  17: {
+    pic1: require('../resources/Pfp/JuliaNguyen/Julia_1.jpeg'),
+    pic2: require('../resources/Pfp/JuliaNguyen/Julia_2.jpeg'),
+    pic3: require('../resources/Pfp/JuliaNguyen/Julia_3.jpeg'),
+    pic4: require('../resources/Pfp/JuliaNguyen/Julia_4.jpeg')
+    },
+}
 
 // Card component that displays user information
 function Card({ id }) {
+
+  const dispatch = useDispatch();
+    var {
+        spotifydata,
+        toptracks,
+        topgenres,
+        topartists,
+    } = useSelector(((state) => state.id));
+
   // State variables to store user data
   const [Name, setName] = useState([]);
   const [Bio, setBio] = useState([]);
@@ -54,6 +169,7 @@ function Card({ id }) {
   const [TopSongs, SetTopSongs] = useState([]);
   const [TopGenres, SetTopGenres] = useState([]);
   const [TopArtists, SetTopArtists] = useState([]);
+  const [compatibility, setCompatibility] = useState(80.0);
 
   const [useBase64, setUseBase64] = useState(false);
 
@@ -126,6 +242,7 @@ function Card({ id }) {
     SetTopGenres(response["data"]["topgenres"]);
     SetTopArtists(response["data"]["topartists"]);
 
+
     const q1id = response["data"]["questionid1"];
     const q2id = response["data"]["questionid2"];
     const q3id = response["data"]["questionid3"];
@@ -133,6 +250,8 @@ function Card({ id }) {
     setQ1(questionBank._z[q1id].value);
     setQ2(questionBank._z[q2id].value);
     setQ3(questionBank._z[q3id].value);
+
+    setCompatibility(findCompatibilty(spotifydata, response["data"]["spotifydata"]));
 
     setLoaded(true);
 
@@ -148,21 +267,32 @@ function Card({ id }) {
     }
   };
 
+  function findCompatibilty(A, B) {
+    console.log(A);
+    console.log(B);
 
-  // async function fileToBase64(fileUri) {
-  //   console.log("loading image:")
-  //   console.log(fileUri)
-  //   try {
-  //     const asset = Asset.fromModule(fileUri);
-  //     const fileContent = await FileSystem.readAsStringAsync(asset.localUri, {
-  //       encoding: FileSystem.EncodingType.Base64,
-  //     });
-  //     return fileContent;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  
+    const data1 = [A.acousticness, A.danceability, A.energy, A.instrumentalness, A.liveness, A.speechiness, A.valence];
+    const data2 = [B.acousticness, B.danceability, B.energy, B.instrumentalness, B.liveness, B.speechiness, B.valence];
+    const cosineSimilarity = cosinesim(data1,data2);
+    return Math.trunc(cosineSimilarity * 100);
+  }
+
+  function cosinesim(A,B){
+    console.log(A)
+    console.log(B)
+    var dotproduct=0;
+    var mA=0;
+    var mB=0;
+    for(let i = 0; i < A.length; i++){ 
+        dotproduct += (A[i] * B[i]);
+        mA += (A[i]*A[i]);
+        mB += (B[i]*B[i]);
+    }
+    mA = Math.sqrt(mA);
+    mB = Math.sqrt(mB);
+    var similarity = (dotproduct)/((mA)*(mB))
+    return similarity;
+  }  
 
   async function setTestUserPhotos(id) {
     setUseBase64(false)
@@ -172,116 +302,6 @@ function Card({ id }) {
     setPic4(testUsers[id].pic4);
   }
 
-  const testUsers = {
-    0: {
-      pic1: require('../resources/Pfp/Jerry/Jerry_1.jpeg'),
-      pic2: require('../resources/Pfp/Jerry/Jerry_2.jpeg'),
-      pic3: require('../resources/Pfp/Jerry/Jerry_3.jpeg'),
-      pic4: require('../resources/Pfp/Jerry/Jerry_4.jpeg')
-    },
-    1: {
-      pic1: require('../resources/Pfp/George/George_1.jpeg'),
-      pic2: require('../resources/Pfp/George/George_2.jpeg'),
-      pic3: require('../resources/Pfp/George/George_3.jpeg'),
-      pic4: require('../resources/Pfp/George/George_4.jpeg')
-    },
-    2: {
-      pic1: require('../resources/Pfp/Elaine/Elaine_1.jpeg'),
-      pic2: require('../resources/Pfp/Elaine/Elaine_2.jpeg'),
-      pic3: require('../resources/Pfp/Elaine/Elaine_3.jpeg'),
-      pic4: require('../resources/Pfp/Elaine/Elaine_4.jpeg')
-      },
-    3: {
-      pic1: require('../resources/Pfp/JayQuellin/JayQuellin_1.jpeg'),
-      pic2: require('../resources/Pfp/JayQuellin/JayQuellin_2.jpeg'),
-      pic3: require('../resources/Pfp/JayQuellin/JayQuellin_3.jpeg'),
-      pic4: require('../resources/Pfp/JayQuellin/JayQuellin_4.jpeg')
-      },
-    4: {
-        pic1: require('../resources/Pfp/Balakay/Balakay_1.jpeg'),
-        pic2: require('../resources/Pfp/Balakay/Balakay_2.jpeg'),
-        pic3: require('../resources/Pfp/Balakay/Balakay_3.jpeg'),
-        pic4: require('../resources/Pfp/Balakay/Balakay_4.jpeg')
-      },
-    5: {
-        pic1: require('../resources/Pfp/Deenice/DeeNice_1.jpeg'),
-        pic2: require('../resources/Pfp/Deenice/DeeNice_2.jpeg'),
-        pic3: require('../resources/Pfp/Deenice/DeeNice_3.jpeg'),
-        pic4: require('../resources/Pfp/Deenice/DeeNice_4.jpeg')
-    },
-    6: {
-      pic1: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_1.jpeg'),
-      pic2: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_2.jpeg'),
-      pic3: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_3.jpeg'),
-      pic4: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_4.jpeg')
-      },
-    7: {
-      pic1: require('../resources/Pfp/Tymothee/Tymothee_1.jpeg'),
-      pic2: require('../resources/Pfp/Tymothee/Tymothee_2.jpeg'),
-      pic3: require('../resources/Pfp/Tymothee/Tymothee_3.jpeg'),
-      pic4: require('../resources/Pfp/Tymothee/Tymothee_4.jpeg')
-      },
-    8: {
-      pic1: require('../resources/Pfp/CallumGarcia/Callum_1.jpeg'),
-      pic2: require('../resources/Pfp/CallumGarcia/Callum_2.jpeg'),
-      pic3: require('../resources/Pfp/CallumGarcia/Callum_3.jpeg'),
-      pic4: require('../resources/Pfp/CallumGarcia/Callum_4.jpeg')
-      },
-    9: {
-      pic1: require('../resources/Pfp/Maggie/Maggie_1.jpeg'),
-      pic2: require('../resources/Pfp/Maggie/Maggie_2.jpeg'),
-      pic3: require('../resources/Pfp/Maggie/Maggie_3.jpeg'),
-      pic4: require('../resources/Pfp/Maggie/Maggie_4.jpeg')
-      },
-    10: {
-      pic1: require('../resources/Pfp/Chris/Chris_1.jpeg'),
-      pic2: require('../resources/Pfp/Chris/Chris_2.jpeg'),
-      pic3: require('../resources/Pfp/Chris/Chris_3.jpeg'),
-      pic4: require('../resources/Pfp/Chris/Chris_4.jpeg')
-      },
-    11: {
-      pic1: require('../resources/Pfp/Nina/Nina_1.jpeg'),
-      pic2: require('../resources/Pfp/Nina/Nina_2.jpeg'),
-      pic3: require('../resources/Pfp/Nina/Nina_3.jpeg'),
-      pic4: require('../resources/Pfp/Nina/Nina_4.jpeg')
-      },
-    12: {
-      pic1: require('../resources/Pfp/Alex/Alex_1.jpeg'),
-      pic2: require('../resources/Pfp/Alex/Alex_2.jpeg'),
-      pic3: require('../resources/Pfp/Alex/Alex_3.jpeg'),
-      pic4: require('../resources/Pfp/Alex/Alex_4.jpeg')
-      },
-    13: {
-      pic1: require('../resources/Pfp/Kara/Kara_1.jpeg'),
-      pic2: require('../resources/Pfp/Kara/Kara_2.jpeg'),
-      pic3: require('../resources/Pfp/Kara/Kara_3.jpeg'),
-      pic4: require('../resources/Pfp/Kara/Kara_4.jpeg')
-      },
-    14: {
-      pic1: require('../resources/Pfp/Sam/Sam_1.jpeg'),
-      pic2: require('../resources/Pfp/Sam/Sam_2.jpeg'),
-      pic3: require('../resources/Pfp/Sam/Sam_3.jpeg'),
-      pic4: require('../resources/Pfp/Sam/Sam_4.jpeg')
-      },
-    15: {
-      pic1: require('../resources/Pfp/Taylor/Taylor_1.jpeg'),
-      pic2: require('../resources/Pfp/Taylor/Taylor_2.jpeg'),
-      pic3: require('../resources/Pfp/Taylor/Taylor_3.jpeg'),
-      pic4: require('../resources/Pfp/Taylor/Taylor_4.jpeg')
-      },
-    16: {
-      pic1: require('../resources/Pfp/Gary/Gary_1.jpeg'),
-      pic2: require('../resources/Pfp/Gary/Gary_2.jpeg'),
-      pic3: require('../resources/Pfp/Gary/Gary_3.jpeg'),
-      pic4: require('../resources/Pfp/Gary/Gary_4.jpeg')
-      },
-    17: {
-      pic1: require('../resources/Pfp/JuliaNguyen/Julia_1.jpeg'),
-      pic2: require('../resources/Pfp/JuliaNguyen/Julia_2.jpeg'),
-      pic3: require('../resources/Pfp/JuliaNguyen/Julia_3.jpeg'),
-      pic4: require('../resources/Pfp/JuliaNguyen/Julia_4.jpeg')
-      },
-  }
 
   useEffect(() => {
     getData({ id });
@@ -411,7 +431,7 @@ function Card({ id }) {
           </Modal>
           <View style={{ bottom: 20 }}>
             <Button
-              title= 'COMPATIBILITY: 80%'
+              title= {'COMPATIBILITY: ' + compatibility + '%'}
               buttonStyle={styles.buttonStyle}
               containerStyle={styles.buttonContainer}
               titleStyle={styles.percentage}
