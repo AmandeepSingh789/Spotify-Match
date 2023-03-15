@@ -40,9 +40,9 @@ Indivisual packages installation-
 `npm install` or `yarn add` or `npx expo install <indivisual package name>` 
 
 Possibly other seperate installations that may need to be completed-
-`npx expo install jest-expo jest`
-`npx expo install expo-media-library@~15.0.`
-`npx expo install expo-auth-session@~3.8.0`
+- `npx expo install jest-expo jest`
+- `npx expo install expo-media-library@~15.0.`
+- `npx expo install expo-auth-session@~3.8.0`
 
 Note- After installing all the packages, there will be npm dependency issues or vulnerabilities warning. But the app will still work.
 
