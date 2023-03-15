@@ -25,12 +25,12 @@ export default function App() {
   const [userIds, setuserIds] = useState([]);
 
   const dispatch = useDispatch();
-  var { LoginUserId } = useSelector((state) => state.id);
+  var { id } = useSelector((state) => state.id);
 
   const getMatches = () => {
     axios
       .get(
-        `http://spotify-match.us-west-1.elasticbeanstalk.com/home/${LoginUserId}`
+        `http://spotify-match.us-west-1.elasticbeanstalk.com/home/${id}`
       )
       .then((response) => {
         setNumMatches(response["data"]);

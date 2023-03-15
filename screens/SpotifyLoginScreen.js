@@ -28,6 +28,87 @@ import {
 
 const logo = require("../assets/spotify_match_logo.png");
 
+async function postData(data, endpoint, id) {
+  axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/', data).catch((error) => { console.error(error); })
+}
+
+async function postDummySpotifyData() {
+  let genres = ["hip-hop", "lo-fi", "indie", "pop", "rock", "swedish-house", "death-metal", "math-rock", "jazz"];
+  let artists = [["Dua Lipa", "6M2wZ9GZgrQXHCFfjv46we"],
+  ["JAY-Z", "3nFkdlSjzX9mRTtwJOzDYB"],
+  ["Nujabes", "3Rq3YOF9YG9YfCWD4D56RZ"],
+  ["Men I Trust", "3zmfs9cQwzJl575W1ZYXeT"],
+  ["Rihanna", "5pKCCKE2ajJHZ9KAiaK11H"],
+  ["SZA", "7tYKF4w9nC0nq9CsPZTHyP"],
+  ["Thad Jones", "6DbqS0X8cSFOPGsvyze2yh"],
+  ["Miles Davis", "0kbYTNQb4Pb1rPbbaF0pT4"],
+  ["Doja Cat", "5cj0lLjcoR7YOSnhnX0Po5"]]
+
+  let tracks = [["Both Sides Of The Moon", "3zBCukLskhPfajaRaGgEvc"],
+  ["telepatía // acoustic", "2syQErCMMM1rXeZqtuaqxg"],
+  ["Aces", "4pV6Kx1T9L49PBFwH1g8ca"],
+  ["Mercury", "3ixe45hov7EBKXm8tYBmvX"],
+  ["Shibuya (feat. Syd)", "6WVSnyKQGzs1fosa2I3FMQ"],
+  ["One Beer", "4BnrGx9tWNF8aiXl1UhDBa"],
+  ["505", "58ge6dfP91o9oXMzq3XkIS"],
+  ["Cruisin to the Park", "3XITcXbaKS08ardf8ahKqM"],
+  ["Walkin", "1q8DwZtQen5fvyB7cKbShC"]]
+
+  // add spotify data
+
+  console.log(dummyArtists);
+  // console.log(dummyGenres);
+  // console.log(dummyTracks);
+
+  for (let id = 0; id < 17; id++) {
+    let dummyGenres = [];
+    for (let i = 0; i < 4; i++) {
+      dummyGenres.push({
+        "genre": genres[Math.floor(Math.random() * 8)],
+        "rank": i + 1,
+      })
+    }
+
+    let dummyArtists = [];
+    for (let i = 0; i < 4; i++) {
+      let val = Math.floor(Math.random() * 8)
+      dummyArtists.push({
+        "artistid": artists[val][1],
+        "artistname": artists[val][0],
+        "rank": i + 1,
+      })
+    }
+
+    let dummyTracks = [];
+    for (let i = 0; i < 4; i++) {
+      let val = Math.floor(Math.random() * 8);
+      dummyTracks.push({
+        "rank": i + 1,
+        "trackid": tracks[val][1],
+        "trackname": tracks[val][0],
+      })
+    }
+
+    axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/',
+      {
+        "id": id,
+        "acousticness": Math.random(),
+        "danceability": Math.random(),
+        "energy": Math.random(),
+        "instrumentalness": Math.random(),
+        "liveness": Math.random(),
+        "speechiness": Math.random(),
+        "valence": Math.random()
+      }
+    ).catch((error) => { console.error(error); });
+
+    // axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topartists/13',
+    //   dummyArtists
+    // ).catch((error) => { console.error(error); });
+
+  }
+};
+
 const NUMTOPARTISTS = 50;
 const NUMTOPTRACKS = 50;
 const NUMTOPGENRES = 50;
@@ -55,6 +136,7 @@ const SpotifyLoginScreen = () => {
     useSelector((state) => state.id);
 
   console.log(id);
+  // postDummySpotifyData();
 
   const navigation = useNavigation();
 
@@ -166,6 +248,7 @@ const SpotifyLoginScreen = () => {
           trackids.push(trackInfo.id);
         }
 
+        console.log(tracks);
         dispatch(setTopTracks(tracks));
         return trackids;
       });
@@ -220,7 +303,7 @@ const SpotifyLoginScreen = () => {
         data.speechiness /= num_tracks;
         data.valence /= num_tracks;
 
-        // console.log(data)
+        console.log(data)
         // console.log("\n")
 
         // console.log(userID);
@@ -249,6 +332,8 @@ const SpotifyLoginScreen = () => {
   }, [response]);
 
   useEffect(() => {
+    postDummySpotifyData();
+
     async function fetchData() {
       // setToken('');
       // console.log(userToken);
@@ -258,16 +343,19 @@ const SpotifyLoginScreen = () => {
 
       // var userID;
 
+
       if (profile.data) {
         userID = profile.data.id;
         userEmail = profile.data.email;
         setData(userID, userEmail);
       }
 
+
+
       const userExists = await axios
         .get(
           "http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/" +
-            userID
+          userID
         )
         .catch((response) => {
           console.log(response);
@@ -276,16 +364,20 @@ const SpotifyLoginScreen = () => {
       // const userExists = await axios.get('http://spotify-match.us-west-1.elasticbeanstalk.com/users/exists/')
       // .catch((response) => { console.log(response) });
 
-      console.log(userExists.data);
+      // console.log(userExists.data);
+      // console.log(spotifydata)
       // console.log(id)
 
       if (userExists.data) {
         dispatch(fetchUserData(userID));
+        let trackids = await getTopTracks(token, userID);
+        await getTopArtists(token, userID);
+        await getAudioFeatures(trackids, token, userID);
         navigation.navigate("Home");
       } else {
         await getTopArtists(token, userID);
         let trackids = await getTopTracks(token, userID);
-        // console.log(trackids);
+        await getTopArtists(token, userID);
         await getAudioFeatures(trackids, token, userID);
         navigation.navigate("SurveyGeneralQuestions");
       }

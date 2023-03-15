@@ -43,9 +43,60 @@ function Card({ id }) {
   const [orientation, SetOrientation] = useState([]);
   const [location, SetLocation] = useState([]);
   const [pronouns, SetPronouns] = useState([]);
-  const [TopSongs, SetTopSongs] = useState([]);
-  const [TopGenres, SetTopGenres] = useState([]);
-  const [TopArtists, SetTopArtists] = useState([]);
+
+
+  let genres = ["hip-hop", "lo-fi", "indie", "pop", "rock", "swedish-house", "death-metal", "math-rock", "jazz"];
+  let artists = [["Dua Lipa", "6M2wZ9GZgrQXHCFfjv46we"],
+  ["JAY-Z", "3nFkdlSjzX9mRTtwJOzDYB"],
+  ["Nujabes", "3Rq3YOF9YG9YfCWD4D56RZ"],
+  ["Men I Trust", "3zmfs9cQwzJl575W1ZYXeT"],
+  ["Rihanna", "5pKCCKE2ajJHZ9KAiaK11H"],
+  ["SZA", "7tYKF4w9nC0nq9CsPZTHyP"],
+  ["Thad Jones", "6DbqS0X8cSFOPGsvyze2yh"],
+  ["Miles Davis", "0kbYTNQb4Pb1rPbbaF0pT4"],
+  ["Doja Cat", "5cj0lLjcoR7YOSnhnX0Po5"]]
+
+  let tracks = [["Both Sides Of The Moon", "3zBCukLskhPfajaRaGgEvc"],
+  ["telepatía // acoustic", "2syQErCMMM1rXeZqtuaqxg"],
+  ["Aces", "4pV6Kx1T9L49PBFwH1g8ca"],
+  ["Mercury", "3ixe45hov7EBKXm8tYBmvX"],
+  ["Shibuya (feat. Syd)", "6WVSnyKQGzs1fosa2I3FMQ"],
+  ["One Beer", "4BnrGx9tWNF8aiXl1UhDBa"],
+  ["505", "58ge6dfP91o9oXMzq3XkIS"],
+  ["Cruisin to the Park", "3XITcXbaKS08ardf8ahKqM"],
+  ["Walkin", "1q8DwZtQen5fvyB7cKbShC"]]
+
+  let dummyGenres = [];
+  for (let i = 0; i < 10; i++) {
+    dummyGenres.push({
+      "genre": genres[Math.floor(Math.random() * 9)],
+      "rank": i + 1,
+    })
+  }
+
+  let dummyArtists = [];
+  for (let i = 0; i < 10; i++) {
+    let val = Math.floor(Math.random() * 9)
+    dummyArtists.push({
+      "artistid": artists[val][1],
+      "artistname": artists[val][0],
+      "rank": i + 1,
+    })
+  }
+
+  let dummyTracks = [];
+  for (let i = 0; i < 10; i++) {
+    let val = Math.floor(Math.random() * 9);
+    dummyTracks.push({
+      "rank": i + 1,
+      "trackid": tracks[val][1],
+      "trackname": tracks[val][0],
+    })
+  }
+
+  const [TopSongs, SetTopSongs] = useState(dummyTracks);
+  const [TopGenres, SetTopGenres] = useState(dummyGenres);
+  const [TopArtists, SetTopArtists] = useState(dummyArtists);
 
   // Array of pictures
   const pics = [
@@ -67,6 +118,12 @@ function Card({ id }) {
     },
   ];
 
+  const generateColor = () => {
+    let colors = ['#B9DD5C', '#D64000', '#FFD5C2', '#E3D9EB', '#C8E0FC', '#D6E3B4']
+
+    return colors[Math.floor(Math.random() * 5)]
+  }
+
   async function getUserById({ id }) {
     console.log("rendering card: " + id);
     return axios
@@ -81,7 +138,7 @@ function Card({ id }) {
     setLoaded(false);
     const response = await getUserById({ id });
 
-    console.log(response.data);
+    // console.log(response.data);
     setName(response["data"]["name"]);
     setBio(response["data"]["bio"]);
     setAnswer1(response["data"]["answer1"]);
@@ -168,7 +225,7 @@ function Card({ id }) {
     SetOrientation(map[orientation]);
   };
 
-  const GetPronouns=(pronouns) => {
+  const GetPronouns = (pronouns) => {
     if (pronouns == null) {
       SetPronouns("-/-");
     }
@@ -204,10 +261,10 @@ function Card({ id }) {
           <View style={styles.basicInfo}>
             <Text style={styles.name}>{`${Name}, ${Age}`}</Text>
             <Text style={styles.genderAndOrientation}>
-              {`${gender}, ${orientation}, ${pronouns}`}            
+              {`${gender}, ${orientation}, ${pronouns}`}
             </Text>
             <Text style={styles.location}>
-              {`${location}`}            
+              {`${location}`}
             </Text>
           </View>
 
@@ -257,7 +314,28 @@ function Card({ id }) {
             <Divider style={styles.divider} />
 
             <Text style={styles.topInfo}>Top Genres: </Text>
-            <Text style={styles.topInfo}>{`${TopGenres}`} </Text>
+            {/* <Text style={styles.topInfo}>{`${TopGenres}`} </Text> */}
+            <ScrollView
+              // showsHorizontalScrollIndicator={true}
+              // indicatorStyle={"white"}
+              scrollIndicatorInsets={{ top: 0, left: 20, bottom: 20, right: 20 }}
+              // pagingEnabled={true}
+              centerContent={true}
+              horizontal={true}
+              style={{
+                margin: 10
+              }}
+            // persistentScrollbar={true}
+            >
+              {
+                /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
+                dummyGenres.map((e, index) => (
+                  <Text
+                    key={index}
+                    style={{ color: generateColor(), fontSize: 20 }}>{'    ' + e.genre + '   '}</Text>
+                ))
+              }
+            </ScrollView>
             <Divider style={styles.divider} />
 
             <View>
@@ -270,7 +348,29 @@ function Card({ id }) {
             <Divider style={styles.divider} />
 
             <Text style={styles.topInfo}>Top Songs: </Text>
-            <Text style={styles.topInfo}>{`${TopSongs}`} </Text>
+            {/* <Text style={styles.topInfo}>{`${TopSongs}`} </Text> */}
+
+            <ScrollView
+              // showsHorizontalScrollIndicator={true}
+              // indicatorStyle={"white"}
+              scrollIndicatorInsets={{ top: 0, left: 20, bottom: 20, right: 20 }}
+              // pagingEnabled={true}
+              centerContent={true}
+              horizontal={true}
+              style={{
+                margin: 10
+              }}
+            // persistentScrollbar={true}
+            >
+              {
+                /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
+                dummyTracks.map((e, index) => (
+                  <Text
+                    key={index}
+                    style={{ color: generateColor(), fontSize: 20  }}>{'    ' + e.trackname + '   '}</Text>
+                ))
+              }
+            </ScrollView>
             <Divider style={styles.divider} />
 
             <View>
@@ -283,8 +383,28 @@ function Card({ id }) {
 
             <Divider style={styles.divider} />
             <Text style={styles.topInfo}>Top Artists: </Text>
-            <Text style={styles.topInfo}>{`${TopArtists}`} </Text>
-
+            {/* <Text style={styles.topInfo}>{`${TopArtists}`} </Text> */}
+            <ScrollView
+              // showsHorizontalScrollIndicator={true}
+              // indicatorStyle={"white"}
+              scrollIndicatorInsets={{ top: 0, left: 20, bottom: 20, right: 20 }}
+              // pagingEnabled={true}
+              centerContent={true}
+              horizontal={true}
+              style={{
+                margin: 10
+              }}
+            // persistentScrollbar={true}
+            >
+              {
+                /* added the part key={index} to Fix the warning "Each child should have a unique key prop"*/
+                dummyArtists.map((e, index) => (
+                  <Text
+                    key={index}
+                    style={{ color: generateColor(), fontSize: 20  }}>{'    ' + e.artistname + '   '}</Text>
+                ))
+              }
+            </ScrollView>
             <Divider style={styles.divider} />
             <View>
               <Text style={styles.desc}>{`Q: ${Q3}`}</Text>

@@ -195,7 +195,10 @@ export default function Edit_user_profile() {
         tempQuestion3 = questionBank._z[question3].value;
     }
 
-    // console.log(toptracks);
+    console.log(topgenres);
+    console.log(topartists);
+    console.log(toptracks);
+    console.log(spotifydata);
 
     // Changes image based on URI
     // Parameters: image - number from 1-4 that specifies which image is being updated

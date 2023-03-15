@@ -211,7 +211,7 @@ const userDataSlice = createSlice({
       //     state.gender = 'O';
       // }
       state.gender = action.payload;
-      console.log(state.gender);
+      // console.log(state.gender);
     },
     setLocation(state, action) {
       state.location = action.payload;
@@ -239,7 +239,7 @@ const userDataSlice = createSlice({
       // }
 
       state.orientation = action.payload;
-      console.log(state.orientation);
+      // console.log(state.orientation);
     },
     setPronouns(state, action) {
       state.pronouns = action.payload;
@@ -321,7 +321,7 @@ const userDataSlice = createSlice({
         state.id = action.payload["id"];
         state.name = action.payload["name"];
 
-        console.log(state.name);
+        // console.log(state.name);
         state.email = action.payload["email"];
 
         if (action.payload["gender"] == "M") {
