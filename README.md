@@ -27,7 +27,7 @@ This app utilizes the Spotify API to analyze a user's music preferences and empl
 
 Note - The project is divided into two repositories, one for the frontend and one for the backend. This repository is the frontend of the app.
 
-The backend repository is present in the assets folder as a zip file (it is a repository and has a readme for instructions). The name of the zipfile is node-api-postgres. It also contains unit tests for the backend.
+The backend repository is present in the assets folder as a zip file (it is a repository and has a readme for instructions). The name of the zipfile is node-api-postgres. It also contains unit tests for the backend. Please read the README file for that repository.
 
 ## Setup Notes-
 
@@ -43,6 +43,8 @@ Possibly other seperate installations that may need to be completed-
 `npx expo install jest-expo jest`
 `npx expo install expo-media-library@~15.0.`
 `npx expo install expo-auth-session@~3.8.0`
+
+Note- After installing all the packages, there will be npm dependency issues or vulnerabilities warning. But the app will still work.
 
 ### to run the app-
 `npx expo start` or
