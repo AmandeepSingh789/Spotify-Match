@@ -22,6 +22,14 @@ import { questionBank } from "../redux/UserData";
 
 const picUri = '../resources/Pfp/';
 
+const NUMTOPGENRES = 5;
+const NUMTOPSONGS = 5;
+const NUMTOPARTISTS = 5;
+const NUMSHAREDGENRES = 5;
+const NUMSHAREDSONGS = 5;
+const NUMSHAREDARTISTS = 5;
+
+
 const testUsers = {
   0: {
     pic1: require('../resources/Pfp/Jerry/Jerry_1.jpeg'),
@@ -170,6 +178,9 @@ function Card({ id }) {
   const [TopGenres, SetTopGenres] = useState([]);
   const [TopArtists, SetTopArtists] = useState([]);
   const [compatibility, setCompatibility] = useState(80.0);
+  const [sharedGenres, setSharedGenres] = useState([]);
+  const [sharedSongs, setSharedSongs] = useState([]);
+  const [sharedArtists, setSharedArtists] = useState([]);
 
   const [useBase64, setUseBase64] = useState(false);
 
@@ -238,9 +249,6 @@ function Card({ id }) {
     GetOrientation(response["data"]["orientation"]);
     GetPronouns(response["data"]["pronouns"])
     SetLocation(response["data"]["location"])
-    SetTopSongs(response["data"]["topsongs"]);
-    SetTopGenres(response["data"]["topgenres"]);
-    SetTopArtists(response["data"]["topartists"]);
 
 
     const q1id = response["data"]["questionid1"];
@@ -252,6 +260,14 @@ function Card({ id }) {
     setQ3(questionBank._z[q3id].value);
 
     setCompatibility(findCompatibilty(spotifydata, response["data"]["spotifydata"]));
+
+    SetTopGenres(getTopGenres(response["data"]["topgenres"]));
+    SetTopSongs(getTopSongs(response["data"]["toptracks"]));
+    SetTopArtists(getTopArtists(response["data"]["topartists"]));
+
+    setSharedGenres(getSharedGenres(topgenres, response["data"]["topgenres"]));
+    setSharedSongs(getSharedSongs(toptracks, response["data"]["toptracks"]));
+    setSharedArtists(getSharedArtists(topartists, response["data"]["topartists"]));
 
     setLoaded(true);
 
@@ -266,6 +282,59 @@ function Card({ id }) {
       setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
     }
   };
+
+  function getTopGenres(topGenres) {
+    let res = [];
+    let i = 0
+    while (i < NUMTOPGENRES && i < topGenres.length) {
+      res.push(topGenres[i].genre)
+      i++;
+    }
+    return res;
+  }
+
+  function getTopSongs(topSongs) {
+    let res = [];
+    let i = 0
+    while (i < NUMTOPSONGS && i < topSongs.length) {
+      res.push(topSongs[i].trackname)
+      i++;
+    }
+    return res;
+  }
+
+  function getTopArtists(topArtists) {
+    let res = [];
+    let i = 0
+    while (i < NUMTOPARTISTS && i < topArtists.length) {
+      res.push(topArtists[i].artistname)
+      i++;
+    }
+    return res;
+  }
+
+  function getSharedGenres(genres1, genres2) {
+    const genre1Names = genres1.map(genre => genre.genre);
+    console.log(genre1Names)
+    const genre2Names = genres2.map(genre => genre.genre);
+    let intersection = genre1Names.filter(x => genre2Names.includes(x));
+    return intersection.slice(0, NUMSHAREDGENRES);
+  }
+
+  function getSharedSongs(songs1, songs2) {
+    const songs1Names = songs1.map(track => track.trackname);
+    const songs2Names = songs2.map(track => track.trackname);
+    let intersection = songs1Names.filter(x => songs2Names.includes(x));
+    return intersection.slice(0, NUMSHAREDSONGS);
+  }
+  
+  function getSharedArtists(artists1, artists2) {
+    const artists1Names = artists1.map(artist => artist.artistname);
+    const artists2Names = artists2.map(artist => artist.artistname);
+    let intersection = artists1Names.filter(x => artists2Names.includes(x));
+    return intersection.slice(0, NUMSHAREDARTISTS);
+  }
+
 
   function findCompatibilty(A, B) {
     console.log(A);
@@ -424,8 +493,12 @@ function Card({ id }) {
                 >
                   <Text style={styles.textStyle}>X</Text>
                 </Pressable>
-                <Text style={styles.modalText}>Compatible songs:  </Text>
-                <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+                <Text style={styles.modalText}>Compatible Songs:  </Text>
+                <Text style={styles.modalText}>{`${sharedSongs}`} </Text>
+                <Text style={styles.modalText}>Compatible Artists:  </Text>
+                <Text style={styles.modalText}>{`${sharedArtists}`} </Text>
+                <Text style={styles.modalText}>Compatible Genre:  </Text>
+                <Text style={styles.modalText}>{`${sharedGenres}`} </Text>
               </View>
             </View>
           </Modal>
@@ -566,7 +639,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     // marginLeft: 10,
     textAlign: 'center',
-    marginTop: -25,
+    marginTop: 5,
   },
   genderAndOrientation: {
     color: "#fff",
@@ -687,10 +760,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#1DB954",
     borderRadius: 10,
-    height: 40,
+    height: 42,
   },
   buttonContainer: {
-    width: 230,
-    top: -35
+    width: 270,
+    top: 20
   },
 });

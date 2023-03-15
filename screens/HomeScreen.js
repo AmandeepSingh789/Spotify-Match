@@ -25,12 +25,12 @@ export default function App() {
   const [userIds, setuserIds] = useState([]);
 
   const dispatch = useDispatch();
-  var { LoginUserId } = useSelector((state) => state.id);
+  var { id: loggedInUser } = useSelector((state) => state.id);
 
   const getMatches = () => {
     axios
       .get(
-        `http://spotify-match.us-west-1.elasticbeanstalk.com/home/${LoginUserId}`
+        `http://spotify-match.us-west-1.elasticbeanstalk.com/home/${loggedInUser}`
       )
       .then((response) => {
         setNumMatches(response["data"]);
@@ -67,7 +67,7 @@ export default function App() {
           onSwipedLeft={(id) => {
             const leftData = {
               swipeeid: userIds[id].userid,
-              swiperid: LoginUserId,
+              swiperid: loggedInUser,
               liked: false,
             };
             console.log(
@@ -89,7 +89,7 @@ export default function App() {
           onSwipedRight={(id) => {
             const rightData = {
               swipeeid: userIds[id].userid,
-              swiperid: LoginUserId,
+              swiperid: loggedInUser,
               liked: true,
             };
             console.log(
