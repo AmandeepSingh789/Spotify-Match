@@ -37,6 +37,9 @@ Note - The project is divided into two repositories, one for the frontend and on
 `npx expo start` or
 `npx expo start --tunnel`
 
+### to run the test-
+`npm run test`
+
 ### to clear the cache and run-
 `npx expo start --clear`
 OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clearing
