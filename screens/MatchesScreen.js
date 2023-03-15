@@ -100,7 +100,7 @@ const MatchScreen = () => {
   }
 
   // Scroll enabled if user has more than 9 matches
-  const scrollEnabled = matches.length > 9;
+  const scrollEnabled = true;
 
   return (
     <View style={styles.container}>

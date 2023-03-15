@@ -14,10 +14,18 @@ import Layout from "../ constants/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
+import { Button } from "@rneui/base";
+import { LinearGradient } from "expo-linear-gradient";
+import * as FileSystem from 'expo-file-system';
+import { Asset } from "expo-asset"
+
 
 import { questionBank } from "../redux/UserData";
 
 const compatibility = "80%";
+const picUri = '../resources/Pfp/';
+
+let test = require('../assets/test300x300.jpeg');
 
 // Card component that displays user information
 function Card({ id }) {
@@ -98,6 +106,8 @@ function Card({ id }) {
   const [TopGenres, SetTopGenres] = useState(dummyGenres);
   const [TopArtists, SetTopArtists] = useState(dummyArtists);
 
+  const [useBase64, setUseBase64] = useState(false);
+
   // Array of pictures
   const pics = [
     {
@@ -123,6 +133,24 @@ function Card({ id }) {
 
     return colors[Math.floor(Math.random() * 5)]
   }
+  const testPics = [
+    {
+      id: 1,
+      source: pic1,
+    },
+    {
+      id: 2,
+      source: pic2,
+    },
+    {
+      id: 3,
+      source: pic3,
+    },
+    {
+      id: 4,
+      source: pic4,
+    },
+  ]
 
   async function getUserById({ id }) {
     console.log("rendering card: " + id);
@@ -164,31 +192,160 @@ function Card({ id }) {
 
     setLoaded(true);
 
-    // setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
-    // setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
-    // setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
-    // setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+    if (testUsers[id] != undefined) {
+      setTestUserPhotos(id);
+    }
+    else {
+      setUseBase64(true);
+      setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
+      setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
+      setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
+      setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+    }
   };
+
+
+  // async function fileToBase64(fileUri) {
+  //   console.log("loading image:")
+  //   console.log(fileUri)
+  //   try {
+  //     const asset = Asset.fromModule(fileUri);
+  //     const fileContent = await FileSystem.readAsStringAsync(asset.localUri, {
+  //       encoding: FileSystem.EncodingType.Base64,
+  //     });
+  //     return fileContent;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  
+
+  async function setTestUserPhotos(id) {
+    setUseBase64(false)
+    setPic1(testUsers[id].pic1);
+    setPic2(testUsers[id].pic2);
+    setPic3(testUsers[id].pic3);
+    setPic4(testUsers[id].pic4);
+  }
+
+  const testUsers = {
+    0: {
+      pic1: require('../resources/Pfp/Jerry/Jerry_1.jpeg'),
+      pic2: require('../resources/Pfp/Jerry/Jerry_2.jpeg'),
+      pic3: require('../resources/Pfp/Jerry/Jerry_3.jpeg'),
+      pic4: require('../resources/Pfp/Jerry/Jerry_4.jpeg')
+    },
+    1: {
+      pic1: require('../resources/Pfp/George/George_1.jpeg'),
+      pic2: require('../resources/Pfp/George/George_2.jpeg'),
+      pic3: require('../resources/Pfp/George/George_3.jpeg'),
+      pic4: require('../resources/Pfp/George/George_4.jpeg')
+    },
+    2: {
+      pic1: require('../resources/Pfp/Elaine/Elaine_1.jpeg'),
+      pic2: require('../resources/Pfp/Elaine/Elaine_2.jpeg'),
+      pic3: require('../resources/Pfp/Elaine/Elaine_3.jpeg'),
+      pic4: require('../resources/Pfp/Elaine/Elaine_4.jpeg')
+      },
+    3: {
+      pic1: require('../resources/Pfp/JayQuellin/JayQuellin_1.jpeg'),
+      pic2: require('../resources/Pfp/JayQuellin/JayQuellin_2.jpeg'),
+      pic3: require('../resources/Pfp/JayQuellin/JayQuellin_3.jpeg'),
+      pic4: require('../resources/Pfp/JayQuellin/JayQuellin_4.jpeg')
+      },
+    4: {
+        pic1: require('../resources/Pfp/Balakay/Balakay_1.jpeg'),
+        pic2: require('../resources/Pfp/Balakay/Balakay_2.jpeg'),
+        pic3: require('../resources/Pfp/Balakay/Balakay_3.jpeg'),
+        pic4: require('../resources/Pfp/Balakay/Balakay_4.jpeg')
+      },
+    5: {
+        pic1: require('../resources/Pfp/Deenice/DeeNice_1.jpeg'),
+        pic2: require('../resources/Pfp/Deenice/DeeNice_2.jpeg'),
+        pic3: require('../resources/Pfp/Deenice/DeeNice_3.jpeg'),
+        pic4: require('../resources/Pfp/Deenice/DeeNice_4.jpeg')
+    },
+    6: {
+      pic1: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_1.jpeg'),
+      pic2: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_2.jpeg'),
+      pic3: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_3.jpeg'),
+      pic4: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_4.jpeg')
+      },
+    7: {
+      pic1: require('../resources/Pfp/Tymothee/Tymothee_1.jpeg'),
+      pic2: require('../resources/Pfp/Tymothee/Tymothee_2.jpeg'),
+      pic3: require('../resources/Pfp/Tymothee/Tymothee_3.jpeg'),
+      pic4: require('../resources/Pfp/Tymothee/Tymothee_4.jpeg')
+      },
+    8: {
+      pic1: require('../resources/Pfp/CallumGarcia/Callum_1.jpeg'),
+      pic2: require('../resources/Pfp/CallumGarcia/Callum_2.jpeg'),
+      pic3: require('../resources/Pfp/CallumGarcia/Callum_3.jpeg'),
+      pic4: require('../resources/Pfp/CallumGarcia/Callum_4.jpeg')
+      },
+    9: {
+      pic1: require('../resources/Pfp/Maggie/Maggie_1.jpeg'),
+      pic2: require('../resources/Pfp/Maggie/Maggie_2.jpeg'),
+      pic3: require('../resources/Pfp/Maggie/Maggie_3.jpeg'),
+      pic4: require('../resources/Pfp/Maggie/Maggie_4.jpeg')
+      },
+    10: {
+      pic1: require('../resources/Pfp/Chris/Chris_1.jpeg'),
+      pic2: require('../resources/Pfp/Chris/Chris_2.jpeg'),
+      pic3: require('../resources/Pfp/Chris/Chris_3.jpeg'),
+      pic4: require('../resources/Pfp/Chris/Chris_4.jpeg')
+      },
+    11: {
+      pic1: require('../resources/Pfp/Nina/Nina_1.jpeg'),
+      pic2: require('../resources/Pfp/Nina/Nina_2.jpeg'),
+      pic3: require('../resources/Pfp/Nina/Nina_3.jpeg'),
+      pic4: require('../resources/Pfp/Nina/Nina_4.jpeg')
+      },
+    12: {
+      pic1: require('../resources/Pfp/Alex/Alex_1.jpeg'),
+      pic2: require('../resources/Pfp/Alex/Alex_2.jpeg'),
+      pic3: require('../resources/Pfp/Alex/Alex_3.jpeg'),
+      pic4: require('../resources/Pfp/Alex/Alex_4.jpeg')
+      },
+    13: {
+      pic1: require('../resources/Pfp/Kara/Kara_1.jpeg'),
+      pic2: require('../resources/Pfp/Kara/Kara_2.jpeg'),
+      pic3: require('../resources/Pfp/Kara/Kara_3.jpeg'),
+      pic4: require('../resources/Pfp/Kara/Kara_4.jpeg')
+      },
+    14: {
+      pic1: require('../resources/Pfp/Sam/Sam_1.jpeg'),
+      pic2: require('../resources/Pfp/Sam/Sam_2.jpeg'),
+      pic3: require('../resources/Pfp/Sam/Sam_3.jpeg'),
+      pic4: require('../resources/Pfp/Sam/Sam_4.jpeg')
+      },
+    15: {
+      pic1: require('../resources/Pfp/Taylor/Taylor_1.jpeg'),
+      pic2: require('../resources/Pfp/Taylor/Taylor_2.jpeg'),
+      pic3: require('../resources/Pfp/Taylor/Taylor_3.jpeg'),
+      pic4: require('../resources/Pfp/Taylor/Taylor_4.jpeg')
+      },
+    16: {
+      pic1: require('../resources/Pfp/Gary/Gary_1.jpeg'),
+      pic2: require('../resources/Pfp/Gary/Gary_2.jpeg'),
+      pic3: require('../resources/Pfp/Gary/Gary_3.jpeg'),
+      pic4: require('../resources/Pfp/Gary/Gary_4.jpeg')
+      },
+    17: {
+      pic1: require('../resources/Pfp/JuliaNguyen/Julia_1.jpeg'),
+      pic2: require('../resources/Pfp/JuliaNguyen/Julia_2.jpeg'),
+      pic3: require('../resources/Pfp/JuliaNguyen/Julia_3.jpeg'),
+      pic4: require('../resources/Pfp/JuliaNguyen/Julia_4.jpeg')
+      },
+  }
 
   useEffect(() => {
     getData({ id });
   }, [id]);
 
-  // Flatlist Image Item
-  const Item = ({ item }) => (
-    <View style={styles.imageContainer}>
-      {/* <Image source={{uri:"data:image/jpeg;base64,"+ `${pic2}`}}
-      resizeMode="cover"
-      style={styles.image} 
-       /> */}
-
-      <Image
-        source={{ uri: item.uri }}
-        resizeMode="contain"
-        style={styles.image}
-      />
-    </View>
-  );
+  const compatibilityText = (percentage) => {
+    return "COMPATIBILITY: " + percentage;
+  };
 
   // Function to get age from DOB
   const getAge = (DOB) => {
@@ -208,31 +365,61 @@ function Card({ id }) {
 
   const GetGender = (gender) => {
     let map = {
-      F: "Female",
-      M: "Male",
-      N: "Non Binary",
+      F: "Female,",
+      M: "Male,",
+      N: "Non Binary,",
+      O: "Non Binary,",
     };
     SetGender(map[gender]);
   };
 
   const GetOrientation = (orientation) => {
     let map = {
-      S: "Straight",
-      B: "Bisexual",
-      G: "Gay",
-      P: "Pansexual",
+      S: "Straight,",
+      B: "Bisexual,",
+      G: "Gay,",
+      L: "Lesbian,",
+      O: "",
+      P: "Pansexual,",
     };
     SetOrientation(map[orientation]);
   };
 
   const GetPronouns = (pronouns) => {
+    // Flatlist Image Item
+    const Item = ({ item }) => {
+    
+      if (useBase64) {
+        return (
+          <View key={item.id} style={styles.imageContainer}>
+            <Image
+              source={{ uri: item.uri }}
+              resizeMode="contain"
+              style={styles.image}
+            />
+          </View>
+        )
+      }
+      else {
+        return (
+          <View key={item.id} style={styles.imageContainer}>
+            <Image
+              source={item.source}
+              resizeMode="contain"
+              style={styles.image}
+            />
+          </View>
+        )
+      }
+    };
+
+  const GetPronouns=(pronouns) => {
     if (pronouns == null) {
       SetPronouns("-/-");
     }
     else {
       SetPronouns(pronouns);
     }
-
   }
   return (
     <View style={styles.container}>
@@ -244,20 +431,60 @@ function Card({ id }) {
       style={styles.image} 
        /> */}
           <FlatList
-            data={pics}
+            data={useBase64 ? pics : testPics}
             renderItem={({ item }) => <Item item={item} />}
             horizontal
             pagingEnabled
             snapToAlignment="center"
             showHorizontalScrollIndicator={false}
             style={styles.flatList}
+            initialScrollIndex={0} // Set the default id to 0
           />
         </View>
 
         {/* -------------------------------------------------------------------- */}
 
+        {/* POPUP CODE BEGINS */}
+        <View style={styles.centeredView}>
+          <Modal
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Pressable
+                  style={[styles.button]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>X</Text>
+                </Pressable>
+                <Text style={styles.modalText}>Compatible songs:  </Text>
+                <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+              </View>
+            </View>
+          </Modal>
+          <View style={{ bottom: 20 }}>
+            <Button
+              title= {compatibilityText(compatibility)}
+              buttonStyle={styles.buttonStyle}
+              containerStyle={styles.buttonContainer}
+              titleStyle={styles.percentage}
+              onPress={() => {
+                setModalVisible(true)
+              }}
+            />
+          </View>
+
+        </View>
+        {/* POPUP CODE ENDS */}
+
         {/* Box with Name,Age and Meter*/}
         <View style={styles.upperBox}>
+          
           <View style={styles.basicInfo}>
             <Text style={styles.name}>{`${Name}, ${Age}`}</Text>
             <Text style={styles.genderAndOrientation}>
@@ -268,40 +495,6 @@ function Card({ id }) {
             </Text>
           </View>
 
-          <View style={styles.meter}>
-            {/* POPUP CODE BEGINS */}
-            <View style={styles.centeredView}>
-              <Modal
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert("Modal has been closed.");
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
-                    <Pressable
-                      style={[styles.button]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>X</Text>
-                    </Pressable>
-                    <Text style={styles.modalText}>Compatiable songs: </Text>
-                    <Text style={styles.modalText}>{`${TopSongs}`} </Text>
-                    {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
-                  </View>
-                </View>
-              </Modal>
-              <Pressable onPress={() => setModalVisible(true)}>
-                <Text style={styles.percentage}>{compatibility}</Text>
-              </Pressable>
-            </View>
-            {/* POPUP CODE ENDS */}
-
-            {/* <Text style={styles.percentage}>{compatibility}</Text> */}
-          </View>
         </View>
 
         {/* -------------------------------------------------------------------- */}
@@ -433,7 +626,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
-    backgroundColor: "#000000",
+    backgroundColor: "#000",
     marginHorizontal: 40,
     marginTop: 20,
     marginBottom: 40,
@@ -471,16 +664,21 @@ const styles = StyleSheet.create({
     // color: '#fff',
     color: "#FE8AE3",
     fontSize: 28,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    // marginLeft: 10,
+    textAlign: 'center',
+    marginTop: 5,
   },
   genderAndOrientation: {
     color: "#fff",
-    fontSize: 15,
+    // marginLeft: 10,
+    textAlign:'center'
   },
   location: {
-    color: "#ff",
+    color: "#fff",
     fontSize: 15,
-
+    textAlign: 'center',
+    marginBottom: 15
   },
   meter: {
     color: "#5E5E5E",
@@ -488,19 +686,31 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
-    marginLeft: 20,
+    marginLeft: 15,
     borderWidth: 2,
-    height: 90,
-    width: 90,
+    marginRight: 20,
+    height: 70,
+    width: 70,
     justifyContent: "center",
   },
+  // compatibility: {
+  //   color: "#1DB954",
+  //   alignSelf: "center",
+  //   fontSize: 20,
+  //   marginBottom: 20
+  //   // fontWeight: 'bold'
+
+  // },
   percentage: {
-    // color: '#fff',
-    marginBottom: 20,
-    color: "#1DB954",
+    color: "#1DB950",
     alignSelf: "center",
-    fontSize: 27,
-    fontWeight: 'bold'
+    fontSize: 20,
+    // top: -40,
+    // marginBottom: -10,
+    fontWeight: 'bold',
+    textShadowColor: '#1DB954', 
+    textShadowOffset: { width: -1, height: 0 },
+    textShadowRadius: 10, 
   },
   desc: {
     color: "white",
@@ -554,7 +764,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: -10,
   },
   // style of the popup window
   modalView: {
@@ -572,5 +782,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     fontSize: 20,
     flexShrink: 1,
+  },
+  buttonStyle: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#1DB954",
+    borderRadius: 10,
+    height: 42,
+  },
+  buttonContainer: {
+    width: 270,
+    top: 20
   },
 });
