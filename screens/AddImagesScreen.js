@@ -11,6 +11,9 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 
+import { fetchUserData } from "../redux/UserData";
+
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -279,6 +282,7 @@ export default function Add_images() {
         "image3": image3,
         "image4": image4,
       });
+      dispatch(fetchUserData(id));
       navigation.navigate("Home");
     } else {
       alert("Please fill out all fields!");
