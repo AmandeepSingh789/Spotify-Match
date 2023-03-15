@@ -92,8 +92,15 @@ const MatchScreen = () => {
     isFocused && getMatches();
   }, [isFocused]);
 
+  // Return's the Match's first name
+  const returnFirstName = (name) => {
+    const full_name = name.split(' ');
+    const first_name = full_name[0];
+    return first_name;
+  }
+
   // Scroll enabled if user has more than 9 matches
-  const scrollEnabled = matches.length > 9;
+  const scrollEnabled = true;
 
   return (
     <View style={styles.container}>
@@ -141,7 +148,7 @@ const MatchScreen = () => {
             <View style={{ flexDirection: "column" }}>
   
               <NewMatches key={item.id} id={item.id} uri={item.picture1} />
-              <Text style={styles.matchName}> {item.name} </Text>
+              <Text style={styles.matchName}> {`${returnFirstName(item.name)}`} </Text>
 
             </View>
           </>

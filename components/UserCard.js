@@ -14,6 +14,8 @@ import Layout from "../ constants/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
+import { Button } from "@rneui/base";
+import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from 'expo-file-system';
 import { Asset } from "expo-asset"
 
@@ -47,6 +49,8 @@ function Card({ id }) {
 
   const [gender, SetGender] = useState([]);
   const [orientation, SetOrientation] = useState([]);
+  const [location, SetLocation] = useState([]);
+  const [pronouns, SetPronouns] = useState([]);
   const [TopSongs, SetTopSongs] = useState([]);
   const [TopGenres, SetTopGenres] = useState([]);
   const [TopArtists, SetTopArtists] = useState([]);
@@ -116,6 +120,8 @@ function Card({ id }) {
     getAge(response["data"]["birthdate"]);
     GetGender(response["data"]["gender"]);
     GetOrientation(response["data"]["orientation"]);
+    GetPronouns(response["data"]["pronouns"])
+    SetLocation(response["data"]["location"])
     SetTopSongs(response["data"]["topsongs"]);
     SetTopGenres(response["data"]["topgenres"]);
     SetTopArtists(response["data"]["topartists"]);
@@ -301,19 +307,22 @@ function Card({ id }) {
 
   const GetGender = (gender) => {
     let map = {
-      F: "Female",
-      M: "Male",
-      N: "Non Binary",
+      F: "Female,",
+      M: "Male,",
+      N: "Non Binary,",
+      O: "Non Binary,",
     };
     SetGender(map[gender]);
   };
 
   const GetOrientation = (orientation) => {
     let map = {
-      S: "Straight",
-      B: "Bisexual",
-      G: "Gay",
-      P: "Pansexual",
+      S: "Straight,",
+      B: "Bisexual,",
+      G: "Gay,",
+      L: "Lesbian,",
+      O: "",
+      P: "Pansexual,",
     };
     SetOrientation(map[orientation]);
   };
@@ -345,6 +354,15 @@ function Card({ id }) {
       }
     };
 
+  const GetPronouns=(pronouns) => {
+    if (pronouns == null) {
+      SetPronouns("-/-");
+    }
+    else {
+      SetPronouns(pronouns);
+    }
+
+  }
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -368,49 +386,57 @@ function Card({ id }) {
 
         {/* -------------------------------------------------------------------- */}
 
+        {/* POPUP CODE BEGINS */}
+        <View style={styles.centeredView}>
+          <Modal
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Pressable
+                  style={[styles.button]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>X</Text>
+                </Pressable>
+                <Text style={styles.modalText}>Compatible songs:  </Text>
+                <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+              </View>
+            </View>
+          </Modal>
+          <View style={{ bottom: 20 }}>
+            <Button
+              title= 'COMPATIBILITY: 80%'
+              buttonStyle={styles.buttonStyle}
+              containerStyle={styles.buttonContainer}
+              titleStyle={styles.percentage}
+              onPress={() => {
+                setModalVisible(true)
+              }}
+            />
+          </View>
+
+        </View>
+        {/* POPUP CODE ENDS */}
+
         {/* Box with Name,Age and Meter*/}
         <View style={styles.upperBox}>
+          
           <View style={styles.basicInfo}>
             <Text style={styles.name}>{`${Name}, ${Age}`}</Text>
             <Text style={styles.genderAndOrientation}>
-              {`${gender}, ${orientation}`}
+              {`${gender} ${orientation} ${pronouns}`}            
+            </Text>
+            <Text style={styles.location}>
+              {`${location}`}            
             </Text>
           </View>
 
-          <View style={styles.meter}>
-            {/* POPUP CODE BEGINS */}
-            <View style={styles.centeredView}>
-              <Modal
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert("Modal has been closed.");
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
-                    <Pressable
-                      style={[styles.button]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>X</Text>
-                    </Pressable>
-                    <Text style={styles.modalText}>Compatiable songs: </Text>
-                    <Text style={styles.modalText}>{`${TopSongs}`} </Text>
-                    {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
-                  </View>
-                </View>
-              </Modal>
-              <Pressable onPress={() => setModalVisible(true)}>
-                <Text style={styles.percentage}>{compatibility}</Text>
-              </Pressable>
-            </View>
-            {/* POPUP CODE ENDS */}
-
-            {/* <Text style={styles.percentage}>{compatibility}</Text> */}
-          </View>
         </View>
 
         {/* -------------------------------------------------------------------- */}
@@ -479,7 +505,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
-    backgroundColor: "#000000",
+    backgroundColor: "#000",
     marginHorizontal: 40,
     marginTop: 20,
     marginBottom: 40,
@@ -517,10 +543,21 @@ const styles = StyleSheet.create({
     // color: '#fff',
     color: "#FE8AE3",
     fontSize: 28,
+    fontWeight: 'bold',
+    // marginLeft: 10,
+    textAlign: 'center',
+    marginTop: -25,
   },
   genderAndOrientation: {
     color: "#fff",
-    fontSize: 18,
+    // marginLeft: 10,
+    textAlign:'center'
+  },
+  location: {
+    color: "#fff",
+    fontSize: 15,
+    textAlign: 'center',
+    marginBottom: 15
   },
   meter: {
     color: "#5E5E5E",
@@ -528,20 +565,34 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     // borderColor:'#3EFF2D',
     borderColor: "#1DB954",
-    marginLeft: 20,
-    borderWidth: 1,
-    height: 90,
-    width: 90,
+    marginLeft: 15,
+    borderWidth: 2,
+    marginRight: 20,
+    height: 70,
+    width: 70,
     justifyContent: "center",
   },
+  // compatibility: {
+  //   color: "#1DB954",
+  //   alignSelf: "center",
+  //   fontSize: 20,
+  //   marginBottom: 20
+  //   // fontWeight: 'bold'
+
+  // },
   percentage: {
-    // color: '#fff',
-    color: "#1DB954",
+    color: "#1DB950",
     alignSelf: "center",
-    fontSize: 30,
+    fontSize: 20,
+    // top: -40,
+    // marginBottom: -10,
+    fontWeight: 'bold',
+    textShadowColor: '#1DB954', 
+    textShadowOffset: { width: -1, height: 0 },
+    textShadowRadius: 10, 
   },
   desc: {
-    color: "#fff",
+    color: "white",
     alignSelf: "flex-start",
     marginTop: 5,
     marginHorizontal: 30,
@@ -551,12 +602,14 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   bio: {
-    color: "#fff",
+    color: "#FE8AE3",
     alignSelf: "center",
+    justifyContent: 'center',
     marginTop: 5,
     marginHorizontal: 30,
     fontSize: 20,
     flexShrink: 1,
+    textAlign: 'center'
   },
 
   divider: {
@@ -590,7 +643,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: -10,
   },
   // style of the popup window
   modalView: {
@@ -608,5 +661,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     fontSize: 20,
     flexShrink: 1,
+  },
+  buttonStyle: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#1DB954",
+    borderRadius: 10,
+    height: 40,
+  },
+  buttonContainer: {
+    width: 230,
+    top: -35
   },
 });
