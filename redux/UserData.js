@@ -104,7 +104,7 @@ export const getQuestions = async () => {
   const questionData = await axios.get(
     "http://spotify-match.us-west-1.elasticbeanstalk.com/profilequestions/"
   );
-  console.log(questionData["data"].length);
+  // console.log(questionData["data"].length);
 
   var questionBank = [];
 
