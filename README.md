@@ -33,9 +33,16 @@ The backend repository is present in the assets folder as a zip file (it is a re
 
 `git clone https://github.com/AmandeepSingh789/Spotify-Match.git`
 
-`npm install` or `yarn` or `npx expo install <indivisual package name>` (recommended)
+`npm install --force` and `yarn add` need to be used for the packages to get installed.
+Its also reccomended to clear the cache. (recommended)
+
+Indivisual packages installation-
+`npm install` or `yarn add` or `npx expo install <indivisual package name>` 
+
+Possibly other seperate installations that may need to be completed-
 `npx expo install jest-expo jest`
 `npx expo install expo-media-library@~15.0.`
+`npx expo install expo-auth-session@~3.8.0`
 
 ### to run the app-
 `npx expo start` or
