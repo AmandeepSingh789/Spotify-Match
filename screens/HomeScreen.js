@@ -24,8 +24,10 @@ export default function App() {
 
   const [userIds, setuserIds] = useState([]);
 
-  // const dispatch = useDispatch();
-  var { id } = useSelector((state) => state.id);
+  const dispatch = useDispatch();
+  var {
+      id,
+  } = useSelector((state) => state.id);
 
   const getMatches = () => {
     axios
