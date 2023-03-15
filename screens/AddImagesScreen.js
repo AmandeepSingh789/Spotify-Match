@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { React, useEffect, useRef, useState, useCallback } from "react";
-import { Camera } from "expo-camera";
-import { shareAsync } from "expo-sharing";
-import { useFonts } from "expo-font";
-import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
+// import { Camera } from "expo-camera";
+// import { shareAsync } from "expo-sharing";
+// import { useFonts } from "expo-font";
+// import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/AntDesign";
 import axios from "axios";
