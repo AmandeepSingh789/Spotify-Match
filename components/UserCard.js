@@ -14,10 +14,16 @@ import Layout from "../ constants/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
+import * as FileSystem from 'expo-file-system';
+import { Asset } from "expo-asset"
+
 
 import { questionBank } from "../redux/UserData";
 
 const compatibility = "80%";
+const picUri = '../resources/Pfp/';
+
+let test = require('../assets/test300x300.jpeg');
 
 // Card component that displays user information
 function Card({ id }) {
@@ -45,6 +51,8 @@ function Card({ id }) {
   const [TopGenres, SetTopGenres] = useState([]);
   const [TopArtists, SetTopArtists] = useState([]);
 
+  const [useBase64, setUseBase64] = useState(false);
+
   // Array of pictures
   const pics = [
     {
@@ -64,6 +72,25 @@ function Card({ id }) {
       uri: "data:image/jpeg;base64," + pic4,
     },
   ];
+
+  const testPics = [
+    {
+      id: 1,
+      source: pic1,
+    },
+    {
+      id: 2,
+      source: pic2,
+    },
+    {
+      id: 3,
+      source: pic3,
+    },
+    {
+      id: 4,
+      source: pic4,
+    },
+  ]
 
   async function getUserById({ id }) {
     console.log("rendering card: " + id);
@@ -103,31 +130,158 @@ function Card({ id }) {
 
     setLoaded(true);
 
-    // setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
-    // setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
-    // setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
-    // setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+    if (testUsers[id] != undefined) {
+      setTestUserPhotos(id);
+    }
+    else {
+      setUseBase64(true);
+      setPic1(binaryToBase64(response["data"]["profilepictures"]["picture1"]["data"]))
+      setPic2(binaryToBase64(response["data"]["profilepictures"]["picture2"]["data"]))
+      setPic3(binaryToBase64(response["data"]["profilepictures"]["picture3"]["data"]))
+      setPic4(binaryToBase64(response["data"]["profilepictures"]["picture4"]["data"]))
+    }
   };
+
+
+  // async function fileToBase64(fileUri) {
+  //   console.log("loading image:")
+  //   console.log(fileUri)
+  //   try {
+  //     const asset = Asset.fromModule(fileUri);
+  //     const fileContent = await FileSystem.readAsStringAsync(asset.localUri, {
+  //       encoding: FileSystem.EncodingType.Base64,
+  //     });
+  //     return fileContent;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  
+
+  async function setTestUserPhotos(id) {
+    setUseBase64(false)
+    setPic1(testUsers[id].pic1);
+    setPic2(testUsers[id].pic2);
+    setPic3(testUsers[id].pic3);
+    setPic4(testUsers[id].pic4);
+  }
+
+  const testUsers = {
+    0: {
+      pic1: require('../resources/Pfp/Jerry/Jerry_1.jpeg'),
+      pic2: require('../resources/Pfp/Jerry/Jerry_2.jpeg'),
+      pic3: require('../resources/Pfp/Jerry/Jerry_3.jpeg'),
+      pic4: require('../resources/Pfp/Jerry/Jerry_4.jpeg')
+    },
+    1: {
+      pic1: require('../resources/Pfp/George/George_1.jpeg'),
+      pic2: require('../resources/Pfp/George/George_2.jpeg'),
+      pic3: require('../resources/Pfp/George/George_3.jpeg'),
+      pic4: require('../resources/Pfp/George/George_4.jpeg')
+    },
+    2: {
+      pic1: require('../resources/Pfp/Elaine/Elaine_1.jpeg'),
+      pic2: require('../resources/Pfp/Elaine/Elaine_2.jpeg'),
+      pic3: require('../resources/Pfp/Elaine/Elaine_3.jpeg'),
+      pic4: require('../resources/Pfp/Elaine/Elaine_4.jpeg')
+      },
+    3: {
+      pic1: require('../resources/Pfp/JayQuellin/JayQuellin_1.jpeg'),
+      pic2: require('../resources/Pfp/JayQuellin/JayQuellin_2.jpeg'),
+      pic3: require('../resources/Pfp/JayQuellin/JayQuellin_3.jpeg'),
+      pic4: require('../resources/Pfp/JayQuellin/JayQuellin_4.jpeg')
+      },
+    4: {
+        pic1: require('../resources/Pfp/Balakay/Balakay_1.jpeg'),
+        pic2: require('../resources/Pfp/Balakay/Balakay_2.jpeg'),
+        pic3: require('../resources/Pfp/Balakay/Balakay_3.jpeg'),
+        pic4: require('../resources/Pfp/Balakay/Balakay_4.jpeg')
+      },
+    5: {
+        pic1: require('../resources/Pfp/Deenice/DeeNice_1.jpeg'),
+        pic2: require('../resources/Pfp/Deenice/DeeNice_2.jpeg'),
+        pic3: require('../resources/Pfp/Deenice/DeeNice_3.jpeg'),
+        pic4: require('../resources/Pfp/Deenice/DeeNice_4.jpeg')
+    },
+    6: {
+      pic1: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_1.jpeg'),
+      pic2: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_2.jpeg'),
+      pic3: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_3.jpeg'),
+      pic4: require('../resources/Pfp/Ay-Ay-Ron/Ay-Ay-Ron_4.jpeg')
+      },
+    7: {
+      pic1: require('../resources/Pfp/Tymothee/Tymothee_1.jpeg'),
+      pic2: require('../resources/Pfp/Tymothee/Tymothee_2.jpeg'),
+      pic3: require('../resources/Pfp/Tymothee/Tymothee_3.jpeg'),
+      pic4: require('../resources/Pfp/Tymothee/Tymothee_4.jpeg')
+      },
+    8: {
+      pic1: require('../resources/Pfp/CallumGarcia/Callum_1.jpeg'),
+      pic2: require('../resources/Pfp/CallumGarcia/Callum_2.jpeg'),
+      pic3: require('../resources/Pfp/CallumGarcia/Callum_3.jpeg'),
+      pic4: require('../resources/Pfp/CallumGarcia/Callum_4.jpeg')
+      },
+    9: {
+      pic1: require('../resources/Pfp/Maggie/Maggie_1.jpeg'),
+      pic2: require('../resources/Pfp/Maggie/Maggie_2.jpeg'),
+      pic3: require('../resources/Pfp/Maggie/Maggie_3.jpeg'),
+      pic4: require('../resources/Pfp/Maggie/Maggie_4.jpeg')
+      },
+    10: {
+      pic1: require('../resources/Pfp/Chris/Chris_1.jpeg'),
+      pic2: require('../resources/Pfp/Chris/Chris_2.jpeg'),
+      pic3: require('../resources/Pfp/Chris/Chris_3.jpeg'),
+      pic4: require('../resources/Pfp/Chris/Chris_4.jpeg')
+      },
+    11: {
+      pic1: require('../resources/Pfp/Nina/Nina_1.jpeg'),
+      pic2: require('../resources/Pfp/Nina/Nina_2.jpeg'),
+      pic3: require('../resources/Pfp/Nina/Nina_3.jpeg'),
+      pic4: require('../resources/Pfp/Nina/Nina_4.jpeg')
+      },
+    12: {
+      pic1: require('../resources/Pfp/Alex/Alex_1.jpeg'),
+      pic2: require('../resources/Pfp/Alex/Alex_2.jpeg'),
+      pic3: require('../resources/Pfp/Alex/Alex_3.jpeg'),
+      pic4: require('../resources/Pfp/Alex/Alex_4.jpeg')
+      },
+    13: {
+      pic1: require('../resources/Pfp/Kara/Kara_1.jpeg'),
+      pic2: require('../resources/Pfp/Kara/Kara_2.jpeg'),
+      pic3: require('../resources/Pfp/Kara/Kara_3.jpeg'),
+      pic4: require('../resources/Pfp/Kara/Kara_4.jpeg')
+      },
+    14: {
+      pic1: require('../resources/Pfp/Sam/Sam_1.jpeg'),
+      pic2: require('../resources/Pfp/Sam/Sam_2.jpeg'),
+      pic3: require('../resources/Pfp/Sam/Sam_3.jpeg'),
+      pic4: require('../resources/Pfp/Sam/Sam_4.jpeg')
+      },
+    15: {
+      pic1: require('../resources/Pfp/Taylor/Taylor_1.jpeg'),
+      pic2: require('../resources/Pfp/Taylor/Taylor_2.jpeg'),
+      pic3: require('../resources/Pfp/Taylor/Taylor_3.jpeg'),
+      pic4: require('../resources/Pfp/Taylor/Taylor_4.jpeg')
+      },
+    16: {
+      pic1: require('../resources/Pfp/Gary/Gary_1.jpeg'),
+      pic2: require('../resources/Pfp/Gary/Gary_2.jpeg'),
+      pic3: require('../resources/Pfp/Gary/Gary_3.jpeg'),
+      pic4: require('../resources/Pfp/Gary/Gary_4.jpeg')
+      },
+    17: {
+      pic1: require('../resources/Pfp/JuliaNguyen/Julia_1.jpeg'),
+      pic2: require('../resources/Pfp/JuliaNguyen/Julia_2.jpeg'),
+      pic3: require('../resources/Pfp/JuliaNguyen/Julia_3.jpeg'),
+      pic4: require('../resources/Pfp/JuliaNguyen/Julia_4.jpeg')
+      },
+  }
 
   useEffect(() => {
     getData({ id });
   }, [id]);
 
-  // Flatlist Image Item
-  const Item = ({ item }) => (
-    <View style={styles.imageContainer}>
-      {/* <Image source={{uri:"data:image/jpeg;base64,"+ `${pic2}`}}
-      resizeMode="cover"
-      style={styles.image} 
-       /> */}
 
-      <Image
-        source={{ uri: item.uri }}
-        resizeMode="contain"
-        style={styles.image}
-      />
-    </View>
-  );
 
   // Function to get age from DOB
   const getAge = (DOB) => {
@@ -164,6 +318,33 @@ function Card({ id }) {
     SetOrientation(map[orientation]);
   };
 
+    // Flatlist Image Item
+    const Item = ({ item }) => {
+    
+      if (useBase64) {
+        return (
+          <View key={item.id} style={styles.imageContainer}>
+            <Image
+              source={{ uri: item.uri }}
+              resizeMode="contain"
+              style={styles.image}
+            />
+          </View>
+        )
+      }
+      else {
+        return (
+          <View key={item.id} style={styles.imageContainer}>
+            <Image
+              source={item.source}
+              resizeMode="contain"
+              style={styles.image}
+            />
+          </View>
+        )
+      }
+    };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -174,13 +355,14 @@ function Card({ id }) {
       style={styles.image} 
        /> */}
           <FlatList
-            data={pics}
+            data={useBase64 ? pics : testPics}
             renderItem={({ item }) => <Item item={item} />}
             horizontal
             pagingEnabled
             snapToAlignment="center"
             showHorizontalScrollIndicator={false}
             style={styles.flatList}
+            initialScrollIndex={0} // Set the default id to 0
           />
         </View>
 
