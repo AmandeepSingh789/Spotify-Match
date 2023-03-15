@@ -38,7 +38,7 @@
 //         // headerStyle: { backgroundColor: 'black' },
 //         "tabBarStyle": [
 //             {
-//             // "backgroundColor": "#28282B",  
+//             // "backgroundColor": "#28282B",
 //             "display": "flex",
 //             // "height": 75,
 //             },
@@ -67,7 +67,6 @@
 //         {/* <Tab.Screen name={homeName} component={HomeScreen} /> */}
 //         <Tab.Screen name={matchesName} component={MatchesScreen} />
 //         <Tab.Screen name={profileName} component={ProfileScreen} />
-        
 
 //       </Tab.Navigator>
 //     </NavigationContainer>
