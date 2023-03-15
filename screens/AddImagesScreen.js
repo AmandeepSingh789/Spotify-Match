@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/AntDesign";
+import axios from "axios";
 
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
@@ -139,7 +140,7 @@ export default function Add_images() {
     }
   };
 
-  const postData = () => {
+  const postData = async () => {
     console.log({
       id: id,
       name: name,
@@ -215,33 +216,68 @@ export default function Add_images() {
           break;
       }
 
-      createUser({
-        id: id,
-        name: name,
-        birthdate: birthdate,
-        email: email,
-        gender: tempGender,
-        orientation: tempOrientation,
-        location: location,
-        pronouns: pronouns,
-        bio: bio,
-        questionid1: question1,
-        questionid2: question2,
-        questionid3: question3,
-        answer1: answer1,
-        answer2: answer2,
-        answer3: answer3,
-        instagram: socials,
+
+
+
+      await createUser({
+        "id": id,
+        "name": name,
+        "birthdate": birthdate,
+        "email": email,
+        "gender": tempGender,
+        "orientation": tempOrientation,
+        "location": location,
+        "pronouns": pronouns,
+        "bio": bio,
+        "questionid1": question1,
+        "questionid2": question2,
+        "questionid3": question3,
+        "answer1": answer1,
+        "answer2": answer2,
+        "answer3": answer3,
+        "instagram": socials,
       });
+
+      // console.log(spotifydata)
+      await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/toptracks/' + id,
+        {
+          "id": id,
+          "data": toptracks
+        }
+      ).catch((error) => { console.error(error); });
+
+
+      await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topgenres/' + id,
+        {
+          "id": id,
+          "data": topgenres
+        }
+      ).catch((error) => { console.error(error); });
+
+      await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/topartists/' + id,
+        {
+          "id": id,
+          "data": topartists
+        }
+      ).catch((error) => { console.error(error); });
+
+      console.log(spotifydata);
+      await axios.post('http://spotify-match.us-west-1.elasticbeanstalk.com/spotifydata/',
+        
+        spotifydata
+        
+      ).then((response) => {
+        console.log(response);
+      }).catch((error) => { console.error(error); });
 
       console.log("Creating Profile Pictures");
 
-      createPictures({
-        id: id,
-        image1: image1,
-        image2: image2,
-        image3: image3,
-        image4: image4,
+      await createPictures({
+        "id": id,
+        "image1": image1,
+        "image2": image2,
+        "image3": image3,
+        "image4": image4,
       });
       navigation.navigate("Home");
     } else {

@@ -171,9 +171,9 @@ export default function Edit_user_profile() {
     // console.log(orientation);
 
     console.log(spotifydata);
-    console.log(topartists);
-    console.log(toptracks);
-    console.log(topgenres);
+    // console.log(topartists);
+    // console.log(toptracks);
+    // console.log(topgenres);
 
 
 
@@ -292,7 +292,7 @@ export default function Edit_user_profile() {
                 <View style={styles.horizontal}>
                     <View>
                         <Text style={styles.fieldTitle}>Birthdate:</Text>
-                        <Text style={styles.userBirthdateInput}>{birthdate}</Text>
+                        <Text style={styles.userBirthdateInput}>{userBirthday}</Text>
                     </View>
 
                     <View>

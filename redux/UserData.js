@@ -9,7 +9,7 @@ import * as FileSystem from "expo-file-system";
 export const createUser = async (data) => {
   console.log("Creating user with data:");
   console.log(data);
-  axios
+  await axios
     .post("http://spotify-match.us-west-1.elasticbeanstalk.com/users", data)
     .then(function (response) {
       console.log(response);
