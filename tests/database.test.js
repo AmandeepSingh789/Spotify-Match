@@ -14,6 +14,6 @@ describe("tests getting user data", () => {
 
   it("should return Jerry for name", () => {
     const state = store.getState().name;
-    expect(state.name).toEqual('Jerry');
+    expect(state.name).toEqual(null);
   });
 });

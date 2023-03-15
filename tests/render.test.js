@@ -236,47 +236,99 @@
 //   });
 // });
 
+// import React from 'react';
+// import { render, fireEvent, expect } from '@testing-library/react-native';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import SpotifyLoginScreen from '../screens/SpotifyLoginScreen';
+// import configureMockStore from 'redux-mock-store';
+// import thunk from 'redux-thunk';
+
+// import { Provider } from 'react-redux';
+// import { store } from '../redux/store';
+
+// // const middlewares = [thunk];
+// // const mockStore = configureMockStore(middlewares);
+// // const store = mockStore({});
+
+// describe('SpotifyLoginScreen', () => {
+//   const Stack = createStackNavigator();
+//   const navigation = {
+//     navigate: jest.fn(),
+//   };
+
+//   it('triggers Spotify login when button is pressed', () => {
+//     const handleLogin = jest.fn();
+//     const { getByTestId } = render(
+//       <Provider store={store}>
+//         <NavigationContainer>
+//           <Stack.Navigator>
+//             <Stack.Screen
+//               name="SpotifyLoginScreen"
+//               component={SpotifyLoginScreen}
+//             />
+//           </Stack.Navigator>
+//         </NavigationContainer>
+//       </Provider>
+//     );
+//     const loginButton = getByTestId('LoginButton');
+//     fireEvent.press(loginButton);
+
+//     // Wait for the authentication process to finish
+//     new Promise(resolve => setTimeout(resolve, 1000));
+
+//     expect(handleLogin).toHaveBeenCalled();
+//   });
+// });
+
+
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import SpotifyLoginScreen from '../screens/SpotifyLoginScreen';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
 import { Provider } from 'react-redux';
-import { store } from '../redux/store';
+import { Button } from '@rneui/base';
+import configureStore from 'redux-mock-store';
+import SpotifyLoginScreen from "../screens/SpotifyLoginScreen";
 
-// const middlewares = [thunk];
-// const mockStore = configureMockStore(middlewares);
-// const store = mockStore({});
+const mockStore = configureStore([]);
 
-describe('SpotifyLoginScreen', () => {
-  const Stack = createStackNavigator();
-  const navigation = {
-    navigate: jest.fn(),
-  };
+describe('Spotify Login Screen', () => {
+  let store;
+  let component;
 
-  it('triggers Spotify login when button is pressed', async () => {
-    const handleLogin = jest.fn();
-    const { getByTestId } = render(
+  beforeEach(() => {
+    store = mockStore({
+      id: {
+        id: null,
+        spotifydata: null,
+        topartists: null,
+        toptracks: null,
+        topgenres: null,
+        userToken: null,
+        email: null,
+      },
+    });
+
+    component = (
       <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="SpotifyLogin"
-              component={SpotifyLoginScreen}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <SpotifyLoginScreen />
       </Provider>
     );
-    const loginButton = getByTestId('LoginButton');
-    fireEvent.press(loginButton);
+  });
 
-    // Wait for the authentication process to finish
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  it('should render the authentication button', () => {
+    const { getByTestId } = render(component);
+    const authButton = getByTestId('auth-button');
 
-    expect(handleLogin).toHaveBeenCalled();
+    expect(authButton).toBeDefined();
+    expect(authButton.props.title).toBe('Log in with Spotify');
+  });
+
+  it('should dispatch the setUserToken action on button press', () => {
+    const { getByTestId } = render(component);
+    const authButton = getByTestId('auth-button');
+    fireEvent.press(authButton);
+
+    const actions = store.getActions();
+    expect(actions[0].type).toBe('SET_USER_TOKEN');
   });
 });
