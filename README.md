@@ -46,6 +46,13 @@ The backend repository is present in the assets folder as a zip file (it is a re
 `npx expo start --clear`
 OR ADD "clean": "npx expo start --clear" to package.json scripts for cache clearing
 
+## Unit test-
+
+The unit tests are placed in the tests directory. 
+
+To run them-
+`npm run test` 
+
 ## Navigation Sturcture-
 - Stack.Navigator
  - - Spotify Login (Screen)
