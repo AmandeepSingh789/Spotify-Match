@@ -14,6 +14,7 @@ import Layout from "../ constants/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
+import { Button } from "@rneui/base";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { questionBank } from "../redux/UserData";
@@ -202,13 +203,45 @@ function Card({ id }) {
         </View>
 
         {/* -------------------------------------------------------------------- */}
-        <Pressable onPress={() => setModalVisible(true)}>
-          <View>
-            <Text style={styles.percentage}>
-              COMPATIBILITY: {compatibility}
-            </Text>
+
+        {/* POPUP CODE BEGINS */}
+        <View style={styles.centeredView}>
+          <Modal
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Pressable
+                  style={[styles.button]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>X</Text>
+                </Pressable>
+                <Text style={styles.modalText}>Compatible songs:  </Text>
+                <Text style={styles.modalText}>{`${TopSongs}`} </Text>
+              </View>
+            </View>
+          </Modal>
+          <View style={{ bottom: 20 }}>
+            <Button
+              title= 'COMPATIBILITY: 80%'
+              buttonStyle={styles.buttonStyle}
+              containerStyle={styles.buttonContainer}
+              titleStyle={styles.percentage}
+              onPress={() => {
+                setModalVisible(true)
+              }}
+            />
           </View>
-        </Pressable>
+
+        </View>
+        {/* POPUP CODE ENDS */}
+
         {/* Box with Name,Age and Meter*/}
         <View style={styles.upperBox}>
           
@@ -221,43 +254,6 @@ function Card({ id }) {
               {`${location}`}            
             </Text>
           </View>
-
-          
-          {/* <View style={styles.meter}> */}
-            {/* POPUP CODE BEGINS */}
-            {/* <View style={styles.centeredView}>
-              <Modal
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert("Modal has been closed.");
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}> */}
-                    {/* <Text style={styles.modalText}>Top Songs: Top Genres: </Text> */}
-                    {/* <Pressable
-                      style={[styles.button]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>X</Text>
-                    </Pressable>
-                    <Text style={styles.modalText}>Compatiable songs: </Text>
-                    <Text style={styles.modalText}>{`${TopSongs}`} </Text> */}
-                    {/* INSERT COMPATIBILITY FUNCTION HERE TO ADD SHARED SONGS  */}
-                  {/* </View>
-                </View>
-              </Modal>
-              <Pressable onPress={() => setModalVisible(true)}>
-                <Text style={styles.percentage}>{compatibility}</Text>
-              </Pressable>
-            </View> */}
-            {/* POPUP CODE ENDS */}
-
-            {/* <Text style={styles.percentage}>{compatibility}</Text> */}
-          {/* </View> */}
-          
 
         </View>
 
@@ -368,7 +364,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     // marginLeft: 10,
     textAlign: 'center',
-    // flexShrink: 1
+    marginTop: -25,
   },
   genderAndOrientation: {
     color: "#fff",
@@ -404,16 +400,11 @@ const styles = StyleSheet.create({
 
   // },
   percentage: {
-    // color: '#fff',
-    // color: "#1DB954",
-    // alignSelf: "center",
-    // fontSize: 20,
-    // fontWeight: 'bold'
     color: "#1DB950",
     alignSelf: "center",
     fontSize: 20,
-    top: -50,
-    marginBottom: -20,
+    // top: -40,
+    // marginBottom: -10,
     fontWeight: 'bold',
     textShadowColor: '#1DB954', 
     textShadowOffset: { width: -1, height: 0 },
@@ -471,7 +462,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: -10,
   },
   // style of the popup window
   modalView: {
@@ -489,5 +480,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     fontSize: 20,
     flexShrink: 1,
+  },
+  buttonStyle: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#1DB954",
+    borderRadius: 10,
+    height: 40,
+  },
+  buttonContainer: {
+    width: 230,
+    top: -35
   },
 });

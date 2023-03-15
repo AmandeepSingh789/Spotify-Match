@@ -1,3 +1,4 @@
+// Importing Packages
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { Button } from "@rneui/base";
@@ -24,13 +25,15 @@ import {
   questionBank,
   fetchUserData,
 } from "../redux/UserData";
-// import { set } from "react-native-reanimated";
 
+// Get app logo
 const logo = require("../assets/spotify_match_logo.png");
 
+// Number of artists / tracks / genres to retrieve from Spotify API
 const NUMTOPARTISTS = 50;
 const NUMTOPTRACKS = 50;
 const NUMTOPGENRES = 50;
+
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
