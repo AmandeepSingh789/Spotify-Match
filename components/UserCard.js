@@ -287,7 +287,9 @@ function Card({ id }) {
     getData({ id });
   }, [id]);
 
-
+  const compatibilityText = (percentage) => {
+    return "COMPATIBILITY: " + percentage;
+  };
 
   // Function to get age from DOB
   const getAge = (DOB) => {
@@ -361,7 +363,6 @@ function Card({ id }) {
     else {
       SetPronouns(pronouns);
     }
-
   }
   return (
     <View style={styles.container}>
@@ -411,7 +412,7 @@ function Card({ id }) {
           </Modal>
           <View style={{ bottom: 20 }}>
             <Button
-              title= 'COMPATIBILITY: 80%'
+              title= {compatibilityText(compatibility)}
               buttonStyle={styles.buttonStyle}
               containerStyle={styles.buttonContainer}
               titleStyle={styles.percentage}
@@ -546,7 +547,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     // marginLeft: 10,
     textAlign: 'center',
-    marginTop: -25,
+    marginTop: 5,
   },
   genderAndOrientation: {
     color: "#fff",
@@ -667,10 +668,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#1DB954",
     borderRadius: 10,
-    height: 40,
+    height: 42,
   },
   buttonContainer: {
-    width: 230,
-    top: -35
+    width: 270,
+    top: 20
   },
 });
